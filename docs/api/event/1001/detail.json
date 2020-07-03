@@ -1,0 +1,401 @@
+{
+  "id": 1001,
+  "type": "event",
+  "name": "Evento XYZ",
+  "title": "Evento XYZ",
+  "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+  "picture": {
+    "src": "https://source.unsplash.com/random/",
+    "width": 1920,
+    "height": 1080
+  },
+  "media": {
+    "src": "https://gruppoconcorde-view.thron.com/api/xcontents/resources/delivery/getContentDetail?clientId=gruppoconcorde&xcontentId=16ef3c0a-ba0c-4e3a-a10a-32bc7f9a4297&pkey=yz1hpd",
+    "type": "thron"
+  },
+  "url": "/cantalupi/events-event.html",
+  "creationDate": "2020-05-20T08:11:17.827Z",
+  "startDate": "2020-05-20T08:11:17.827Z",
+  "endDate": null,
+  "info": {
+    "subscribers": 100,
+    "subscribed": false,
+    "likes": 100,
+    "liked": false,
+    "saved": false
+  },
+  "features": [
+    10000001,
+    10000002
+  ],
+  "channel": {
+    "id": 101,
+    "type": "channel",
+    "name": "Channel A",
+    "url": "/cantalupi/events-channel.html"
+  },
+  "related": [
+    {
+      "id": 1001,
+      "type": "event",
+      "name": "Evento A1",
+      "title": "Evento A1",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1002,
+      "type": "event",
+      "name": "Evento A2",
+      "title": "Evento A2",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1003,
+      "type": "event",
+      "name": "Evento A3",
+      "title": "Evento A3",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1004,
+      "type": "event",
+      "name": "Evento A4",
+      "title": "Evento A4",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1005,
+      "type": "event",
+      "name": "Evento A5",
+      "title": "Evento A5",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1006,
+      "type": "event",
+      "name": "Evento A6",
+      "title": "Evento A6",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1007,
+      "type": "event",
+      "name": "Evento A7",
+      "title": "Evento A7",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1008,
+      "type": "event",
+      "name": "Evento A8",
+      "title": "Evento A8",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1009,
+      "type": "event",
+      "name": "Evento A9",
+      "title": "Evento A9",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 1010,
+      "type": "event",
+      "name": "Evento A10",
+      "title": "Evento A10",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 101,
+        "type": "channel",
+        "name": "Channel A",
+        "url": "/cantalupi/events-channel.html"
+      }
+    }
+  ],
+  "questions": [
+    {
+      "id": 1000004,
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "user": {
+        "id": 100003,
+        "firstName": "Marco",
+        "lastName": "Montemagno"
+      },
+      "body": "interessante!"
+    },
+    {
+      "id": 1000003,
+      "user": {
+        "id": 100002,
+        "firstName": "Enza",
+        "lastName": "Ambrosio"
+      },
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "body": "bello il video!"
+    },
+    {
+      "id": 1000002,
+      "user": {
+        "id": 100001,
+        "firstName": "Franco",
+        "lastName": "Rebolini"
+      },
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "body": "Potreste fare una guida per l'applicazione dei decori? Grazie."
+    }
+  ]
+}

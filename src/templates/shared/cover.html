@@ -1,0 +1,12 @@
+<div class="section--cover" cover *if="showCover" (skip)="onSkipCover($event)">
+	<div class="background">
+		<img class="image-0" src="/cantalupi/img/cover/cover-01.jpg" />
+		<img class="image-1" src="/cantalupi/img/cover/cover-02.jpg" />
+		<img class="image-2" src="/cantalupi/img/cover/cover-03.jpg" />
+	</div>
+	<div class="container">
+		<div class="brand"><svg class="cantalupi-light-engineering"><use xlink:href="#cantalupi-light-engineering"></use></svg></div>
+		<div class="title">Progettiamo la luce per far risplendere la bellezza</div>
+		<div class="btn--skip" (click)="onSkip(event)">Skip intro</div>
+	</div>
+</div>

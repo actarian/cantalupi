@@ -1,0 +1,123 @@
+.header {
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+
+	.container-fluid,
+	.container {
+		min-height: 65px;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+
+	.btn--menu {
+		line-height: 0;
+		cursor: pointer;
+
+		.icon {
+			width: 19px;
+			height: 19px;
+			color: #b5c0e4;
+		}
+	}
+
+	.brand {
+		line-height: 0;
+	}
+
+	.cantalupi-badge {
+		// fill: $foreground-primary;
+		width: 44px;
+		height: 30px;
+	}
+
+	.btn--rounded {
+		@extend %btn-md;
+	}
+
+	@include media-up(md) {
+		margin-bottom: 50px;
+	}
+}
+
+.group--header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	.group--left {
+		flex: 1 1 auto;
+		display: flex;
+		justify-content: flex-start;
+	}
+
+	.group--center {
+		flex: 0 0 auto;
+		display: flex;
+		justify-content: center;
+	}
+
+	.group--right {
+		flex: 1 1 auto;
+		display: flex;
+		justify-content: flex-end;
+	}
+}
+
+.nav--secondary-menu {
+	@extend %nav;
+	width: auto;
+
+	&>li {
+		@extend %nav-item;
+		margin-right: 80px;
+
+		&:last-child {
+			margin-right: 0;
+		}
+
+		&>a {
+			@extend %btn;
+			color: white;
+			font-size: 16px;
+		}
+	}
+}
+
+
+.group--brand {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+
+	&>*+* {
+		margin-left: 10px;
+	}
+}
+
+.group--actions {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+
+	&>*+* {
+		margin-left: 10px;
+	}
+}
+
+.avatar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	font-family: 'Roboto mono', monospace;
+	font-weight: 900;
+	font-size: 12px;
+	letter-spacing: 0.1em;
+	background: $background-tertiary;
+	color: $foreground-primary;
+}

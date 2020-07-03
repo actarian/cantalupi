@@ -1,0 +1,9 @@
+<aside class="aside" aside>
+	<div class="container">
+		<ul class="nav--menu">
+			<li class="nav--menu__item" *for="let item of channels">
+				<a [href]="item.url" [class]="{ active: item.id === channelId }" [innerHTML]="item.name"></a>
+			</li>
+		</ul>
+	</div>
+</aside>

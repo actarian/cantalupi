@@ -1,0 +1,10 @@
+<aside class="notification" notification>
+	<div class="container">
+		<div class="group--notification" *virtual="let item of notifications" [mode]="grid.mode" [width]="grid.width" [gutter]="grid.gutter">
+			<!-- serve un nodo figlio -->
+			<div [event]="item">
+				<!-- @@include ./event/card-notification.html -->
+			</div>
+		</div>
+	</div>
+</aside>

@@ -1,0 +1,186 @@
+{
+  "id": 104,
+  "type": "channel",
+  "name": "Channel D",
+  "title": "Channel D",
+  "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+  "picture": {
+    "src": "https://source.unsplash.com/random/",
+    "width": 1920,
+    "height": 1080
+  },
+  "url": "/cantalupi/events-channel.html",
+  "info": {
+    "subscribers": 100,
+    "subscribed": false,
+    "likes": 100,
+    "liked": false
+  },
+  "events": [
+    {
+      "id": 4001,
+      "type": "event",
+      "name": "Evento D1",
+      "title": "Evento D1",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 104,
+        "type": "channel",
+        "name": "Channel D",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 4002,
+      "type": "event",
+      "name": "Evento D2",
+      "title": "Evento D2",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 104,
+        "type": "channel",
+        "name": "Channel D",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 4003,
+      "type": "event",
+      "name": "Evento D3",
+      "title": "Evento D3",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 104,
+        "type": "channel",
+        "name": "Channel D",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 4004,
+      "type": "event",
+      "name": "Evento D4",
+      "title": "Evento D4",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 104,
+        "type": "channel",
+        "name": "Channel D",
+        "url": "/cantalupi/events-channel.html"
+      }
+    },
+    {
+      "id": 4005,
+      "type": "event",
+      "name": "Evento D5",
+      "title": "Evento D5",
+      "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+      "picture": {
+        "src": "https://source.unsplash.com/random/",
+        "width": 1920,
+        "height": 1080
+      },
+      "url": "/cantalupi/events-event.html",
+      "creationDate": "2020-05-20T08:11:17.827Z",
+      "startDate": "2020-05-20T08:11:17.827Z",
+      "endDate": null,
+      "info": {
+        "subscribers": 100,
+        "subscribed": false,
+        "likes": 100,
+        "liked": false,
+        "saved": false
+      },
+      "features": [
+        10000001,
+        10000002
+      ],
+      "channel": {
+        "id": 104,
+        "type": "channel",
+        "name": "Channel D",
+        "url": "/cantalupi/events-channel.html"
+      }
+    }
+  ]
+}

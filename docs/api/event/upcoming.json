@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1001,
+    "title": "First teaser box with headline",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-event.html"
+  },
+  {
+    "id": 1002,
+    "title": "Second teaser box with headline",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-event.html"
+  },
+  {
+    "id": 1003,
+    "title": "Third teaser box with headline",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-event.html"
+  }
+]

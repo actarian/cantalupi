@@ -1,0 +1,89 @@
+<mjml owa="desktop">
+  <mj-head>
+    <mj-font name="Montserrat" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700" />
+    <mj-font name="Roboto Mono" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@700" />
+  </mj-head>
+  <mj-body background-color="#ffffff">
+    <!-- Header -->
+    <mj-section padding="20px 0px 10px 0px" background-color="#ffffff">
+      <mj-column>
+        <mj-image width="184px" href="@Model.Event.Url" src="https://bom-demo.wslabs.it/Modules/Events/Client/docs/img/logo.png"></mj-image>
+      </mj-column>
+    </mj-section>
+    <!-- Body -->
+    <!-- New Event -->
+    <mj-section background-color="#ffffff" background-repeat="no-repeat" text-align="center" padding="0 0 0 0" border-radius="6px">
+      <mj-column>
+        <mj-image align="center" border="none" padding-bottom="0px" padding-top="0px" border-radius="6px" src="https://source.unsplash.com/random/800x450" target="_blank" title="" width="780px"></mj-image>
+      </mj-column>
+    </mj-section>
+    <mj-section padding="0px 0px 0px 0px" background-color="#ffffff">
+      <mj-column width="100%">
+        <mj-text align="right" font-size="11px" color="#262626" font-family="'Roboto Mono'" line-height="15px">
+          <strong>@Model.Event.StartDate.ToString("ddd, MMMM dd yyyy", DateTimeFormatInfo.InvariantInfo)</strong>
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text align="left" font-size="26px" color="#262626" font-family="'Montserrat'" line-height="28px">
+          <strong>@Model.Event.Name</strong>
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text align="left" font-size="17px" color="#262626" font-family="'Montserrat'" line-height="20px">
+          <strong>@Model.Channel.Name</strong>
+        </mj-text>
+      </mj-column>
+      <mj-column width="100%">
+        <mj-text align="left" font-size="15px" color="#262626" font-family="'Montserrat', Helvetica, Arial" line-height="22px">
+          @Model.Event.Abstract
+        </mj-text>
+      </mj-column>
+    </mj-section>
+    <!-- New Event -->
+    <mj-section padding="20px 0px 30px 0px" background-color="#ffffff">
+      <mj-column>
+        <mj-button href="@Model.Event.Url" align="center" background-color="#0099ff" color="#ffffff" border-radius="25px" font-family="'Montserrat'" font-size="14px" font-weight="700">
+          Scopri l'evento
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    <!-- Incoming Event -->
+    <mj-section padding="20px 0px 30px 0px" background-color="#ffffff">
+      <mj-column width="100%">
+        <mj-text align="center" font-size="15px" color="#262626" font-family="'Montserrat', Helvetica, Arial" line-height="22px">
+          L'evento sta per iniziare
+        </mj-text>
+      </mj-column>
+      <mj-column>
+        <mj-button href="@Model.Event.Url" align="center" background-color="#0099ff" color="#ffffff" border-radius="25px" font-family="'Montserrat'" font-size="14px" font-weight="700">
+          Guarda l'evento ora
+        </mj-button>
+      </mj-column>
+    </mj-section>
+    <!-- Body -->
+    <!-- Footer -->
+    <mj-section padding-bottom="5px">
+      <mj-column>
+        <mj-text mj-class="footer-text" align="center">
+          <p style="margin:0; padding:20px; font-size:11px; line-height:18px; margin-bottom:10px; color:#262626; font-family: 'Montserrat', Helvetica, Arial, sans-serif; background-color: #edf1fe; border-radius:6px;">
+            <span style="color:#262626 !important; text-decoration:none;">
+              <strong style="font-family:'Montserrat'">websolute spa</strong>
+              <br>Strada della Campanara, 15 Pesaro (PU) - Italia
+              <br> T. 0721 411112 - F. 0721 430007 <a href="mailto:info@websolute.it" style="color:#5a80fb; text-decoration:underline; font-weight:700;">info@websolute.it</a>
+            </span>
+            <br><br>
+            <a href="https://bom-demo.wslabs.it/it/it/pagineinterne/informativa_sulla_privacy" style="text-decoration:underline; color:#5a80fb;">
+              <strong>Privacy</strong>
+            </a>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="https://bom-demo.wslabs.it/unsubscribe" style="text-decoration:underline; color:#5a80fb;">
+              <strong>Cancellami</strong>
+            </a>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <a href="https://bom-demo.wslabs.it/" style="text-decoration:underline; color:#5a80fb;">
+              Apri nel browser
+            </a>
+          </p>
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

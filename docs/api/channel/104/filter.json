@@ -1,0 +1,192 @@
+[
+  {
+    "key": "placement",
+    "label": "Placement",
+    "options": [
+      {
+        "value": 10000043,
+        "label": "Indoor"
+      },
+      {
+        "value": 10000044,
+        "label": "Outdoor"
+      }
+    ]
+  },
+  {
+    "key": "material",
+    "label": "Material",
+    "options": [
+      {
+        "value": 10000045,
+        "label": "Marble"
+      },
+      {
+        "value": 10000046,
+        "label": "Stone"
+      },
+      {
+        "value": 10000047,
+        "label": "Cement"
+      },
+      {
+        "value": 10000048,
+        "label": "Wood"
+      },
+      {
+        "value": 10000049,
+        "label": "Metal"
+      },
+      {
+        "value": 10000050,
+        "label": "Fabric"
+      }
+    ]
+  },
+  {
+    "key": "finish",
+    "label": "Finish",
+    "options": [
+      {
+        "value": 10000051,
+        "label": "Lucid"
+      },
+      {
+        "value": 10000052,
+        "label": "Matt"
+      }
+    ]
+  },
+  {
+    "key": "color",
+    "label": "Color",
+    "options": [
+      {
+        "value": 10000053,
+        "label": "White"
+      },
+      {
+        "value": 10000054,
+        "label": "Black"
+      },
+      {
+        "value": 10000055,
+        "label": "Gray"
+      },
+      {
+        "value": 10000056,
+        "label": "Ivory"
+      },
+      {
+        "value": 10000057,
+        "label": "Cream"
+      },
+      {
+        "value": 10000058,
+        "label": "Beige"
+      },
+      {
+        "value": 10000059,
+        "label": "Brown"
+      },
+      {
+        "value": 10000060,
+        "label": "Gold"
+      },
+      {
+        "value": 10000061,
+        "label": "Cream"
+      },
+      {
+        "value": 10000062,
+        "label": "Yellow"
+      },
+      {
+        "value": 10000063,
+        "label": "Pink"
+      },
+      {
+        "value": 10000064,
+        "label": "Orange"
+      },
+      {
+        "value": 10000065,
+        "label": "Red"
+      },
+      {
+        "value": 10000066,
+        "label": "Blue"
+      },
+      {
+        "value": 10000067,
+        "label": "Green"
+      },
+      {
+        "value": 10000068,
+        "label": "Purple"
+      }
+    ]
+  },
+  {
+    "key": "size",
+    "label": "Size",
+    "options": [
+      {
+        "value": 10000069,
+        "label": "Small"
+      },
+      {
+        "value": 10000070,
+        "label": "Medium"
+      },
+      {
+        "value": 10000071,
+        "label": "Large"
+      },
+      {
+        "value": 10000072,
+        "label": "Extra Large"
+      }
+    ]
+  },
+  {
+    "key": "class",
+    "label": "Class",
+    "options": [
+      {
+        "value": 10000073,
+        "label": "Class A"
+      },
+      {
+        "value": 10000074,
+        "label": "Class B"
+      },
+      {
+        "value": 10000075,
+        "label": "Class C"
+      },
+      {
+        "value": 10000076,
+        "label": "Class D"
+      }
+    ]
+  },
+  {
+    "key": "category",
+    "label": "Category",
+    "options": [
+      {
+        "value": 10000077,
+        "label": "Professional"
+      },
+      {
+        "value": 10000078,
+        "label": "Heritage"
+      },
+      {
+        "value": 10000079,
+        "label": "Premium"
+      }
+    ]
+  }
+]

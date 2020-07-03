@@ -1,0 +1,119 @@
+.card {
+	position: relative;
+	background: $background;
+
+	&>.picture {
+		display: block;
+		@include aspect-clip(1, 1);
+		background: $background;
+		overflow: visible;
+
+		&>img {
+			position: absolute;
+			top: 0;
+			left: 50%;
+			width: auto;
+			height: 100%;
+			transform: translateX(-50%);
+			// @extend %lazy;
+		}
+	}
+
+	&>.content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		padding: 20px;
+
+		.title {
+			font-family: $font-secondary;
+			font-style: italic;
+			font-size: 54px;
+			line-height: 1.2;
+			margin-bottom: 20px;
+			color: $foreground;
+		}
+
+		p {
+			margin: 0;
+		}
+
+		& p+p {
+			margin-top: 10px;
+		}
+	}
+
+	&__category {
+		display: block;
+		position: relative;
+		@extend %category;
+		max-width: 500px;
+		margin-bottom: 30px;
+	}
+
+	&__title {
+		display: block;
+		position: relative;
+		@extend %category;
+		max-width: 500px;
+		margin-bottom: 10px;
+	}
+
+	.btn--rounded {
+		@extend %btn-md;
+	}
+
+	.event__info {
+		.date {
+			background: $background-tertiary;
+
+			&.date--live {
+				background: #f70a36;
+			}
+
+			&.date--countdown {
+				background: rgba(0, 0, 0, 0.8);
+			}
+		}
+	}
+
+	&__abstract {
+		display: block;
+		position: relative;
+		@extend %abstract;
+		max-width: 500px;
+		margin-bottom: 10px;
+		font-size: 14px;
+	}
+
+	&__group--cta {
+		display: block;
+		position: relative;
+		margin-top: 20px;
+	}
+
+	@include media-down(sm) {
+
+		&__picture {
+			@include aspect-clip(4, 3);
+
+			&>img {
+				left: 50%;
+			}
+
+			&:after {
+				display: none;
+			}
+
+		}
+
+		&__category {
+			margin-bottom: 10px;
+		}
+
+		&__group--cta {
+			margin: 20px 0;
+		}
+	}
+}

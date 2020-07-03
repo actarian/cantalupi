@@ -1,0 +1,235 @@
+$thron-background: rgba($background-negative, 1);
+$thron-pagelet: #ffffff;
+$thron-other: #343434;
+$thron-track: #383838;
+$thron-handle: #666;
+$thron-disabled: #737474;
+$thron-foreground: $foreground-negative;
+$thron-primary: $foreground-primary;
+$thron-overlay: rgba(0, 0, 0, 0.5);
+$thron-background-play: rgba(0, 0, 0, 0.5);
+$thron-background-error: #282829;
+
+/*
+* === START COLORIZATION ===
+*/
+
+.player__thron {
+
+	/* BACKGROUND SCROLLBAR */
+	&.th-player-external-element,
+	&.player {
+
+		/* Track */
+		*::-webkit-scrollbar-track {
+			background-color: $thron-track;
+		}
+
+		/* Handle */
+		*::-webkit-scrollbar-thumb:vertical {
+			background-color: $thron-handle;
+			border-width: 0px;
+		}
+
+		*::-webkit-scrollbar-thumb:horizontal {
+			background-color: $thron-handle;
+			border-width: 0px;
+		}
+
+		*::-webkit-scrollbar-thumb:window-inactive {
+			background-color: $thron-disabled;
+		}
+	}
+
+	.th-slider-bg-hover-color {
+		background-color: rgba($thron-primary, 0.3);
+	}
+
+	/* BACKGROUND COLORS */
+	/* Player Background Color */
+	&.th-audio,
+	&.th-video,
+	&.th-image,
+	&.th-liveevent,
+	&.th-videogallery,
+	&.th-imagegallery,
+	&.th-audiogallery {
+		.th-media-bg-color {
+			background-color: $thron-background;
+		}
+	}
+
+	&.th-url,
+	&.th-other {
+		.th-media-bg-color {
+			background-color: $thron-background;
+		}
+	}
+
+	&.th-pagelet {
+		.th-media-bg-color {
+			background: $thron-pagelet;
+		}
+	}
+
+	&.th-other-document {
+		.th-media-bg-color {
+			background-color: $thron-other;
+		}
+	}
+
+	&.th-other-document {
+		.th-loading-bar .th-progress {
+			background-color: $thron-primary;
+		}
+	}
+
+	/* Control bar Background */
+	.th-control-bg-color {
+		background-color: $thron-overlay;
+	}
+
+	/* Overlay Background. For example share view background */
+	.th-overlay-bg-color {
+		background-color: $thron-overlay;
+	}
+
+	/** TEXT COLOR **/
+	.th-text-color {
+		color: $thron-foreground;
+	}
+
+	.th-text-color * {
+		color: $thron-foreground;
+	}
+
+	/* Active text. For example, tooltips active items */
+	.th-text-active-color {
+		color: $thron-primary;
+	}
+
+	.th-text-active-color * {
+		color: $thron-primary;
+	}
+
+	/** BUTTONS COLOR **/
+
+	/* Button Color */
+	.th-button-color {
+		color: $thron-foreground;
+		fill: $thron-foreground;
+
+		&:not(.th-hover-disabled):not(.th-button-disabled):hover {
+			color: $thron-primary;
+			fill: $thron-primary;
+		}
+	}
+
+	/* For example, play icon in center of video reproducer */
+	.th-clickable-overlay:hover {
+		.th-button-color:not(.th-hover-disabled):not(.th-button-disabled) {
+			color: $thron-primary;
+			fill: $thron-primary;
+		}
+	}
+
+	&.th-mobile {
+
+		/* For example, in mobile hover color play icon in center of video reproducer  */
+		.th-button-color:hover:not(.th-hover-disabled):not(.th-button-disabled):not(.th-button-color-active) {
+			color: $thron-primary;
+			fill: $thron-primary;
+		}
+
+		/* For example, in mobile hover color play/pause/speed   */
+		.th-clickable-overlay:hover .th-button-color:not(.th-hover-disabled):not(.th-button-disabled) {
+			color: $thron-primary;
+			fill: $thron-primary;
+		}
+	}
+
+	/* Disabled Button Color */
+	.th-button-disabled {
+		color: $thron-disabled;
+		fill: $thron-disabled;
+	}
+
+	/* When tooltips is open, button assumes this color */
+	.th-button-color-active {
+		color: $thron-primary;
+		fill: $thron-primary;
+	}
+
+	.th-svg-bg-color {
+		fill: $thron-background-play;
+		fill-opacity: 0.8;
+	}
+
+	/* SLIDER COLORS */
+	/* Svg gradient, actually used only for volume */
+	.th-svg-gradient {
+		&.th-bg-stop-color {
+			stop-color: $thron-primary;
+		}
+
+		&.th-overlay-stop-color {
+			stop-color: $thron-foreground;
+		}
+	}
+
+	/* Filled slider background color */
+	.th-components-bg-color {
+		stroke: $thron-primary;
+		background-color: $thron-primary;
+	}
+
+	/* Empty slider element background color */
+	.th-slider-bg-color {
+		stroke: $thron-foreground;
+		background-color: $thron-foreground;
+	}
+
+	/* This Css class defines the color of the selected text by the user. Used for example in document player */
+	.th-selectable-container {
+		&::-moz-selection {
+			background-color: $thron-primary;
+		}
+
+		& ::selection {
+			background-color: $thron-primary;
+		}
+	}
+
+	/* Highlighted elements, used for example in doc player to highlight text */
+	.th-highlighted-hover:hover {
+		opacity: 0.2;
+		background-color: $thron-primary;
+	}
+
+	.th-highlighted-item {
+		background-color: $thron-primary;
+	}
+
+	/* Error background */
+	.th-bg-error {
+		background-color: $thron-background-error;
+	}
+
+	/* bordered element */
+	.th-item-selected {
+		border: 2px solid $thron-primary;
+	}
+
+
+	/* external linked bar */
+	.th-external-linked-carousel {
+		& .th-linked-carousel .th-button-color {
+			color: $thron-overlay;
+			fill: $thron-overlay;
+		}
+	}
+}
+
+/*
+* === END COLORIZATION ===
+*/

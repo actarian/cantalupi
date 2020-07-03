@@ -1,0 +1,97 @@
+[
+  {
+    "id": 101,
+    "type": "channel",
+    "name": "Channel A",
+    "title": "Channel A",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-channel.html",
+    "info": {
+      "subscribers": 100,
+      "subscribed": false,
+      "likes": 100,
+      "liked": false
+    }
+  },
+  {
+    "id": 102,
+    "type": "channel",
+    "name": "Channel B",
+    "title": "Channel B",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-channel.html",
+    "info": {
+      "subscribers": 100,
+      "subscribed": false,
+      "likes": 100,
+      "liked": false
+    }
+  },
+  {
+    "id": 103,
+    "type": "channel",
+    "name": "Channel C",
+    "title": "Channel C",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-channel.html",
+    "info": {
+      "subscribers": 100,
+      "subscribed": false,
+      "likes": 100,
+      "liked": false
+    }
+  },
+  {
+    "id": 104,
+    "type": "channel",
+    "name": "Channel D",
+    "title": "Channel D",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-channel.html",
+    "info": {
+      "subscribers": 100,
+      "subscribed": false,
+      "likes": 100,
+      "liked": false
+    }
+  },
+  {
+    "id": 105,
+    "type": "channel",
+    "name": "Channel E",
+    "title": "Channel E",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-channel.html",
+    "info": {
+      "subscribers": 100,
+      "subscribed": false,
+      "likes": 100,
+      "liked": false
+    }
+  }
+]

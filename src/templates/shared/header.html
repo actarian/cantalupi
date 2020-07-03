@@ -1,0 +1,35 @@
+<header class="header" header (aside)="onAsideToggle($event)" (notification)="onNotificationToggle($event)">
+	<div class="container">
+		<div class="group--header">
+			<div class="group--left">
+				<!--
+				<div class="btn--menu" (click)="toggleAside($event)" (clickOutside)="dismissAside($event)"><svg class="icon"><use xlink:href="#menu"></use></svg></div>
+				-->
+				<ul class="nav nav--secondary-menu">
+					<li><a href="#">Menu</a></li>
+					<li><a href="#">En</a></li>
+				</ul>
+			</div>
+			<div class="group--center">
+				<a href="/cantalupi/" class="brand"><svg class="cantalupi-badge"><use xlink:href="#cantalupi-badge"></use></svg></a>
+			</div>
+			<div class="group--right">
+				<ul class="nav nav--secondary-menu">
+					<li><a href="#">Downloads</a></li>
+					<li><a href="#">Contacts</a></li>
+				</ul>
+			</div>
+			<!--
+			<div class="group--actions" *if="user">
+				<a href="/cantalupi/events-favourite.html" class="btn--circle" *if="favourites.length">
+					<svg class="icon"><use xlink:href="#star"></use></svg><span class="count" [innerHTML]="favourites.length"></span>
+				</a>
+				<div class="avatar" [innerHTML]="user.avatar"></div>
+				<div class="btn--circle" (click)="toggleNotification($event)" (clickOutside)="dismissNotification($event)">
+					<svg class="icon"><use xlink:href="#bell"></use></svg><span class="count" [innerHTML]="notifications.length"></span>
+				</div>
+			</div>
+			-->
+		</div>
+	</div>
+</header>

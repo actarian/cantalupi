@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1001,
+    "type": "event",
+    "name": "Evento XYZ",
+    "title": "Evento XYZ",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-event.html",
+    "creationDate": "2020-05-20T08:11:17.827Z",
+    "startDate": "2020-05-20T08:11:17.827Z",
+    "endDate": null,
+    "info": {
+      "subscribers": 100,
+      "subscribed": false,
+      "likes": 100,
+      "liked": false,
+      "saved": false
+    },
+    "features": [
+      10000001,
+      10000002
+    ],
+    "channel": {
+      "id": 101,
+      "type": "channel",
+      "name": "Channel A",
+      "url": "/cantalupi/events-channel.html"
+    }
+  },
+  {
+    "id": 2002,
+    "type": "event",
+    "name": "Evento XYZ",
+    "title": "Evento XYZ",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-event.html",
+    "creationDate": "2020-05-20T08:11:17.827Z",
+    "startDate": "2020-05-20T08:11:17.827Z",
+    "endDate": null,
+    "info": {
+      "subscribers": 100,
+      "subscribed": false,
+      "likes": 100,
+      "liked": false,
+      "saved": false
+    },
+    "features": [
+      10000001,
+      10000002
+    ],
+    "channel": {
+      "id": 102,
+      "type": "channel",
+      "name": "Channel B",
+      "url": "/cantalupi/events-channel.html"
+    }
+  },
+  {
+    "id": 3003,
+    "type": "event",
+    "name": "Evento XYZ",
+    "title": "Evento XYZ",
+    "abstract": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget dolor tincidunt, lobortis dolor eget, condimentum libero.</p>",
+    "picture": {
+      "src": "https://source.unsplash.com/random/",
+      "width": 1920,
+      "height": 1080
+    },
+    "url": "/cantalupi/events-event.html",
+    "creationDate": "2020-05-20T08:11:17.827Z",
+    "startDate": "2020-05-20T08:11:17.827Z",
+    "endDate": null,
+    "info": {
+      "subscribers": 100,
+      "subscribed": false,
+      "likes": 100,
+      "liked": false,
+      "saved": false
+    },
+    "features": [
+      10000001,
+      10000002
+    ],
+    "channel": {
+      "id": 101,
+      "type": "channel",
+      "name": "Channel A",
+      "url": "/cantalupi/events-channel.html"
+    }
+  }
+]
