@@ -5,15 +5,18 @@
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+	user-select: none;
 	cursor: pointer;
 	z-index: 1;
-	transition: ease-in-out 350ms;
-	transition-property: background-color, color, border, opacity;
+	// transition: ease-in-out 350ms;
+	// transition-property: background-color, color, border, opacity;
 
+	/*
 	svg {
 		transition: ease-in-out 350ms;
 		transition-property: fill, opacity;
 	}
+	*/
 
 	&:focus {
 		outline: 0;

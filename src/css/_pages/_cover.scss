@@ -24,7 +24,7 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background: linear-gradient(to bottom, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
 		}
 
 		&>img {
@@ -34,6 +34,7 @@
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
+			transition: none;
 			@extend %lazy;
 		}
 	}
@@ -45,16 +46,16 @@
 		justify-content: space-between;
 		height: 100%;
 		max-width: 1330px;
-		padding-top: 120px;
-		padding-bottom: 120px;
+		padding-top: 100px;
+		padding-bottom: 100px;
 	}
 
 	.brand {
 		opacity: 0;
 
 		svg {
-			width: 130px * 2.5;
-			height: 35px * 2.5;
+			width: 130px * 1.5;
+			height: 35px * 1.5;
 		}
 	}
 
@@ -63,11 +64,14 @@
 		font-style: italic;
 		font-size: 87px;
 		line-height: 1.3;
+		text-align: center;
 		text-transform: uppercase;
 
 		position: relative;
 		overflow: hidden;
 		flex: none;
+
+		animation: title-animation 10000ms cubic-bezier(.5, 0, .5, 1) both;
 
 		&.splitting .char {
 			position: relative;
@@ -132,5 +136,25 @@
 	to {
 		transform: translateY(0);
 		opacity: 1;
+	}
+}
+
+@keyframes title-animation {
+	0% {
+		opacity: 0;
+		transform: scale(1);
+	}
+
+	10% {
+		opacity: 1;
+	}
+
+	90% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+		transform: scale(0.9);
 	}
 }

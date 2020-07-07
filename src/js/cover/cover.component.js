@@ -18,10 +18,10 @@ export default class CoverComponent extends Component {
 						gsap.to(images, {
 							opacity: 1,
 							delay: 2,
-							duration: 0.4,
+							duration: 0.6,
 							stagger: {
 								each: 3,
-								ease: "power2.inOut"
+								ease: Power0.easeNone
 							},
 							onComplete: () => {
 								console.log('complete!');
@@ -33,10 +33,10 @@ export default class CoverComponent extends Component {
 						gsap.to(images, {
 							scale: 1.05,
 							delay: 2,
-							duration: 2.4,
+							duration: 4,
 							stagger: {
 								each: 3,
-								ease: "power0.out"
+								ease: Power0.easeNone
 							}
 						});
 					}

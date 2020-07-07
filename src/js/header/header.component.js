@@ -1,4 +1,4 @@
-import { Component } from 'rxcomp';
+import { Component, getContext } from 'rxcomp';
 import { takeUntil } from 'rxjs/operators';
 import CssService from '../css/css.service';
 // import UserService from '../user/user.service';
@@ -6,17 +6,7 @@ import CssService from '../css/css.service';
 export default class HeaderComponent extends Component {
 
 	onInit() {
-		this.user = null;
-		/*
-		UserService.me$().pipe(
-			catchError(() => of (null)),
-			takeUntil(this.unsubscribe$)
-		).subscribe(user => {
-			console.log('HeaderComponent.me$', user);
-			this.user = user;
-			this.pushChanges();
-		});
-		*/
+		this.mainActive = false;
 		CssService.height$().pipe(
 			takeUntil(this.unsubscribe$)
 		).subscribe(height => {
@@ -24,23 +14,45 @@ export default class HeaderComponent extends Component {
 		});
 	}
 
-	/*
-	toggleAside($event) {
-		this.aside_ = !this.aside_;
-		this.aside.next(this.aside_);
+	onMainToggle() {
+		this.mainActive = !this.mainActive;
+		const { node } = getContext(this);
+		const items = Array.prototype.slice.call(node.querySelectorAll('.nav--primary-menu > li'));
+		gsap.to(items, {
+			opacity: this.mainActive ? 1 : 0,
+			duration: 0.35,
+			stagger: {
+				each: 0.05,
+				ease: Power3.easeOut
+			}
+		});
+		this.pushChanges();
+		this.toggle.next(this.mainActive);
 	}
 
-	dismissAside($event) {
-		if (this.aside_) {
-			this.aside_ = false;
-			this.aside.next(this.aside_);
+	onOpenSub(subId) {
+		this.subId = subId;
+		this.pushChanges();
+	}
+
+	onCloseSub(subId) {
+		if (this.subId === subId) {
+			this.subId = null;
+			this.pushChanges();
 		}
 	}
-	*/
+
+	isSubOpen(subId) {
+		return this.subId === subId;
+	}
+
+	isPrimaryHidden() {
+		return this.subId != null;
+	}
 
 }
 
 HeaderComponent.meta = {
 	selector: 'header',
-	outputs: ['aside']
+	outputs: ['toggle']
 };

@@ -1,5 +1,6 @@
 import LocomotiveScroll from "locomotive-scroll";
-import { ReplaySubject } from "rxjs";
+import { fromEventPattern, ReplaySubject } from "rxjs";
+import { switchMap } from "rxjs/operators";
 
 export default class LocomotiveService {
 
@@ -7,7 +8,7 @@ export default class LocomotiveService {
 		if (!this.init_) {
 			this.init_ = true;
 			setTimeout(() => {
-				const scroll = new LocomotiveScroll({
+				const ls = new LocomotiveScroll({
 					el: element,
 					smooth: true,
 					getSpeed: true,
@@ -22,11 +23,19 @@ export default class LocomotiveService {
 					smoothClass: "has-scroll-smooth",
 					initClass: "has-scroll-init"
 				});
-				this.scroll$.next(scroll);
+				this.instance$.next(ls);
 			}, 200);
 		}
-		return this.scroll$;
+		return this.instance$;
 	}
 }
 
-LocomotiveService.scroll$ = new ReplaySubject(1);
+LocomotiveService.instance$ = new ReplaySubject(1);
+
+LocomotiveService.scroll$ = LocomotiveService.instance$.pipe(
+	switchMap(ls => fromEventPattern((handler) => {
+		ls.on('scroll', handler);
+	}, (handler) => {
+		ls.off('scroll', handler);
+	}))
+);

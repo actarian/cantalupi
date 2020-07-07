@@ -6,14 +6,7 @@ export default class AppComponent extends Component {
 		const { node } = getContext(this);
 		node.classList.remove('hidden');
 		this.showCover = true;
-		// this.asideActive = false;
 	}
-
-	// onView() { const context = getContext(this); }
-
-	// onChanges() {}
-
-	// onDestroy() {}
 
 	onSkipCover(event) {
 		console.log('AppComponent.onSkipCover');
@@ -21,17 +14,9 @@ export default class AppComponent extends Component {
 		this.pushChanges();
 	}
 
-	/*
-	onAsideToggle($event) {
-		const { node } = getContext(this);
-		if ($event) {
-			node.classList.add('aside--active');
-			node.classList.remove('notification--active');
-		} else {
-			node.classList.remove('aside--active');
-		}
+	onMenuToggle(opened) {
+		console.log('AppComponent.onMenuToggle', opened);
 	}
-	*/
 }
 
 AppComponent.meta = {

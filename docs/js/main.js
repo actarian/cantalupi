@@ -46,29 +46,18 @@
           node = _getContext.node;
 
       node.classList.remove('hidden');
-      this.showCover = true; // this.asideActive = false;
-    } // onView() { const context = getContext(this); }
-    // onChanges() {}
-    // onDestroy() {}
-    ;
+      this.showCover = true;
+    };
 
     _proto.onSkipCover = function onSkipCover(event) {
       console.log('AppComponent.onSkipCover');
       this.showCover = false;
       this.pushChanges();
-    }
-    /*
-    onAsideToggle($event) {
-    	const { node } = getContext(this);
-    	if ($event) {
-    		node.classList.add('aside--active');
-    		node.classList.remove('notification--active');
-    	} else {
-    		node.classList.remove('aside--active');
-    	}
-    }
-    */
-    ;
+    };
+
+    _proto.onMenuToggle = function onMenuToggle(opened) {
+      console.log('AppComponent.onMenuToggle', opened);
+    };
 
     return AppComponent;
   }(rxcomp.Component);
@@ -660,10 +649,10 @@
               gsap.to(images, {
                 opacity: 1,
                 delay: 2,
-                duration: 0.4,
+                duration: 0.6,
                 stagger: {
                   each: 3,
-                  ease: "power2.inOut"
+                  ease: Power0.easeNone
                 },
                 onComplete: function onComplete() {
                   console.log('complete!');
@@ -675,10 +664,10 @@
               gsap.to(images, {
                 scale: 1.05,
                 delay: 2,
-                duration: 2.4,
+                duration: 4,
                 stagger: {
                   each: 3,
-                  ease: "power0.out"
+                  ease: Power0.easeNone
                 }
               });
             }
@@ -2132,42 +2121,56 @@
     var _proto = HeaderComponent.prototype;
 
     _proto.onInit = function onInit() {
-      this.user = null;
-      /*
-      UserService.me$().pipe(
-      	catchError(() => of (null)),
-      	takeUntil(this.unsubscribe$)
-      ).subscribe(user => {
-      	console.log('HeaderComponent.me$', user);
-      	this.user = user;
-      	this.pushChanges();
-      });
-      */
-
+      this.mainActive = false;
       CssService.height$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (height) {
         console.log('HeaderComponent.height$', height);
       });
-    }
-    /*
-    toggleAside($event) {
-    	this.aside_ = !this.aside_;
-    	this.aside.next(this.aside_);
-    }
-    
-    dismissAside($event) {
-    	if (this.aside_) {
-    		this.aside_ = false;
-    		this.aside.next(this.aside_);
-    	}
-    }
-    */
-    ;
+    };
+
+    _proto.onMainToggle = function onMainToggle() {
+      this.mainActive = !this.mainActive;
+
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      var items = Array.prototype.slice.call(node.querySelectorAll('.nav--primary-menu > li'));
+      gsap.to(items, {
+        opacity: this.mainActive ? 1 : 0,
+        duration: 0.35,
+        stagger: {
+          each: 0.05,
+          ease: Power3.easeOut
+        }
+      });
+      this.pushChanges();
+      this.toggle.next(this.mainActive);
+    };
+
+    _proto.onOpenSub = function onOpenSub(subId) {
+      this.subId = subId;
+      this.pushChanges();
+    };
+
+    _proto.onCloseSub = function onCloseSub(subId) {
+      if (this.subId === subId) {
+        this.subId = null;
+        this.pushChanges();
+      }
+    };
+
+    _proto.isSubOpen = function isSubOpen(subId) {
+      return this.subId === subId;
+    };
+
+    _proto.isPrimaryHidden = function isPrimaryHidden() {
+      return this.subId != null;
+    };
 
     return HeaderComponent;
   }(rxcomp.Component);
   HeaderComponent.meta = {
     selector: 'header',
-    outputs: ['aside']
+    outputs: ['toggle']
   };
 
   /*
@@ -5084,7 +5087,7 @@
       if (!this.init_) {
         this.init_ = true;
         setTimeout(function () {
-          var scroll = new _default$3({
+          var ls = new _default$3({
             el: element,
             smooth: true,
             getSpeed: true,
@@ -5100,16 +5103,23 @@
             initClass: "has-scroll-init"
           });
 
-          _this.scroll$.next(scroll);
+          _this.instance$.next(ls);
         }, 200);
       }
 
-      return this.scroll$;
+      return this.instance$;
     };
 
     return LocomotiveService;
   }();
-  LocomotiveService.scroll$ = new rxjs.ReplaySubject(1);
+  LocomotiveService.instance$ = new rxjs.ReplaySubject(1);
+  LocomotiveService.scroll$ = LocomotiveService.instance$.pipe(operators.switchMap(function (ls) {
+    return rxjs.fromEventPattern(function (handler) {
+      ls.on('scroll', handler);
+    }, function (handler) {
+      ls.off('scroll', handler);
+    });
+  }));
 
   var LocomotiveDirective = /*#__PURE__*/function (_Directive) {
     _inheritsLoose(LocomotiveDirective, _Directive);
@@ -5305,6 +5315,71 @@
   ModalComponent.meta = {
     selector: '[modal]'
   };
+
+  var OverlayLerp = /*#__PURE__*/function () {
+    function OverlayLerp() {
+      this.x = this.ex = window.innerWidth / 2;
+      this.y = this.ey = window.innerHeight / 2;
+      this.dy = 0;
+    }
+
+    var _proto = OverlayLerp.prototype;
+
+    _proto.tick = function tick(event) {
+      if (event.clientX) {
+        this.ex = event.clientX;
+        this.ey = event.clientY;
+        this.x += (this.ex - this.x) * 0.01;
+        this.y += (this.ey + this.dy - this.y) * 0.01;
+      }
+    };
+
+    return OverlayLerp;
+  }();
+
+  var OverlayDirective = /*#__PURE__*/function (_Directive) {
+    _inheritsLoose(OverlayDirective, _Directive);
+
+    function OverlayDirective() {
+      return _Directive.apply(this, arguments) || this;
+    }
+
+    var _proto2 = OverlayDirective.prototype;
+
+    _proto2.onInit = function onInit() {
+      var _this = this;
+
+      this.raf$ = rxjs.interval(0, rxjs.animationFrame);
+      this.move$ = rxjs.fromEvent(document, 'mousemove');
+      this.lerp = new OverlayLerp();
+
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      this.animation$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (lerp) {
+        node.style.transform = "translate3d(" + lerp.x + "px," + lerp.y + "px,0px)";
+      });
+      LocomotiveService.scroll$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
+        _this.lerp.dy = event.scroll.y;
+      });
+    };
+
+    _proto2.animation$ = function animation$() {
+      var _this2 = this;
+
+      return this.raf$.pipe(operators.withLatestFrom(this.move$), operators.map(function (latest) {
+        var lerp = _this2.lerp;
+        lerp.tick(latest[1]);
+        return lerp;
+      }));
+    };
+
+    return OverlayDirective;
+  }(rxcomp.Directive);
+  OverlayDirective.meta = {
+    selector: "[overlay]"
+  };
+  OverlayDirective.rafWindow = rxjs.of(rxjs.animationFrame);
 
   var ScrollToDirective = /*#__PURE__*/function (_Directive) {
     _inheritsLoose(ScrollToDirective, _Directive);
@@ -6437,7 +6512,7 @@
   }(rxcomp.Module);
   AppModule.meta = {
     imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, HeaderComponent, HtmlPipe, IndexPageComponent, LazyDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
+    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, HeaderComponent, HtmlPipe, IndexPageComponent, LazyDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayDirective, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
     bootstrap: AppComponent
   };
 

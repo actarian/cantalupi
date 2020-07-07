@@ -14,6 +14,7 @@ import LazyDirective from './lazy/lazy.directive';
 import LocomotiveDirective from './locomotive/locomotive.directive';
 import ModalOutletComponent from './modal/modal-outlet.component';
 import ModalComponent from './modal/modal.component';
+import OverlayDirective from './overlay/overlay.directive';
 import ScrollToDirective from './scroll-to/scroll-to.directive';
 import SecureDirective from './secure/secure.directive';
 import SlugPipe from './slug/slug.pipe';
@@ -40,6 +41,7 @@ AppModule.meta = {
 		LocomotiveDirective,
 		ModalComponent,
 		ModalOutletComponent,
+		OverlayDirective,
 		ScrollToDirective,
 		SecureDirective,
 		SlugPipe,
