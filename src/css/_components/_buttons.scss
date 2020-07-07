@@ -192,6 +192,44 @@
 	}
 }
 
+%btn-rect-secondary {
+	@extend %btn-animated;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px 30px;
+
+	span {
+		display: block;
+	}
+
+	&:before {
+		background: #2D2D2B;
+	}
+
+	&:after {
+		top: 20px;
+		left: 30px;
+		color: #888888;
+	}
+
+	&,
+	&:active,
+	&:focus,
+	&:visited,
+	&:hover {
+		background: #1D1D1B;
+		color: #ffffff;
+	}
+
+	&:hover,
+	&.active {
+		&:after {
+			width: calc(100% - 60px);
+		}
+	}
+}
+
 .btn {
 	@extend %btn;
 }
@@ -202,6 +240,10 @@
 
 .btn--secondary {
 	@extend %btn-rect;
+}
+
+.btn--contact {
+	@extend %btn-rect-secondary;
 }
 
 .btn--link {

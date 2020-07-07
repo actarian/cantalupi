@@ -1,0 +1,275 @@
+.emotional-page {
+	background: #000001;
+	color: white;
+
+	.background {
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+
+		&--left {
+			justify-content: flex-start;
+		}
+
+		&--right {
+			justify-content: flex-end;
+		}
+	}
+
+	.absolute {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		transform: translateY(-50%);
+	}
+}
+
+.section--hero-emotional {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	color: white;
+	min-height: 100vh;
+
+	.background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+
+		&>img {
+			object-fit: cover;
+			@extend %lazy;
+		}
+	}
+
+	.container {
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding-bottom: 120px;
+	}
+
+	.category {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 18px;
+		text-transform: uppercase;
+	}
+
+	.title {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 120px;
+		line-height: 1.1;
+		text-transform: uppercase;
+	}
+
+	@include media-up(lg) {
+		.title {
+			font-style: 120px;
+		}
+	}
+
+	@include media-between(sm, lg) {
+		.title {
+			font-size: 8vw;
+		}
+	}
+
+	@include media-between(xs, sm) {
+		.title {
+			font-size: 80px;
+		}
+	}
+
+	@include media-down(xs) {
+		.title {
+			font-size: 60px;
+			line-height: 1.2;
+		}
+	}
+
+	// .group--cta {}
+}
+
+.section--intro {
+	padding: 120px 0 0 0;
+
+	.category {
+		font-size: 16px;
+	}
+
+	.abstract {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 36px;
+		line-height: 1.15;
+	}
+
+	.description {
+		font-size: 16px;
+	}
+
+}
+
+.section--text-picture-01 {
+	position: relative;
+}
+
+.group--picture {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.title {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 74px;
+		line-height: 1.15;
+	}
+}
+
+.section--text-picture-02 {
+	position: relative;
+
+	.group--inline {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 80px 0;
+	}
+
+	.group--text {
+		@include as-col(3, 12, 12px);
+		@include as-offset(1, 12);
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+
+	.title {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 74px;
+		line-height: 1.15;
+	}
+
+	.abstract {
+		font-size: 21px;
+		line-height: 1.4;
+	}
+}
+
+.section--text-picture-03 {
+	position: relative;
+
+	.group--inline {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 80px 0;
+	}
+
+	.group--text {
+		@include as-col(4, 12, 12px);
+		@include as-offset(7, 12);
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+
+	.title {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 74px;
+		line-height: 1.15;
+	}
+
+	.abstract {
+		font-size: 21px;
+		line-height: 1.4;
+	}
+
+	.group--cta {
+		margin-top: 30px;
+	}
+}
+
+.section--text-picture-04 {
+
+	.group--inline {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 80px 0;
+	}
+
+	.group--picture {
+		@include as-col(10, 12, 12px);
+		@include as-offset(1, 12);
+	}
+
+	.group--title {
+		@include as-col(3, 12, 12px);
+		@include as-offset(1, 12);
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+
+	.group--abstract {
+		@include as-col(7, 12, 12px);
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+
+	.title {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 74px;
+		line-height: 1.15;
+	}
+}
+
+.section--text-picture-05 {
+
+	.group--inline {
+		position: relative;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		align-items: center;
+		padding: 80px 0;
+	}
+
+	.group--picture {
+		@include as-col(3, 12, 12px);
+		@include as-offset(2, 12);
+	}
+
+	.group--text {
+		@include as-col(4, 12, 12px);
+		margin-top: 40px;
+		margin-bottom: 40px;
+	}
+
+	.title {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 74px;
+		line-height: 1.15;
+	}
+
+	.group--cta {
+		margin-top: 40px;
+	}
+}

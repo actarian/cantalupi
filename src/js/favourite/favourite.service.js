@@ -2,7 +2,7 @@ import { BehaviorSubject } from 'rxjs';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 import ApiService from '../api/api.service';
 import EventService from '../event/event.service';
-import LocalStorageService from '../local-storage/local-storage.service';
+import LocalStorageService from '../storage/local-storage.service';
 
 const subscriptions$_ = new BehaviorSubject([]);
 const likes$_ = new BehaviorSubject([]);
@@ -148,13 +148,13 @@ export default class FavouriteService {
 		return ApiService.post$(`/user/favourite/add`, { id }).pipe(
 			map(response => {
 				//if (response.static) {
-					const favourites = LocalStorageService.get('favourites') || [];
-					const item = favourites.find(x => x.id === id);
-					if (!item) {
-						favourites.unshift({ id });
-					}
-					favourites$_.next(favourites);
-					LocalStorageService.set('favourites', favourites);
+				const favourites = LocalStorageService.get('favourites') || [];
+				const item = favourites.find(x => x.id === id);
+				if (!item) {
+					favourites.unshift({ id });
+				}
+				favourites$_.next(favourites);
+				LocalStorageService.set('favourites', favourites);
 				//}
 				return response.data;
 			}),
@@ -165,14 +165,14 @@ export default class FavouriteService {
 		return ApiService.post$(`/user/favourite/remove`, { id }).pipe(
 			map(response => {
 				//if (response.static) {
-					const favourites = LocalStorageService.get('favourites') || [];
-					const item = favourites.find(x => x.id === id);
-					const index = item ? favourites.indexOf(item) : -1;
-					if (index !== -1) {
-						favourites.splice(index, 1);
-					}
-					favourites$_.next(favourites);
-					LocalStorageService.set('favourites', favourites);
+				const favourites = LocalStorageService.get('favourites') || [];
+				const item = favourites.find(x => x.id === id);
+				const index = item ? favourites.indexOf(item) : -1;
+				if (index !== -1) {
+					favourites.splice(index, 1);
+				}
+				favourites$_.next(favourites);
+				LocalStorageService.set('favourites', favourites);
 				//}
 				return response.data;
 			}),

@@ -75,7 +75,7 @@
 	max-width: percentage($size / $columns);
 }
 
-@mixin make-col-offset($size, $columns: $grid-columns) {
+@mixin as-offset($size, $columns: $grid-columns) {
 	$num: $size / $columns;
 	margin-left: if($num==0, 0, percentage($num));
 }
@@ -179,7 +179,7 @@
 
 					// Avoid emitting useless .offset-0
 					.offset#{$infix}-#{$i} {
-						@include make-col-offset($i, $columns);
+						@include as-offset($i, $columns);
 					}
 				}
 			}

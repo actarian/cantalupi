@@ -9,7 +9,7 @@ import DropdownDirective from './dropdown/dropdown.directive';
 import ErrorsComponent from './forms/errors.component';
 import HeaderComponent from './header/header.component';
 import HtmlPipe from './html/html.pipe';
-import IndexPageComponent from './index/index-page.component';
+import { default as EmotionalPageComponent, default as IndexPageComponent } from './index/index-page.component';
 import LazyDirective from './lazy/lazy.directive';
 import LocomotiveDirective from './locomotive/locomotive.directive';
 import ModalOutletComponent from './modal/modal-outlet.component';
@@ -33,6 +33,7 @@ AppModule.meta = {
 		DatePipe,
 		DropdownDirective,
 		DropdownItemDirective,
+		EmotionalPageComponent,
 		ErrorsComponent,
 		HeaderComponent,
 		HtmlPipe,

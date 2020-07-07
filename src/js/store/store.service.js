@@ -1,6 +1,6 @@
 import { BehaviorSubject, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import LocalStorageService from '../local-storage/local-storage.service';
+import LocalStorageService from '../storage/local-storage.service';
 
 export default class StoreService {
 

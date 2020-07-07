@@ -1,8 +1,9 @@
 import { Directive, getContext } from 'rxcomp';
 import { of , Subject } from 'rxjs';
-import { distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { delay, distinctUntilChanged, first, switchMap, takeUntil } from 'rxjs/operators';
 import ImageService from '../image/image.service';
 import IntersectionService from '../intersection/intersection.service';
+import LocomotiveService from '../locomotive/locomotive.service';
 import LazyCache from './lazy.cache';
 
 export default class LazyDirective extends Directive {
@@ -26,6 +27,10 @@ export default class LazyDirective extends Directive {
 			LazyCache.set(this.lazy, src);
 			node.setAttribute('src', src);
 			node.classList.add('lazyed');
+			LocomotiveService.instance$.pipe(
+				first(),
+				delay(10),
+			).subscribe(instance => instance.update());
 		});
 	}
 

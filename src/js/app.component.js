@@ -1,11 +1,14 @@
 import { Component, getContext } from 'rxcomp';
+import SessionStorageService from './storage/session-storage.service';
 
 export default class AppComponent extends Component {
 
 	onInit() {
 		const { node } = getContext(this);
 		node.classList.remove('hidden');
-		this.showCover = true;
+		const showCover = SessionStorageService.get('showCover');
+		this.showCover = !showCover;
+		SessionStorageService.set('showCover', true);
 	}
 
 	onSkipCover(event) {

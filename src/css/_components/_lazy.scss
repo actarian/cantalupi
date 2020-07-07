@@ -7,3 +7,7 @@
 		opacity: 1;
 	}
 }
+
+[lazy] {
+	@extend %lazy;
+}

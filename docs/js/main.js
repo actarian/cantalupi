@@ -32,6 +32,85 @@
     subClass.__proto__ = superClass;
   }
 
+  var SessionStorageService = /*#__PURE__*/function () {
+    function SessionStorageService() {}
+
+    SessionStorageService.delete = function _delete(name) {
+      if (this.isSessionStorageSupported()) {
+        window.sessionStorage.removeItem(name);
+      }
+    };
+
+    SessionStorageService.exist = function exist(name) {
+      if (this.isSessionStorageSupported()) {
+        return window.sessionStorage[name] !== undefined;
+      }
+    };
+
+    SessionStorageService.get = function get(name) {
+      var value = null;
+
+      if (this.isSessionStorageSupported() && window.sessionStorage[name] !== undefined) {
+        try {
+          value = JSON.parse(window.sessionStorage[name]);
+        } catch (e) {
+          console.log('SessionStorageService.get.error parsing', name, e);
+        }
+      }
+
+      return value;
+    };
+
+    SessionStorageService.set = function set(name, value) {
+      if (this.isSessionStorageSupported()) {
+        try {
+          var cache = [];
+          var json = JSON.stringify(value, function (key, value) {
+            if (typeof value === 'object' && value !== null) {
+              if (cache.indexOf(value) !== -1) {
+                // Circular reference found, discard key
+                return;
+              }
+
+              cache.push(value);
+            }
+
+            return value;
+          });
+          window.sessionStorage.setItem(name, json);
+        } catch (e) {
+          console.log('SessionStorageService.set.error serializing', name, value, e);
+        }
+      }
+    };
+
+    SessionStorageService.isSessionStorageSupported = function isSessionStorageSupported() {
+      if (this.supported) {
+        return true;
+      }
+
+      var supported = false;
+
+      try {
+        supported = 'sessionStorage' in window && window.sessionStorage !== null;
+
+        if (supported) {
+          window.sessionStorage.setItem('test', '1');
+          window.sessionStorage.removeItem('test');
+        } else {
+          supported = false;
+        }
+      } catch (e) {
+        supported = false;
+      }
+
+      this.supported = supported;
+      return supported;
+    };
+
+    return SessionStorageService;
+  }();
+
   var AppComponent = /*#__PURE__*/function (_Component) {
     _inheritsLoose(AppComponent, _Component);
 
@@ -46,7 +125,9 @@
           node = _getContext.node;
 
       node.classList.remove('hidden');
-      this.showCover = true;
+      var showCover = SessionStorageService.get('showCover');
+      this.showCover = !showCover;
+      SessionStorageService.set('showCover', true);
     };
 
     _proto.onSkipCover = function onSkipCover(event) {
@@ -2229,14 +2310,14 @@
     selector: '[page]'
   };
 
-  var IndexPageComponent = /*#__PURE__*/function (_PageComponent) {
-    _inheritsLoose(IndexPageComponent, _PageComponent);
+  var EmotionalPageComponent = /*#__PURE__*/function (_PageComponent) {
+    _inheritsLoose(EmotionalPageComponent, _PageComponent);
 
-    function IndexPageComponent() {
+    function EmotionalPageComponent() {
       return _PageComponent.apply(this, arguments) || this;
     }
 
-    var _proto = IndexPageComponent.prototype;
+    var _proto = EmotionalPageComponent.prototype;
 
     _proto.onInit = function onInit() {
       /*
@@ -2255,10 +2336,10 @@
       return rxjs.combineLatest(rxjs.of(1), rxjs.of(2));
     };
 
-    return IndexPageComponent;
+    return EmotionalPageComponent;
   }(PageComponent);
-  IndexPageComponent.meta = {
-    selector: '[index-page]'
+  EmotionalPageComponent.meta = {
+    selector: '[emotional-page]'
   };
 
   var UID = 0;
@@ -2362,94 +2443,6 @@
 
     return IntersectionService;
   }();
-
-  var LazyCache = /*#__PURE__*/function () {
-    function LazyCache() {}
-
-    LazyCache.get = function get(src) {
-      return this.cache[src];
-    };
-
-    LazyCache.set = function set(src, blob) {
-      this.cache[src] = blob;
-      var keys = Object.keys(this.cache);
-
-      if (keys.length > 100) {
-        this.remove(keys[0]);
-      }
-    };
-
-    LazyCache.remove = function remove(src) {
-      delete this.cache[src];
-    };
-
-    _createClass(LazyCache, null, [{
-      key: "cache",
-      get: function get() {
-        if (!this.cache_) {
-          this.cache_ = {};
-        }
-
-        return this.cache_;
-      }
-    }]);
-
-    return LazyCache;
-  }();
-
-  var LazyDirective = /*#__PURE__*/function (_Directive) {
-    _inheritsLoose(LazyDirective, _Directive);
-
-    function LazyDirective() {
-      return _Directive.apply(this, arguments) || this;
-    }
-
-    var _proto = LazyDirective.prototype;
-
-    _proto.onInit = function onInit() {
-      var _this = this;
-
-      var _getContext = rxcomp.getContext(this),
-          node = _getContext.node;
-
-      node.classList.add('lazy');
-      this.input$ = new rxjs.Subject().pipe(operators.distinctUntilChanged(), operators.switchMap(function (input) {
-        var src = LazyCache.get(input);
-
-        if (src) {
-          return rxjs.of(src);
-        }
-
-        node.classList.remove('lazyed');
-        return _this.lazy$(input);
-      }), operators.takeUntil(this.unsubscribe$));
-      this.input$.subscribe(function (src) {
-        LazyCache.set(_this.lazy, src);
-        node.setAttribute('src', src);
-        node.classList.add('lazyed');
-      });
-    };
-
-    _proto.onChanges = function onChanges() {
-      this.input$.next(this.lazy);
-    };
-
-    _proto.lazy$ = function lazy$(input) {
-      var _getContext2 = rxcomp.getContext(this),
-          node = _getContext2.node;
-
-      return IntersectionService.firstIntersection$(node).pipe( // tap(entry => console.log(entry)),
-      operators.switchMap(function () {
-        return ImageService.load$(input);
-      }), operators.takeUntil(this.unsubscribe$));
-    };
-
-    return LazyDirective;
-  }(rxcomp.Directive);
-  LazyDirective.meta = {
-    selector: '[lazy],[[lazy]]',
-    inputs: ['lazy']
-  };
 
   /* locomotive-scroll v3.5.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
   function _classCallCheck(instance, Constructor) {
@@ -5121,6 +5114,97 @@
     });
   }));
 
+  var LazyCache = /*#__PURE__*/function () {
+    function LazyCache() {}
+
+    LazyCache.get = function get(src) {
+      return this.cache[src];
+    };
+
+    LazyCache.set = function set(src, blob) {
+      this.cache[src] = blob;
+      var keys = Object.keys(this.cache);
+
+      if (keys.length > 100) {
+        this.remove(keys[0]);
+      }
+    };
+
+    LazyCache.remove = function remove(src) {
+      delete this.cache[src];
+    };
+
+    _createClass(LazyCache, null, [{
+      key: "cache",
+      get: function get() {
+        if (!this.cache_) {
+          this.cache_ = {};
+        }
+
+        return this.cache_;
+      }
+    }]);
+
+    return LazyCache;
+  }();
+
+  var LazyDirective = /*#__PURE__*/function (_Directive) {
+    _inheritsLoose(LazyDirective, _Directive);
+
+    function LazyDirective() {
+      return _Directive.apply(this, arguments) || this;
+    }
+
+    var _proto = LazyDirective.prototype;
+
+    _proto.onInit = function onInit() {
+      var _this = this;
+
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      node.classList.add('lazy');
+      this.input$ = new rxjs.Subject().pipe(operators.distinctUntilChanged(), operators.switchMap(function (input) {
+        var src = LazyCache.get(input);
+
+        if (src) {
+          return rxjs.of(src);
+        }
+
+        node.classList.remove('lazyed');
+        return _this.lazy$(input);
+      }), operators.takeUntil(this.unsubscribe$));
+      this.input$.subscribe(function (src) {
+        LazyCache.set(_this.lazy, src);
+        node.setAttribute('src', src);
+        node.classList.add('lazyed');
+        LocomotiveService.instance$.pipe(operators.first(), operators.delay(10)).subscribe(function (instance) {
+          return instance.update();
+        });
+      });
+    };
+
+    _proto.onChanges = function onChanges() {
+      this.input$.next(this.lazy);
+    };
+
+    _proto.lazy$ = function lazy$(input) {
+      var _getContext2 = rxcomp.getContext(this),
+          node = _getContext2.node;
+
+      return IntersectionService.firstIntersection$(node).pipe( // tap(entry => console.log(entry)),
+      operators.switchMap(function () {
+        return ImageService.load$(input);
+      }), operators.takeUntil(this.unsubscribe$));
+    };
+
+    return LazyDirective;
+  }(rxcomp.Directive);
+  LazyDirective.meta = {
+    selector: '[lazy],[[lazy]]',
+    inputs: ['lazy']
+  };
+
   var LocomotiveDirective = /*#__PURE__*/function (_Directive) {
     _inheritsLoose(LocomotiveDirective, _Directive);
 
@@ -6512,7 +6596,7 @@
   }(rxcomp.Module);
   AppModule.meta = {
     imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, HeaderComponent, HtmlPipe, IndexPageComponent, LazyDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayDirective, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
+    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayDirective, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
     bootstrap: AppComponent
   };
 

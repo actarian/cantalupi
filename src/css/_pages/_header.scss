@@ -230,6 +230,16 @@
 			background: transparent;
 		}
 
+		&:hover {
+			&:before {
+				width: 1vw;
+			}
+
+			&:after {
+				width: 9vw;
+			}
+		}
+
 		&.open {
 			&:before {
 				width: 6vw;
@@ -323,33 +333,4 @@
 	width: 100%;
 	flex: 1 1 auto;
 	align-items: center;
-}
-
-.overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	margin-left: -25vw;
-	margin-top: -25vw;
-	width: 50vw;
-	height: 50vw;
-	background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
-	mix-blend-mode: overlay;
-	pointer-events: none;
-	animation: overlay-animation 7s 20s infinite;
-	z-index: 100001;
-}
-
-@keyframes overlay-animation {
-	0% {
-		opacity: 1;
-	}
-
-	50% {
-		opacity: 0.5;
-	}
-
-	100% {
-		opacity: 1;
-	}
 }
