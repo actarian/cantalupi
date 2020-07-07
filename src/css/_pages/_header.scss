@@ -238,6 +238,11 @@
 			&:after {
 				width: 9vw;
 			}
+
+			&>a,
+			&>span {
+				color: white;
+			}
 		}
 
 		&.open {

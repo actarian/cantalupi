@@ -4024,6 +4024,9 @@ errors-component {
       width: 1vw; }
     .nav--primary-menu > li:hover:after {
       width: 9vw; }
+    .nav--primary-menu > li:hover > a,
+    .nav--primary-menu > li:hover > span {
+      color: white; }
     .nav--primary-menu > li.open:before {
       width: 6vw; }
     .nav--primary-menu > li.open:after {
