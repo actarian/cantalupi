@@ -28,12 +28,17 @@
 
 	.title {
 		font-family: $font-secondary;
+		font-style: italic;
 		font-size: 87px;
 		line-height: 1.3;
 		text-transform: uppercase;
 	}
 
 	@include media-up(lg) {
+		.container {
+			max-width: 66%;
+		}
+
 		.title {
 			font-style: 87px;
 		}
