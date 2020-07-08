@@ -11,19 +11,19 @@ export default class LazyDirective extends Directive {
 	onInit() {
 		const { node } = getContext(this);
 		node.classList.add('lazy');
-		this.input$ = new Subject().pipe(
+		this.src$ = new Subject().pipe(
 			distinctUntilChanged(),
-			switchMap(input => {
-				const src = LazyCache.get(input);
-				if (src) {
-					return of(src);
+			switchMap(src => {
+				const data = LazyCache.get(src);
+				if (data) {
+					return of(data);
 				}
 				node.classList.remove('lazyed');
-				return this.lazy$(input);
+				return this.lazy$(src);
 			}),
 			takeUntil(this.unsubscribe$)
 		);
-		this.input$.subscribe(src => {
+		this.src$.subscribe(src => {
 			LazyCache.set(this.lazy, src);
 			node.setAttribute('src', src);
 			node.classList.add('lazyed');
@@ -35,14 +35,14 @@ export default class LazyDirective extends Directive {
 	}
 
 	onChanges() {
-		this.input$.next(this.lazy);
+		this.src$.next(this.lazy);
 	}
 
-	lazy$(input) {
+	lazy$(src) {
 		const { node } = getContext(this);
 		return IntersectionService.firstIntersection$(node).pipe(
 			// tap(entry => console.log(entry)),
-			switchMap(() => ImageService.load$(input)),
+			switchMap(() => ImageService.load$(src)),
 			takeUntil(this.unsubscribe$),
 		);
 	}

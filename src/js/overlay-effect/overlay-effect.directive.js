@@ -1,6 +1,6 @@
 import { Directive, getContext } from 'rxcomp';
 import { animationFrame, fromEvent, interval, of } from 'rxjs';
-import { map, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { map, startWith, takeUntil, withLatestFrom } from 'rxjs/operators';
 import LocomotiveService from '../locomotive/locomotive.service';
 
 export class OverlayLerp {
@@ -13,16 +13,17 @@ export class OverlayLerp {
 
 	tick(event) {
 		if (event.clientX) {
+			const inertia = this.inertia ? Number(this.inertia) : 0.01;
 			this.ex = event.clientX;
 			this.ey = event.clientY;
-			this.x += (this.ex - this.x) * 0.01;
-			this.y += ((this.ey + this.dy) - this.y) * 0.01;
+			this.x += (this.ex - this.x) * inertia;
+			this.y += ((this.ey + this.dy) - this.y) * inertia;
 		}
 	}
 
 }
 
-export default class OverlayDirective extends Directive {
+export default class OverlayEffectDirective extends Directive {
 
 	onInit() {
 		this.raf$ = interval(0, animationFrame);
@@ -48,13 +49,15 @@ export default class OverlayDirective extends Directive {
 				const lerp = this.lerp;
 				lerp.tick(latest[1]);
 				return lerp;
-			})
+			}),
+			startWith(this.lerp)
 		);
 	}
 }
 
-OverlayDirective.meta = {
-	selector: `[overlay]`
+OverlayEffectDirective.meta = {
+	selector: `[overlay-effect]`,
+	inputs: ['inertia']
 };
 
-OverlayDirective.rafWindow = of (animationFrame);
+OverlayEffectDirective.rafWindow = of (animationFrame);

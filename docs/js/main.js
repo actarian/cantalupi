@@ -5148,6 +5148,138 @@
     return LazyCache;
   }();
 
+  var LazyPictureDirective = /*#__PURE__*/function (_Directive) {
+    _inheritsLoose(LazyPictureDirective, _Directive);
+
+    function LazyPictureDirective() {
+      return _Directive.apply(this, arguments) || this;
+    }
+
+    var _proto = LazyPictureDirective.prototype;
+
+    _proto.onInit = function onInit() {
+      var _this = this;
+
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      var imgs = node.querySelectorAll('img');
+
+      if (imgs.length > 1) {
+        throw 'LazyPictureDirective.error only one img tag allowed';
+      }
+
+      if (imgs.length === 0) {
+        throw 'LazyPictureDirective.error one img tag needed';
+      }
+
+      var img = imgs[0]; // node.classList.add('lazy');
+
+      this.src$ = new rxjs.ReplaySubject(1).pipe(operators.distinctUntilChanged(), operators.switchMap(function (src) {
+        var data = LazyCache.get(src);
+
+        if (data) {
+          return rxjs.of(data);
+        } // node.classList.remove('lazyed');
+
+
+        _this.setAnimation(0);
+
+        return  _this.intersection$(src) ;
+      }), operators.takeUntil(this.unsubscribe$));
+      this.src$.subscribe(function (src) {
+
+
+        LocomotiveService.instance$.pipe(operators.first(), operators.delay(10)).subscribe(function (instance) {
+          instance.update();
+
+          _this.animate();
+        });
+      });
+      node.addEventListener('click', function () {
+        _this.setAnimation(0);
+
+        _this.animate();
+      });
+    };
+
+    _proto.setAnimation = function setAnimation(value) {
+      var _getContext2 = rxcomp.getContext(this),
+          node = _getContext2.node;
+
+      var overlay = node.querySelector('.lazy-picture__overlay');
+      var o2 = 1 - value;
+      var p2 = 100 * value;
+      gsap.set(overlay, {
+        // background: `radial-gradient(ellipse at center,rgba(0,0,0,0) 0px,rgba(0,0,0,${o2}) ${p2}%)`
+        background: "linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0," + o2 + ") " + p2 + "%)"
+      });
+    };
+
+    _proto.animate = function animate() {
+      var _getContext3 = rxcomp.getContext(this),
+          node = _getContext3.node;
+
+      var overlay = node.querySelector('.lazy-picture__overlay');
+      var o = {
+        value: 0
+      };
+      gsap.to(o, 3, {
+        value: 1,
+        delay: 1,
+        overwrite: true,
+        ease: Power4.easeOut,
+        onUpdate: function onUpdate() {
+          var o2 = 1 - o.value;
+          var p2 = 100 * o.value;
+          gsap.set(overlay, {
+            // background: `radial-gradient(ellipse at center,rgba(0,0,0,0) 0px,rgba(0,0,0,${o2}) ${p2}%)`
+            background: "linear-gradient(rgba(0,0,0,0) 0%, rgba(0,0,0," + o2 + ") " + p2 + "%)"
+          });
+        },
+        onCompleted: function onCompleted() {
+          gsap.set(overlay, {
+            background: "none"
+          });
+        }
+      });
+    };
+
+    _proto.onChanges = function onChanges() {
+      this.src$.next(this.lazyPicture);
+    };
+
+    _proto.lazy$ = function lazy$(src) {
+      var _getContext4 = rxcomp.getContext(this),
+          node = _getContext4.node;
+
+      return IntersectionService.firstIntersection$(node).pipe( // tap(entry => console.log(entry)),
+      operators.switchMap(function () {
+        return ImageService.load$(src);
+      }), operators.takeUntil(this.unsubscribe$));
+    };
+
+    _proto.intersection$ = function intersection$(src) {
+      var _this2 = this;
+
+      var _getContext5 = rxcomp.getContext(this),
+          node = _getContext5.node;
+
+      var img = node.querySelector('img');
+      return ImageService.load$(src).pipe(operators.switchMap(function (src) {
+        LazyCache.set(_this2.lazyPicture, src);
+        img.setAttribute('src', src);
+        return IntersectionService.firstIntersection$(node);
+      }), operators.takeUntil(this.unsubscribe$));
+    };
+
+    return LazyPictureDirective;
+  }(rxcomp.Directive);
+  LazyPictureDirective.meta = {
+    selector: '[lazyPicture],[[lazyPicture]]',
+    inputs: ['lazyPicture']
+  };
+
   var LazyDirective = /*#__PURE__*/function (_Directive) {
     _inheritsLoose(LazyDirective, _Directive);
 
@@ -5164,17 +5296,17 @@
           node = _getContext.node;
 
       node.classList.add('lazy');
-      this.input$ = new rxjs.Subject().pipe(operators.distinctUntilChanged(), operators.switchMap(function (input) {
-        var src = LazyCache.get(input);
+      this.src$ = new rxjs.Subject().pipe(operators.distinctUntilChanged(), operators.switchMap(function (src) {
+        var data = LazyCache.get(src);
 
-        if (src) {
-          return rxjs.of(src);
+        if (data) {
+          return rxjs.of(data);
         }
 
         node.classList.remove('lazyed');
-        return _this.lazy$(input);
+        return _this.lazy$(src);
       }), operators.takeUntil(this.unsubscribe$));
-      this.input$.subscribe(function (src) {
+      this.src$.subscribe(function (src) {
         LazyCache.set(_this.lazy, src);
         node.setAttribute('src', src);
         node.classList.add('lazyed');
@@ -5185,16 +5317,16 @@
     };
 
     _proto.onChanges = function onChanges() {
-      this.input$.next(this.lazy);
+      this.src$.next(this.lazy);
     };
 
-    _proto.lazy$ = function lazy$(input) {
+    _proto.lazy$ = function lazy$(src) {
       var _getContext2 = rxcomp.getContext(this),
           node = _getContext2.node;
 
       return IntersectionService.firstIntersection$(node).pipe( // tap(entry => console.log(entry)),
       operators.switchMap(function () {
-        return ImageService.load$(input);
+        return ImageService.load$(src);
       }), operators.takeUntil(this.unsubscribe$));
     };
 
@@ -5411,24 +5543,25 @@
 
     _proto.tick = function tick(event) {
       if (event.clientX) {
+        var inertia = this.inertia ? Number(this.inertia) : 0.01;
         this.ex = event.clientX;
         this.ey = event.clientY;
-        this.x += (this.ex - this.x) * 0.01;
-        this.y += (this.ey + this.dy - this.y) * 0.01;
+        this.x += (this.ex - this.x) * inertia;
+        this.y += (this.ey + this.dy - this.y) * inertia;
       }
     };
 
     return OverlayLerp;
   }();
 
-  var OverlayDirective = /*#__PURE__*/function (_Directive) {
-    _inheritsLoose(OverlayDirective, _Directive);
+  var OverlayEffectDirective = /*#__PURE__*/function (_Directive) {
+    _inheritsLoose(OverlayEffectDirective, _Directive);
 
-    function OverlayDirective() {
+    function OverlayEffectDirective() {
       return _Directive.apply(this, arguments) || this;
     }
 
-    var _proto2 = OverlayDirective.prototype;
+    var _proto2 = OverlayEffectDirective.prototype;
 
     _proto2.onInit = function onInit() {
       var _this = this;
@@ -5455,15 +5588,16 @@
         var lerp = _this2.lerp;
         lerp.tick(latest[1]);
         return lerp;
-      }));
+      }), operators.startWith(this.lerp));
     };
 
-    return OverlayDirective;
+    return OverlayEffectDirective;
   }(rxcomp.Directive);
-  OverlayDirective.meta = {
-    selector: "[overlay]"
+  OverlayEffectDirective.meta = {
+    selector: "[overlay-effect]",
+    inputs: ['inertia']
   };
-  OverlayDirective.rafWindow = rxjs.of(rxjs.animationFrame);
+  OverlayEffectDirective.rafWindow = rxjs.of(rxjs.animationFrame);
 
   var ScrollToDirective = /*#__PURE__*/function (_Directive) {
     _inheritsLoose(ScrollToDirective, _Directive);
@@ -6596,7 +6730,7 @@
   }(rxcomp.Module);
   AppModule.meta = {
     imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayDirective, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
+    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
     bootstrap: AppComponent
   };
 

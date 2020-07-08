@@ -3899,7 +3899,7 @@ errors-component {
 .header {
   position: absolute;
   width: 100%;
-  z-index: 1; }
+  z-index: 10; }
   .header .container-fluid,
   .header .container {
     min-height: 65px;
@@ -4127,7 +4127,7 @@ errors-component {
   font-size: 12px;
   color: #425356; }
 
-.overlay {
+.overlay-effect {
   position: fixed;
   top: 0;
   left: 0;
@@ -4138,7 +4138,7 @@ errors-component {
   pointer-events: none;
   mix-blend-mode: overlay;
   z-index: 100001; }
-  .overlay:before {
+  .overlay-effect:before {
     content: '';
     position: absolute;
     display: block;
@@ -4148,7 +4148,7 @@ errors-component {
     top: 0;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%);
     animation: overlay-animation 7s 20s infinite; }
-  .overlay:after {
+  .overlay-effect:after {
     content: '';
     position: absolute;
     display: block;
@@ -4157,6 +4157,42 @@ errors-component {
     left: 25%;
     top: 25%;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 70%); }
+
+.overlay-effect--dark {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin-left: -200vw;
+  margin-top: -200vh;
+  width: 400vw;
+  height: 400vh;
+  border: 50vw solid black;
+  box-sizing: border-box;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  z-index: 100001;
+  /*
+	&:after {
+		content: '';
+		position: absolute;
+		display: block;
+		width: 50%;
+		height: 50%;
+		left: 25%;
+		top: 25%;
+		background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 70%);
+	}
+	*/ }
+  .overlay-effect--dark:before {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0) 20%, black 50%);
+    animation: overlay-animation 7s 20s infinite; }
 
 @keyframes overlay-animation {
   0% {
@@ -4333,20 +4369,8 @@ errors-component {
 .emotional-page {
   background: #000001;
   color: white; }
-  .emotional-page .background {
-    min-height: 100vh;
-    display: flex;
-    align-items: center; }
-    .emotional-page .background--left {
-      justify-content: flex-start; }
-    .emotional-page .background--right {
-      justify-content: flex-end; }
-  .emotional-page .absolute {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    transform: translateY(-50%); }
+  .emotional-page .container {
+    z-index: 1; }
 
 .section--hero-emotional {
   position: relative;
@@ -4398,30 +4422,76 @@ errors-component {
 .section--intro {
   padding: 120px 0 0 0; }
   .section--intro .category {
-    font-size: 16px; }
+    font-size: 16px;
+    margin-bottom: 20px; }
   .section--intro .abstract {
     font-family: "Cormorant Garamond", serif;
     font-style: italic;
     font-size: 36px;
-    line-height: 1.15; }
+    line-height: 1.15;
+    margin-bottom: 20px; }
   .section--intro .description {
     font-size: 16px; }
 
-.section--text-picture-01 {
-  position: relative; }
+@media (min-width: 1024px) {
+  .group--picture .background, .section--text-picture-01 .background, .section--text-picture-02 .background, .section--text-picture-03 .background, .section--text-picture-04 .background, .section--text-picture-05 .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center; }
+    .group--picture .background img, .section--text-picture-01 .background img, .section--text-picture-02 .background img, .section--text-picture-03 .background img, .section--text-picture-04 .background img, .section--text-picture-05 .background img {
+      width: 100%; } }
+
+.section--text-picture-01 .container, .section--text-picture-02 .container, .section--text-picture-03 .container {
+  /*
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	transform: translateX(-50%) translateY(-50%);
+	*/ }
+  @media (min-width: 1024px) {
+    .section--text-picture-01 .container, .section--text-picture-02 .container, .section--text-picture-03 .container {
+      margin-top: 120px;
+      margin-bottom: 120px; } }
+
+.group--picture .title, .section--text-picture-02 .title, .section--text-picture-03 .title, .section--text-picture-04 .title, .section--text-picture-05 .title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 74px;
+  line-height: 1.15; }
+  @media (min-width: 1440px) {
+    .group--picture .title, .section--text-picture-02 .title, .section--text-picture-03 .title, .section--text-picture-04 .title, .section--text-picture-05 .title {
+      font-size: 74px; } }
+  @media (min-width: 1024px) and (max-width: 1919.98px) {
+    .group--picture .title, .section--text-picture-02 .title, .section--text-picture-03 .title, .section--text-picture-04 .title, .section--text-picture-05 .title {
+      font-size: 4vw; } }
+  @media (max-width: 1023.98px) {
+    .group--picture .title, .section--text-picture-02 .title, .section--text-picture-03 .title, .section--text-picture-04 .title, .section--text-picture-05 .title {
+      font-size: 37px; } }
 
 .group--picture {
   display: flex;
   flex-direction: column;
   align-items: center; }
-  .group--picture .title {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 74px;
-    line-height: 1.15; }
+
+.section--text-picture-01 {
+  position: relative;
+  padding: 120px 0; }
+  @media (max-width: 1023.98px) {
+    .section--text-picture-01 .background {
+      transform: scale(1.5);
+      transform-origin: right; } }
 
 .section--text-picture-02 {
   position: relative; }
+  @media (max-width: 1023.98px) {
+    .section--text-picture-02 .background {
+      transform: scale(1.5);
+      transform-origin: right; } }
   .section--text-picture-02 .group--inline {
     position: relative;
     display: flex;
@@ -4429,26 +4499,35 @@ errors-component {
     justify-content: flex-start;
     align-items: center;
     padding: 80px 0; }
-  .section--text-picture-02 .group--text {
-    width: 100%;
-    flex: 0 0 calc(25% - 12px);
-    max-width: calc(25% - 12px);
-    margin-left: 6px;
-    margin-right: 6px;
-    margin-left: 8.33333%;
-    margin-top: 40px;
-    margin-bottom: 40px; }
-  .section--text-picture-02 .title {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 74px;
-    line-height: 1.15; }
   .section--text-picture-02 .abstract {
     font-size: 21px;
     line-height: 1.4; }
+  @media (min-width: 1024px) {
+    .section--text-picture-02 .group--text {
+      width: 100%;
+      flex: 0 0 calc(25% - 12px);
+      max-width: calc(25% - 12px);
+      margin-left: 6px;
+      margin-right: 6px;
+      margin-left: 8.33333%;
+      margin-top: 40px;
+      margin-bottom: 40px; } }
+  @media (max-width: 1023.98px) {
+    .section--text-picture-02 .group--text {
+      width: 100%;
+      flex: 0 0 calc(100% - 0);
+      max-width: calc(100% - 0);
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 40px;
+      margin-bottom: 40px; } }
 
 .section--text-picture-03 {
   position: relative; }
+  @media (max-width: 1023.98px) {
+    .section--text-picture-03 .background {
+      transform: scale(1.5);
+      transform-origin: left; } }
   .section--text-picture-03 .group--inline {
     position: relative;
     display: flex;
@@ -4456,25 +4535,30 @@ errors-component {
     justify-content: flex-start;
     align-items: center;
     padding: 80px 0; }
-  .section--text-picture-03 .group--text {
-    width: 100%;
-    flex: 0 0 calc(33.33333% - 12px);
-    max-width: calc(33.33333% - 12px);
-    margin-left: 6px;
-    margin-right: 6px;
-    margin-left: 58.33333%;
-    margin-top: 40px;
-    margin-bottom: 40px; }
-  .section--text-picture-03 .title {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 74px;
-    line-height: 1.15; }
   .section--text-picture-03 .abstract {
     font-size: 21px;
     line-height: 1.4; }
   .section--text-picture-03 .group--cta {
     margin-top: 30px; }
+  @media (min-width: 1024px) {
+    .section--text-picture-03 .group--text {
+      width: 100%;
+      flex: 0 0 calc(33.33333% - 12px);
+      max-width: calc(33.33333% - 12px);
+      margin-left: 6px;
+      margin-right: 6px;
+      margin-left: 58.33333%;
+      margin-top: 40px;
+      margin-bottom: 40px; } }
+  @media (max-width: 1023.98px) {
+    .section--text-picture-03 .group--text {
+      width: 100%;
+      flex: 0 0 calc(100% - 0);
+      max-width: calc(100% - 0);
+      margin-left: 0;
+      margin-right: 0;
+      margin-top: 40px;
+      margin-bottom: 40px; } }
 
 .section--text-picture-04 .group--inline {
   position: relative;
@@ -4484,38 +4568,58 @@ errors-component {
   align-items: center;
   padding: 80px 0; }
 
-.section--text-picture-04 .group--picture {
-  width: 100%;
-  flex: 0 0 calc(83.33333% - 12px);
-  max-width: calc(83.33333% - 12px);
-  margin-left: 6px;
-  margin-right: 6px;
-  margin-left: 8.33333%; }
+@media (min-width: 1024px) {
+  .section--text-picture-04 .group--picture {
+    width: 100%;
+    flex: 0 0 calc(83.33333% - 12px);
+    max-width: calc(83.33333% - 12px);
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-left: 8.33333%; }
+  .section--text-picture-04 .group--content {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 40px;
+    margin-bottom: 40px; }
+  .section--text-picture-04 .group--title {
+    width: 100%;
+    flex: 0 0 calc(25% - 12px);
+    max-width: calc(25% - 12px);
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-left: 8.33333%; }
+  .section--text-picture-04 .group--abstract {
+    width: 100%;
+    flex: 0 0 calc(58.33333% - 12px);
+    max-width: calc(58.33333% - 12px);
+    margin-left: 6px;
+    margin-right: 6px; } }
 
-.section--text-picture-04 .group--title {
-  width: 100%;
-  flex: 0 0 calc(25% - 12px);
-  max-width: calc(25% - 12px);
-  margin-left: 6px;
-  margin-right: 6px;
-  margin-left: 8.33333%;
-  margin-top: 40px;
-  margin-bottom: 40px; }
-
-.section--text-picture-04 .group--abstract {
-  width: 100%;
-  flex: 0 0 calc(58.33333% - 12px);
-  max-width: calc(58.33333% - 12px);
-  margin-left: 6px;
-  margin-right: 6px;
-  margin-top: 40px;
-  margin-bottom: 40px; }
-
-.section--text-picture-04 .title {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 74px;
-  line-height: 1.15; }
+@media (max-width: 1023.98px) {
+  .section--text-picture-04 .group--picture {
+    width: 100%;
+    flex: 0 0 calc(100% - 0);
+    max-width: calc(100% - 0);
+    margin-left: 0;
+    margin-right: 0; }
+  .section--text-picture-04 .group--content {
+    margin-top: 40px;
+    margin-bottom: 40px; }
+  .section--text-picture-04 .group--title {
+    width: 100%;
+    flex: 0 0 calc(100% - 0);
+    max-width: calc(100% - 0);
+    margin-left: 0;
+    margin-right: 0; }
+  .section--text-picture-04 .group--abstract {
+    width: 100%;
+    flex: 0 0 calc(100% - 0);
+    max-width: calc(100% - 0);
+    margin-left: 0;
+    margin-right: 0; } }
 
 .section--text-picture-05 .group--inline {
   position: relative;
@@ -4525,28 +4629,46 @@ errors-component {
   align-items: center;
   padding: 80px 0; }
 
-.section--text-picture-05 .group--picture {
-  width: 100%;
-  flex: 0 0 calc(25% - 12px);
-  max-width: calc(25% - 12px);
-  margin-left: 6px;
-  margin-right: 6px;
-  margin-left: 16.66667%; }
-
-.section--text-picture-05 .group--text {
-  width: 100%;
-  flex: 0 0 calc(33.33333% - 12px);
-  max-width: calc(33.33333% - 12px);
-  margin-left: 6px;
-  margin-right: 6px;
-  margin-top: 40px;
-  margin-bottom: 40px; }
-
-.section--text-picture-05 .title {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: 74px;
-  line-height: 1.15; }
-
 .section--text-picture-05 .group--cta {
   margin-top: 40px; }
+
+@media (min-width: 1024px) {
+  .section--text-picture-05 .group--picture {
+    width: 100%;
+    flex: 0 0 calc(25% - 12px);
+    max-width: calc(25% - 12px);
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-left: 16.66667%; }
+  .section--text-picture-05 .group--text {
+    width: 100%;
+    flex: 0 0 calc(33.33333% - 12px);
+    max-width: calc(33.33333% - 12px);
+    margin-left: 6px;
+    margin-right: 6px;
+    margin-top: 40px;
+    margin-bottom: 40px; } }
+
+@media (max-width: 1023.98px) {
+  .section--text-picture-05 .group--picture {
+    width: 100%;
+    flex: 0 0 calc(100% - 0);
+    max-width: calc(100% - 0);
+    margin-left: 0;
+    margin-right: 0; }
+  .section--text-picture-05 .group--text {
+    width: 100%;
+    flex: 0 0 calc(100% - 0);
+    max-width: calc(100% - 0);
+    margin-left: 0;
+    margin-right: 0; } }
+
+.lazy-picture {
+  position: relative; }
+  .lazy-picture__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, black 0%, black 20%); }

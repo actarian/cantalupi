@@ -2,26 +2,8 @@
 	background: #000001;
 	color: white;
 
-	.background {
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
-
-		&--left {
-			justify-content: flex-start;
-		}
-
-		&--right {
-			justify-content: flex-end;
-		}
-	}
-
-	.absolute {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		width: 100%;
-		transform: translateY(-50%);
+	.container {
+		z-index: 1;
 	}
 }
 
@@ -103,6 +85,7 @@
 
 	.category {
 		font-size: 16px;
+		margin-bottom: 20px;
 	}
 
 	.abstract {
@@ -110,6 +93,7 @@
 		font-style: italic;
 		font-size: 36px;
 		line-height: 1.15;
+		margin-bottom: 20px;
 	}
 
 	.description {
@@ -118,8 +102,55 @@
 
 }
 
-.section--text-picture-01 {
-	position: relative;
+%emotional-background {
+	@include media-up(md) {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+
+		width: 100%;
+		display: flex;
+		align-items: center;
+
+		img {
+			width: 100%;
+		}
+	}
+}
+
+%emotional-container {
+	@include media-up(md) {
+		margin-top: 120px;
+		margin-bottom: 120px;
+	}
+
+	/*
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 100%;
+	transform: translateX(-50%) translateY(-50%);
+	*/
+}
+
+%emotional-title {
+	font-family: $font-secondary;
+	font-style: italic;
+	font-size: 74px;
+	line-height: 1.15;
+
+	@include media-up(lg) {
+		font-size: 74px;
+	}
+
+	@include media-between(md, lg) {
+		font-size: 4vw;
+	}
+
+	@include media-down(sm) {
+		font-size: 37px;
+	}
 }
 
 .group--picture {
@@ -127,16 +158,49 @@
 	flex-direction: column;
 	align-items: center;
 
-	.title {
-		font-family: $font-secondary;
-		font-style: italic;
-		font-size: 74px;
-		line-height: 1.15;
+	.background {
+		@extend %emotional-background;
 	}
+
+	.title {
+		@extend %emotional-title;
+	}
+}
+
+.section--text-picture-01 {
+	position: relative;
+	padding: 120px 0;
+
+	.background {
+		@extend %emotional-background;
+
+		@include media-down(sm) {
+			transform: scale(1.5);
+			transform-origin: right;
+		}
+	}
+
+	.container {
+		@extend %emotional-container;
+	}
+
 }
 
 .section--text-picture-02 {
 	position: relative;
+
+	.background {
+		@extend %emotional-background;
+
+		@include media-down(sm) {
+			transform: scale(1.5);
+			transform-origin: right;
+		}
+	}
+
+	.container {
+		@extend %emotional-container;
+	}
 
 	.group--inline {
 		position: relative;
@@ -147,28 +211,48 @@
 		padding: 80px 0;
 	}
 
-	.group--text {
-		@include as-col(3, 12, 12px);
-		@include as-offset(1, 12);
-		margin-top: 40px;
-		margin-bottom: 40px;
-	}
-
 	.title {
-		font-family: $font-secondary;
-		font-style: italic;
-		font-size: 74px;
-		line-height: 1.15;
+		@extend %emotional-title;
 	}
 
 	.abstract {
 		font-size: 21px;
 		line-height: 1.4;
 	}
+
+	@include media-up(md) {
+		.group--text {
+			@include as-col(3, 12, 12px);
+			@include as-offset(1, 12);
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+	}
+
+	@include media-down(sm) {
+		.group--text {
+			@include as-col(12, 12, 0);
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+	}
 }
 
 .section--text-picture-03 {
 	position: relative;
+
+	.background {
+		@extend %emotional-background;
+
+		@include media-down(sm) {
+			transform: scale(1.5);
+			transform-origin: left;
+		}
+	}
+
+	.container {
+		@extend %emotional-container;
+	}
 
 	.group--inline {
 		position: relative;
@@ -179,18 +263,8 @@
 		padding: 80px 0;
 	}
 
-	.group--text {
-		@include as-col(4, 12, 12px);
-		@include as-offset(7, 12);
-		margin-top: 40px;
-		margin-bottom: 40px;
-	}
-
 	.title {
-		font-family: $font-secondary;
-		font-style: italic;
-		font-size: 74px;
-		line-height: 1.15;
+		@extend %emotional-title;
 	}
 
 	.abstract {
@@ -201,9 +275,30 @@
 	.group--cta {
 		margin-top: 30px;
 	}
+
+	@include media-up(md) {
+		.group--text {
+			@include as-col(4, 12, 12px);
+			@include as-offset(7, 12);
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+	}
+
+	@include media-down(sm) {
+		.group--text {
+			@include as-col(12, 12, 0);
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+	}
 }
 
 .section--text-picture-04 {
+
+	.background {
+		@extend %emotional-background;
+	}
 
 	.group--inline {
 		position: relative;
@@ -214,34 +309,62 @@
 		padding: 80px 0;
 	}
 
-	.group--picture {
-		@include as-col(10, 12, 12px);
-		@include as-offset(1, 12);
-	}
-
-	.group--title {
-		@include as-col(3, 12, 12px);
-		@include as-offset(1, 12);
-		margin-top: 40px;
-		margin-bottom: 40px;
-	}
-
-	.group--abstract {
-		@include as-col(7, 12, 12px);
-		margin-top: 40px;
-		margin-bottom: 40px;
-	}
-
 	.title {
-		font-family: $font-secondary;
-		font-style: italic;
-		font-size: 74px;
-		line-height: 1.15;
+		@extend %emotional-title;
+	}
+
+	@include media-up(md) {
+		.group--picture {
+			@include as-col(10, 12, 12px);
+			@include as-offset(1, 12);
+		}
+
+		.group--content {
+			position: relative;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-items: center;
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+
+		.group--title {
+			@include as-col(3, 12, 12px);
+			@include as-offset(1, 12);
+		}
+
+		.group--abstract {
+			@include as-col(7, 12, 12px);
+		}
+	}
+
+	@include media-down(sm) {
+		.group--picture {
+			@include as-col(12, 12, 0);
+		}
+
+		.group--content {
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+
+		.group--title {
+			@include as-col(12, 12, 0);
+		}
+
+		.group--abstract {
+			@include as-col(12, 12, 0);
+		}
 	}
 }
 
 .section--text-picture-05 {
 
+	.background {
+		@extend %emotional-background;
+	}
+
 	.group--inline {
 		position: relative;
 		display: flex;
@@ -251,25 +374,47 @@
 		padding: 80px 0;
 	}
 
-	.group--picture {
-		@include as-col(3, 12, 12px);
-		@include as-offset(2, 12);
-	}
-
-	.group--text {
-		@include as-col(4, 12, 12px);
-		margin-top: 40px;
-		margin-bottom: 40px;
-	}
-
 	.title {
-		font-family: $font-secondary;
-		font-style: italic;
-		font-size: 74px;
-		line-height: 1.15;
+		@extend %emotional-title;
 	}
 
 	.group--cta {
 		margin-top: 40px;
+	}
+
+	@include media-up(md) {
+		.group--picture {
+			@include as-col(3, 12, 12px);
+			@include as-offset(2, 12);
+		}
+
+		.group--text {
+			@include as-col(4, 12, 12px);
+			margin-top: 40px;
+			margin-bottom: 40px;
+		}
+	}
+
+	@include media-down(sm) {
+		.group--picture {
+			@include as-col(12, 12, 0);
+		}
+
+		.group--text {
+			@include as-col(12, 12, 0);
+		}
+	}
+}
+
+.lazy-picture {
+	position: relative;
+
+	&__overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 20%);
 	}
 }
