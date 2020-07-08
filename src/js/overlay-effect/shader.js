@@ -42,12 +42,12 @@ export const FRAGMENT_SHADER_1 = FRAGMENT_SHARED + `
 void main() {
 	vec2 p = st - vec2(mx.x, mx.y * -1.0);
 	vec3 color = vec3(1.0);
-	float noise = random(p) * 0.1;
-	color = vec3(clamp(0.0, 1.0, color.r - noise));
+	// float noise = random(p) * 0.1;
+	// color = vec3(clamp(0.0, 1.0, color.r - noise));
 	float circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);
 	circle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);
 	circle = clamp(0.0, 1.0, circle);
-	float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * 0.7;
+	float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);
 	gl_FragColor = vec4(color, alpha);
 }
 `;

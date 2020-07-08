@@ -1,0 +1,341 @@
+<!-- @@master = ./templates/layout.html { "baseHref": "/cantalupi/" } -->
+
+<!-- @@block = main-->
+
+<script type="text/javascript">
+	window.filters = {
+		families: {
+			label: 'Famiglia',
+			placeholder: 'scegli la famiglia',
+			mode: 'or',
+			options: [{
+				label: 'Top 5',
+				value: 101,
+			}, {
+				label: 'Top 6',
+				value: 102,
+			}, {
+				label: 'Top 7',
+				value: 103,
+			}]
+		},
+		areas: {
+			label: 'Ambiente',
+			placeholder: 'scegli l\'ambiente',
+			mode: 'or',
+			options: [{
+				label: 'Small',
+				value: 201,
+			}, {
+				label: 'Medium',
+				value: 202,
+			}, {
+				label: 'Large',
+				value: 203,
+			}]
+		},
+		types: {
+			label: 'Tipologia di illuminazione',
+			placeholder: 'scegli la tipologia',
+			mode: 'or',
+			options: [{
+				label: 'Ceiling Recessed',
+				value: 301,
+			}, {
+				label: 'Ceiling Surface',
+				value: 302,
+			}, {
+				label: 'Wall Mounted',
+				value: 303,
+			}]
+		},
+		shapes: {
+			label: 'Shape',
+			placeholder: 'seleziona',
+			mode: 'or',
+			options: [{
+				label: 'Narrow',
+				value: 401,
+			}, {
+				label: 'Medium',
+				value: 402,
+			}, {
+				label: 'Wide',
+				value: 403,
+			}]
+		},
+		frames: {
+			label: 'Frame',
+			placeholder: 'seleziona',
+			mode: 'or',
+			options: [{
+				label: 'Frame',
+				value: 501,
+			}, {
+				label: 'Frameless',
+				value: 502,
+			}]
+		},
+	};
+
+	// families, areas, types, shapes, frames
+
+	window.products = [
+		{
+			id: 1001,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/01.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 5 R FR PM',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [101, 201, 301, 401, 501]
+		}, {
+			id: 1002,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/02.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 5 S ADJ',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [102, 201, 302, 401, 502]
+		}, {
+			id: 1003,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/03.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 8 R FIX',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [101, 203, 301, 403, 501]
+		}, {
+			id: 1004,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/04.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 8 COMFORT PM',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [101, 202, 301, 402, 502]
+		}, {
+			id: 1005,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/01.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 5 R FR PM',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [101, 201, 301, 401, 501]
+		}, {
+			id: 1006,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/02.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 5 S ADJ',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [102, 201, 302, 401, 502]
+		}, {
+			id: 1007,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/03.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 8 R FIX',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [101, 203, 301, 403, 501]
+		}, {
+			id: 1008,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/04.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 8 COMFORT PM',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [102, 201, 302, 401, 502]
+		}, {
+			id: 1009,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/01.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 5 R FR PM',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [103, 201, 303, 401, 502]
+		}, {
+			id: 1010,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/02.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 5 S ADJ',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [101, 202, 302, 401, 501]
+		}, {
+			id: 1011,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/03.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 8 R FIX',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [103, 201, 303, 401, 501]
+		}, {
+			id: 1012,
+			url: '#',
+			image: '/cantalupi/img/exclusive-yachts-exteriors/04.jpg',
+			imageOver: '/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg',
+			category: 'Exclusive Yachts Exteriors',
+			title: 'TOP 8 COMFORT PM',
+			description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at magna mauris. ',
+			diameter: '5mm',
+			height: '3.75mm',
+			power: '56 W',
+			lumen: '280 lumen',
+			features: [101, 201, 302, 402, 502]
+		}
+	];
+
+</script>
+
+<div class="products-page" products-page>
+
+	<section class="section--hero-products">
+		<div class="background">
+			<img lazy="/cantalupi/img/exclusive-yachts-exteriors/hero.jpg" />
+		</div>
+		<div class="container">
+			<div class="category">Exclusive Yachts</div>
+			<div class="title">Exteriors</div>
+		</div>
+	</section>
+
+	<section class="section--serp">
+		<div class="container">
+			<!-- filters -->
+			<div class="listing--filters">
+				<div class="listing__item" *for="let [key, filter] of filters" [class]="{ active: filter.active }">
+					<div class="name" [innerHTML]="filter.label"></div>
+					<div class="control" (click)="toggleFilter(filter)">
+						<span [innerHTML]="filter.getLabel()"></span> <svg class="icon icon--caret-down"><use xlink:href="#caret-down"></use></svg>
+					</div>
+					<ul class="nav--options" *if="filter.active">
+						<li class="nav--options__item" *for="let item of filter.options">
+							<span class="option" [class]="{ active: filter.has(item), disabled: item.disabled }" (click)="filter.toggle(item)">
+								<span class="name" [innerHTML]="item.label"></span>
+								<span class="count" [innerHTML]="item.count || ''"></span>
+							</span>
+						</li>
+					</ul>
+				</div>
+				<div class="listing__item">
+					<div class="btn--secondary" data-title="Aggiungi filtri alla ricerca">Aggiungi filtri alla ricerca</div>
+				</div>
+			</div>
+			<!-- results -->
+			<div class="listing--products">
+				<div class="listing__item" *for="let item of items">
+					<div class="card--product" appear>
+						<div class="picture">
+							<img [lazy]="item.image" />
+							<img class="over" [lazy]="item.imageOver" *if="item.imageOver" />
+						</div>
+						<div class="content">
+							<div class="category" [innerHTML]="item.category"></div>
+							<div class="title" [innerHTML]="item.title"></div>
+							<div class="abstract" [innerHTML]="item.abstract" *if="item.abstract"></div>
+							<div class="listing--info">
+								<div class="listing__item">
+									<svg class="diameter"><use xlink:href="#diameter"></use></svg> <span [innerHTML]="item.diameter"></span>
+								</div>
+								<div class="listing__item">
+									<svg class="height"><use xlink:href="#height"></use></svg> <span [innerHTML]="item.height"></span>
+								</div>
+								<div class="listing__item">
+									<svg class="power"><use xlink:href="#power"></use></svg> <span [innerHTML]="item.power"></span>
+								</div>
+								<div class="listing__item">
+									<svg class="lumen"><use xlink:href="#lumen"></use></svg> <span [innerHTML]="item.lumen"></span>
+								</div>
+							</div>
+							<div class="group--cta">
+								<a [href]="item.url" class="btn--contact" data-title="Scarica la scheda tecnica">Scarica la scheda tecnica</a>
+								<a [href]="item.url" class="btn--link" data-title="Scopri la serie">Scopri la serie</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section--text-picture-06">
+		<div class="container">
+			<div class="group--inline">
+				<div class="group--picture">
+					<div class="picture">
+						<img lazy="/cantalupi/img/exclusive-yachts-exteriors/money-lamp.jpg" />
+					</div>
+				</div>
+				<div class="group--text">
+					<div class="title">Money Lamp</div>
+					<div class="abstract">
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent auctor auctor massa, aliquam feugiat leo varius eget. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In hac habitasse platea dictumst.</p>
+					</div>
+					<div class="firm"><img src="/cantalupi/img/exclusive-yachts-exteriors/firma-cantalupi-black.png"></div>
+					<div class="author">Bruno Cantalupi<br>Fondatore</div>
+					<div class="group--cta">
+						<a href="#" class="btn--contact" data-title="Contattaci per maggiori informazioni">Contattaci per maggiori informazioni</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>
+
+<!-- @@close-->

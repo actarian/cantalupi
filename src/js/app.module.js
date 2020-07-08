@@ -17,6 +17,7 @@ import ModalOutletComponent from './modal/modal-outlet.component';
 import ModalComponent from './modal/modal.component';
 import OverlayEffectDirective from './overlay-effect/overlay-effect.directive';
 import OverlayWebglDirective from './overlay-effect/overlay-webgl.directive';
+import ProductsPageComponent from './products-page/products-page.component';
 import ScrollToDirective from './scroll-to/scroll-to.directive';
 import SecureDirective from './secure/secure.directive';
 import SlugPipe from './slug/slug.pipe';
@@ -47,6 +48,7 @@ AppModule.meta = {
 		ModalOutletComponent,
 		OverlayEffectDirective,
 		OverlayWebglDirective,
+		ProductsPageComponent,
 		ScrollToDirective,
 		SecureDirective,
 		SlugPipe,

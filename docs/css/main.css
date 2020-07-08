@@ -208,7 +208,7 @@ strong {
 .btn--primary, .btn--secondary, .btn--contact, .btn--link, .btn, .btn--circle, .btn--mode,
 .btn--filter, .btn--rounded, .section--cover .btn--skip, .nav--secondary-menu > li > a,
 .nav--secondary-menu > li > span, .nav--primary-menu > li > a,
-.nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a {
+.nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .nav--options__item > span {
   display: inline-block;
   padding: 0;
   border: none;
@@ -223,19 +223,19 @@ strong {
   .btn--primary, .btn--secondary, .btn--contact, .btn--link, .btn, .btn--circle, .btn--mode,
   .btn--filter, .btn--rounded, .section--cover .btn--skip, .nav--secondary-menu > li > a,
   .nav--secondary-menu > li > span, .nav--primary-menu > li > a,
-  .nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .btn--primary:active, .btn--secondary:active, .btn--contact:active, .btn--link:active, .btn:active, .btn--circle:active, .btn--mode:active,
+  .nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .nav--options__item > span, .btn--primary:active, .btn--secondary:active, .btn--contact:active, .btn--link:active, .btn:active, .btn--circle:active, .btn--mode:active,
   .btn--filter:active, .btn--rounded:active, .section--cover .btn--skip:active, .nav--secondary-menu > li > a:active,
   .nav--secondary-menu > li > span:active, .nav--primary-menu > li > a:active,
-  .nav--primary-menu > li > span:active, .nav--primary-menu > li > ul > li > a:active, .nav--menu-tertiary > li > a:active, .btn--primary:focus, .btn--secondary:focus, .btn--contact:focus, .btn--link:focus, .btn:focus, .btn--circle:focus, .btn--mode:focus,
+  .nav--primary-menu > li > span:active, .nav--primary-menu > li > ul > li > a:active, .nav--menu-tertiary > li > a:active, .nav--options__item > span:active, .btn--primary:focus, .btn--secondary:focus, .btn--contact:focus, .btn--link:focus, .btn:focus, .btn--circle:focus, .btn--mode:focus,
   .btn--filter:focus, .btn--rounded:focus, .section--cover .btn--skip:focus, .nav--secondary-menu > li > a:focus,
   .nav--secondary-menu > li > span:focus, .nav--primary-menu > li > a:focus,
-  .nav--primary-menu > li > span:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--menu-tertiary > li > a:focus, .btn--primary:hover, .btn--secondary:hover, .btn--contact:hover, .btn--link:hover, .btn:hover, .btn--circle:hover, .btn--mode:hover,
+  .nav--primary-menu > li > span:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--menu-tertiary > li > a:focus, .nav--options__item > span:focus, .btn--primary:hover, .btn--secondary:hover, .btn--contact:hover, .btn--link:hover, .btn:hover, .btn--circle:hover, .btn--mode:hover,
   .btn--filter:hover, .btn--rounded:hover, .section--cover .btn--skip:hover, .nav--secondary-menu > li > a:hover,
   .nav--secondary-menu > li > span:hover, .nav--primary-menu > li > a:hover,
-  .nav--primary-menu > li > span:hover, .nav--primary-menu > li > ul > li > a:hover, .nav--menu-tertiary > li > a:hover, .btn--primary:visited, .btn--secondary:visited, .btn--contact:visited, .btn--link:visited, .btn:visited, .btn--circle:visited, .btn--mode:visited,
+  .nav--primary-menu > li > span:hover, .nav--primary-menu > li > ul > li > a:hover, .nav--menu-tertiary > li > a:hover, .nav--options__item > span:hover, .btn--primary:visited, .btn--secondary:visited, .btn--contact:visited, .btn--link:visited, .btn:visited, .btn--circle:visited, .btn--mode:visited,
   .btn--filter:visited, .btn--rounded:visited, .section--cover .btn--skip:visited, .nav--secondary-menu > li > a:visited,
   .nav--secondary-menu > li > span:visited, .nav--primary-menu > li > a:visited,
-  .nav--primary-menu > li > span:visited, .nav--primary-menu > li > ul > li > a:visited, .nav--menu-tertiary > li > a:visited {
+  .nav--primary-menu > li > span:visited, .nav--primary-menu > li > ul > li > a:visited, .nav--menu-tertiary > li > a:visited, .nav--options__item > span:visited {
     color: inherit;
     text-decoration: none;
     outline: none; }
@@ -243,12 +243,12 @@ strong {
 .btn--primary, .btn--secondary, .btn--contact, .btn--link, .btn, .btn--circle, .btn--mode,
 .btn--filter, .btn--rounded, .section--cover .btn--skip, .nav--secondary-menu > li > a,
 .nav--secondary-menu > li > span, .nav--primary-menu > li > a,
-.nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a {
+.nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .nav--options__item > span {
   transition: ease-in-out 350ms; }
   .btn--primary[disabled], .btn--secondary[disabled], .btn--contact[disabled], .btn--link[disabled], .btn[disabled], .btn--circle[disabled], .btn--mode[disabled],
   .btn--filter[disabled], .btn--rounded[disabled], .section--cover .btn--skip[disabled], .nav--secondary-menu > li > a[disabled],
   .nav--secondary-menu > li > span[disabled], .nav--primary-menu > li > a[disabled],
-  .nav--primary-menu > li > span[disabled], .nav--primary-menu > li > ul > li > a[disabled], .nav--menu-tertiary > li > a[disabled] {
+  .nav--primary-menu > li > span[disabled], .nav--primary-menu > li > ul > li > a[disabled], .nav--menu-tertiary > li > a[disabled], .nav--options__item > span[disabled] {
     opacity: 0.5;
     pointer-events: none; }
 
@@ -3108,18 +3108,19 @@ errors-component {
 [class^="icon--"] {
   fill: currentColor; }
 
-[lazy], .section--cover .background > img, .section--hero .background > img, .card--serie > .picture > img, .section--hero-emotional .background > img {
+[lazy], .section--cover .background > img, .section--hero .background > img, .card--serie > .picture > img, .section--hero-emotional .background > img, .section--hero-products .background > img {
   opacity: 0;
   transition: cubic-bezier(0.32, 0, 0.29, 0.99) 700ms;
   transition-property: opacity, transform; }
-  .lazyed[lazy], .section--cover .background > img.lazyed, .section--hero .background > img.lazyed, .card--serie > .picture > img.lazyed, .section--hero-emotional .background > img.lazyed {
+  .lazyed[lazy], .section--cover .background > img.lazyed, .section--hero .background > img.lazyed, .card--serie > .picture > img.lazyed, .section--hero-emotional .background > img.lazyed, .section--hero-products .background > img.lazyed {
     opacity: 1; }
 
 .nav--secondary-menu > li > a,
-.nav--secondary-menu > li > span, .nav--primary-menu > li > a, .nav--primary-menu > li > ul > li > a,
+.nav--secondary-menu > li > span, .nav--primary-menu > li > a, .nav--primary-menu > li > ul > li > a, .nav--options > li > a,
 .nav--primary-menu > li > span,
-.nav--primary-menu > li > ul > li > span, .nav--dropdown > li > a,
-.nav--dropdown > li > span, .nav--secondary-menu > li, .nav--primary-menu > li, .nav--primary-menu > li > ul > li {
+.nav--primary-menu > li > ul > li > span,
+.nav--options > li > span, .nav--dropdown > li > a,
+.nav--dropdown > li > span, .nav--secondary-menu > li, .nav--primary-menu > li, .nav--primary-menu > li > ul > li, .nav--options__item {
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -3136,13 +3137,14 @@ errors-component {
 	}
 	*/ }
   .nav--secondary-menu > li > a:focus,
-  .nav--secondary-menu > li > span:focus, .nav--primary-menu > li > a:focus, .nav--primary-menu > li > ul > li > a:focus,
+  .nav--secondary-menu > li > span:focus, .nav--primary-menu > li > a:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--options > li > a:focus,
   .nav--primary-menu > li > span:focus,
-  .nav--primary-menu > li > ul > li > span:focus, .nav--dropdown > li > a:focus,
-  .nav--dropdown > li > span:focus, .nav--secondary-menu > li:focus, .nav--primary-menu > li:focus, .nav--primary-menu > li > ul > li:focus {
+  .nav--primary-menu > li > ul > li > span:focus,
+  .nav--options > li > span:focus, .nav--dropdown > li > a:focus,
+  .nav--dropdown > li > span:focus, .nav--secondary-menu > li:focus, .nav--primary-menu > li:focus, .nav--primary-menu > li > ul > li:focus, .nav--options__item:focus {
     outline: 0; }
 
-.nav--secondary-menu, .nav--primary-menu, .nav--primary-menu > li > ul, .nav--dropdown, .nav--menu-tertiary, .nav--social {
+.nav--secondary-menu, .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .nav--dropdown, .nav--menu-tertiary, .nav--social {
   list-style: none;
   padding: 0;
   margin: 0; }
@@ -3161,20 +3163,20 @@ errors-component {
     .nav--secondary-menu {
       display: block; } }
 
-.nav--primary-menu > li, .nav--primary-menu > li > ul > li {
+.nav--primary-menu > li, .nav--primary-menu > li > ul > li, .nav--options > li {
   position: relative;
   display: block;
   flex: 1 1 auto; }
 
 @media (min-width: 1024px) {
-  .nav--primary-menu, .nav--primary-menu > li > ul {
+  .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center; } }
 
 @media (max-width: 1023.98px) {
-  .nav--primary-menu, .nav--primary-menu > li > ul {
+  .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options {
     display: block; } }
 
 .modal-outlet__container {
@@ -4686,3 +4688,249 @@ errors-component {
     width: 100%;
     height: 100%;
     background: radial-gradient(ellipse at center, black 0%, black 20%); }
+
+.products-page .container {
+  z-index: 1; }
+
+.section--hero-products {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  min-height: 100vh; }
+  .section--hero-products .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex; }
+    .section--hero-products .background > img {
+      object-fit: cover; }
+  .section--hero-products .container {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 120px; }
+  .section--hero-products .category {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 18px;
+    text-transform: uppercase; }
+  .section--hero-products .title {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 120px;
+    line-height: 1.1;
+    text-transform: uppercase; }
+  @media (min-width: 1440px) {
+    .section--hero-products .title {
+      font-style: 120px; } }
+  @media (min-width: 768px) and (max-width: 1919.98px) {
+    .section--hero-products .title {
+      font-size: 8vw; } }
+  @media (max-width: 1023.98px) {
+    .section--hero-products .title {
+      font-size: 80px; } }
+  @media (max-width: 767.98px) {
+    .section--hero-products .title {
+      font-size: 60px;
+      line-height: 1.2; } }
+
+.listing--filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 80px 0; }
+  @media (min-width: 1024px) {
+    .listing--filters {
+      margin-left: -6px;
+      margin-right: -6px;
+      align-items: flex-end; }
+      .listing--filters .listing__item {
+        position: relative;
+        white-space: nowrap; } }
+  .listing--filters .category {
+    font-size: 10px; }
+  .listing--filters .control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    line-height: 1;
+    color: black;
+    border-bottom: 1px solid black; }
+    .listing--filters .control svg {
+      display: none; }
+
+.nav--options {
+  position: absolute; }
+
+.card--product {
+  display: block;
+  text-align: center;
+  margin-bottom: 60px;
+  cursor: pointer;
+  transition: all ease-in-out 400ms; }
+  .card--product > .picture {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding-top: 72.28916%;
+    overflow: hidden;
+    margin-bottom: 15px; }
+    .card--product > .picture > img,
+    .card--product > .picture > svg,
+    .card--product > .picture > video,
+    .card--product > .picture > canvas,
+    .card--product > .picture > .video,
+    .card--product > .picture > iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover; }
+    .card--product > .picture .over {
+      opacity: 0;
+      transition: opacity ease-in-out 350ms; }
+  .card--product .category {
+    display: block;
+    font-size: 14px;
+    color: #A3A3A3; }
+  .card--product .title {
+    display: block;
+    font-size: 24px;
+    color: #03191D; }
+  .card--product .abstract {
+    display: block;
+    font-size: 14px;
+    color: #21293C; }
+  .card--product .listing--info {
+    display: inline-flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 15px; }
+    .card--product .listing--info > .listing__item {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      white-space: nowrap;
+      font-size: 11px;
+      color: #21293C;
+      margin: 0 10px; }
+    .card--product .listing--info svg {
+      margin-bottom: 5px; }
+    .card--product .listing--info .diameter {
+      width: 14px;
+      height: 14px; }
+    .card--product .listing--info .height {
+      width: 6px;
+      height: 20px; }
+    .card--product .listing--info .lumen {
+      width: 20px;
+      height: 20px; }
+    .card--product .listing--info .power {
+      width: 11px;
+      height: 18px; }
+  .card--product .group--cta {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity ease-in-out 400ms; }
+    .card--product .group--cta .btn--link, .card--product .group--cta .btn--link:active, .card--product .group--cta .btn--link:focus, .card--product .group--cta .btn--link:hover, .card--product .group--cta .btn--link:visited {
+      color: #03191D; }
+  .card--product:hover {
+    box-shadow: 0 30px 30px -10px rgba(0, 0, 0, 0.15); }
+    .card--product:hover > .picture .over {
+      opacity: 1; }
+    .card--product:hover .group--cta {
+      opacity: 1;
+      pointer-events: all; }
+
+.listing--products {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: 0 0 80px 0; }
+  @media (min-width: 1024px) {
+    .listing--products {
+      margin-left: -6px;
+      margin-right: -6px;
+      align-items: flex-end; }
+      .listing--products .listing__item {
+        width: 100%;
+        flex: 0 0 calc(25% - 12px);
+        max-width: calc(25% - 12px);
+        margin-left: 6px;
+        margin-right: 6px; } }
+  @media (max-width: 1023.98px) {
+    .listing--products .listing__item {
+      width: 100%;
+      flex: 0 0 calc(100% - 0px);
+      max-width: calc(100% - 0px);
+      margin-left: 0px;
+      margin-right: 0px; } }
+
+.section--text-picture-06 .title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 74px;
+  line-height: 1.15; }
+  @media (min-width: 1440px) {
+    .section--text-picture-06 .title {
+      font-size: 74px; } }
+  @media (min-width: 1024px) and (max-width: 1919.98px) {
+    .section--text-picture-06 .title {
+      font-size: 4vw; } }
+  @media (max-width: 1023.98px) {
+    .section--text-picture-06 .title {
+      font-size: 37px; } }
+
+.section--text-picture-06 {
+  color: #1D1D1B; }
+  .section--text-picture-06 .group--inline {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 80px 0; }
+  .section--text-picture-06 .group--cta {
+    margin-top: 40px; }
+  @media (min-width: 1024px) {
+    .section--text-picture-06 .group--picture {
+      width: 100%;
+      flex: 0 0 calc(41.66667% - 12px);
+      max-width: calc(41.66667% - 12px);
+      margin-left: 6px;
+      margin-right: 6px;
+      margin-left: 8.33333%; }
+    .section--text-picture-06 .group--text {
+      width: 100%;
+      flex: 0 0 calc(33.33333% - 12px);
+      max-width: calc(33.33333% - 12px);
+      margin-left: 6px;
+      margin-right: 6px;
+      margin-left: 8.33333%;
+      margin-top: 40px;
+      margin-bottom: 40px; } }
+  @media (max-width: 1023.98px) {
+    .section--text-picture-06 .group--picture {
+      width: 100%;
+      flex: 0 0 calc(100% - 0);
+      max-width: calc(100% - 0);
+      margin-left: 0;
+      margin-right: 0; }
+    .section--text-picture-06 .group--text {
+      width: 100%;
+      flex: 0 0 calc(100% - 0);
+      max-width: calc(100% - 0);
+      margin-left: 0;
+      margin-right: 0; } }

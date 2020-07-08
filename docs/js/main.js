@@ -5604,7 +5604,7 @@
   var FRAGMENT_SHARED =
   /* glsl */
   "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_mx;\nuniform float u_my;\nuniform float u_speed;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvec2 coord(in vec2 p) {\n\tp = p / u_resolution.xy;\n    if (u_resolution.x > u_resolution.y) {\n        p.x *= u_resolution.x / u_resolution.y;\n        p.x += (u_resolution.y - u_resolution.x) / u_resolution.y / 2.0;\n    } else {\n        p.y *= u_resolution.y / u_resolution.x;\n\t    p.y += (u_resolution.x - u_resolution.y) / u_resolution.x / 2.0;\n    }\n    p -= 0.5;\n    p *= vec2(-1.0, 1.0);\n\treturn p;\n}\n#define uv gl_FragCoord.xy / u_resolution.xy\n#define st coord(gl_FragCoord.xy)\n#define mx coord(vec2(u_mx, u_my))\n#define ee noise(gl_FragCoord.xy / u_resolution.xy)\n#define rx 1.0 / min(u_resolution.x, u_resolution.y)\n\nfloat sCircle(in vec2 p, in float w) {\n    return length(p) * 2.0 - w;\n}\n";
-  var FRAGMENT_SHADER_1 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(1.0);\n\tfloat noise = random(p) * 0.1;\n\tcolor = vec3(clamp(0.0, 1.0, color.r - noise));\n\tfloat circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);\n\tcircle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);\n\tcircle = clamp(0.0, 1.0, circle);\n\tfloat alpha = smoothstep(0.0, 0.99, 1.0 - circle) * 0.7;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
+  var FRAGMENT_SHADER_1 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(1.0);\n\t// float noise = random(p) * 0.1;\n\t// color = vec3(clamp(0.0, 1.0, color.r - noise));\n\tfloat circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);\n\tcircle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);\n\tcircle = clamp(0.0, 1.0, circle);\n\tfloat alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);\n\tgl_FragColor = vec4(color, alpha);\n}\n";
   var FRAGMENT_SHADER_2 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(0.0);\n\tfloat noise = random(p) * 0.2;\n\tcolor = vec3(clamp(0.0, 1.0, color.r + noise));\n\tfloat circle = sCircle(p, 1.5 - 1.5 * u_speed + cos(u_time) * 0.05);\n\tfloat alpha = clamp(0.0, 1.0, circle * 0.4); // smoothstep(0.0, 0.99, circle) * 0.7;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
 
   var OverlayLerp$1 = /*#__PURE__*/function () {
@@ -5705,6 +5705,423 @@
     selector: "[overlay-webgl]"
   };
   OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);
+
+  var FilterMode = {
+    SELECT: 'select',
+    AND: 'and',
+    OR: 'or'
+  };
+
+  var FilterItem = /*#__PURE__*/function () {
+    function FilterItem(filter) {
+      this.change$ = new rxjs.BehaviorSubject();
+      this.mode = FilterMode.SELECT;
+      this.placeholder = 'Select';
+      this.values = [];
+      this.options = [];
+
+      if (filter) {
+        if (filter.mode === FilterMode.SELECT) {
+          filter.options.unshift({
+            label: filter.placeholder,
+            values: []
+          });
+        }
+
+        Object.assign(this, filter);
+      }
+    }
+
+    var _proto = FilterItem.prototype;
+
+    _proto.filter = function filter(item, value) {
+      return true; // item.options.indexOf(value) !== -1;
+    };
+
+    _proto.match = function match(item) {
+      var _this = this;
+
+      var match;
+
+      if (this.mode === FilterMode.OR) {
+        match = this.values.length ? false : true;
+        this.values.forEach(function (value) {
+          match = match || _this.filter(item, value);
+        });
+      } else {
+        match = true;
+        this.values.forEach(function (value) {
+          match = match && _this.filter(item, value);
+        });
+      }
+
+      return match;
+    };
+
+    _proto.getSelectedOption = function getSelectedOption() {
+      var _this2 = this;
+
+      return this.options.find(function (x) {
+        return _this2.has(x);
+      });
+    };
+
+    _proto.getLabel = function getLabel() {
+      if (this.mode === FilterMode.SELECT) {
+        var selectedOption = this.getSelectedOption();
+        return selectedOption ? selectedOption.label : this.placeholder;
+      } else {
+        return this.label;
+      }
+    };
+
+    _proto.has = function has(item) {
+      return this.values.indexOf(item.value) !== -1;
+    };
+
+    _proto.set = function set(item) {
+      if (this.mode === FilterMode.SELECT) {
+        this.values = [];
+      }
+
+      var index = this.values.indexOf(item.value);
+
+      if (index === -1) {
+        if (item.value !== undefined) {
+          this.values.push(item.value);
+        }
+      }
+
+      if (this.mode === FilterMode.SELECT) {
+        this.placeholder = item.label;
+      } // console.log('FilterItem.set', item);
+
+
+      this.change$.next();
+    };
+
+    _proto.remove = function remove(item) {
+      var index = this.values.indexOf(item.value);
+
+      if (index !== -1) {
+        this.values.splice(index, 1);
+      }
+
+      if (this.mode === FilterMode.SELECT) {
+        var first = this.options[0];
+        this.placeholder = first.label;
+      } // console.log('FilterItem.remove', item);
+
+
+      this.change$.next();
+    };
+
+    _proto.toggle = function toggle(item) {
+      if (this.has(item)) {
+        this.remove(item);
+      } else {
+        this.set(item);
+      }
+    };
+
+    _proto.toggleActive = function toggleActive() {
+      this.active = !this.active;
+    };
+
+    return FilterItem;
+  }();
+
+  var LocationService = /*#__PURE__*/function () {
+    function LocationService() {}
+
+    LocationService.get = function get(key) {
+      var params = new URLSearchParams(window.location.search); // console.log('LocationService.get', params);
+
+      return params.get(key);
+    };
+
+    LocationService.set = function set(keyOrValue, value) {
+      var params = new URLSearchParams(window.location.search);
+
+      if (typeof keyOrValue === 'string') {
+        params.set(keyOrValue, value);
+      } else {
+        params.set(keyOrValue, '');
+      }
+
+      this.replace(params); // console.log('LocationService.set', params, keyOrValue, value);
+    };
+
+    LocationService.replace = function replace(params) {
+      if (window.history && window.history.pushState) {
+        var title = document.title;
+        var url = window.location.href.split('?')[0] + "?" + params.toString();
+        window.history.pushState(params.toString(), title, url);
+      }
+    };
+
+    LocationService.deserialize = function deserialize(key) {
+      var encoded = this.get('params');
+      return this.decode(key, encoded);
+    };
+
+    LocationService.serialize = function serialize(keyOrValue, value) {
+      var params = this.deserialize();
+      var encoded = this.encode(keyOrValue, value, params);
+      this.set('params', encoded);
+    };
+
+    LocationService.decode = function decode(key, encoded) {
+      var decoded = null;
+
+      if (encoded) {
+        var json = window.atob(encoded);
+        decoded = JSON.parse(json);
+      }
+
+      if (key && decoded) {
+        decoded = decoded[key];
+      }
+
+      return decoded || null;
+    };
+
+    LocationService.encode = function encode(keyOrValue, value, params) {
+      params = params || {};
+      var encoded = null;
+
+      if (typeof keyOrValue === 'string') {
+        params[keyOrValue] = value;
+      } else {
+        params = keyOrValue;
+      }
+
+      var json = JSON.stringify(params);
+      encoded = window.btoa(json);
+      return encoded;
+    };
+
+    return LocationService;
+  }();
+
+  var FilterService = /*#__PURE__*/function () {
+    function FilterService(options, initialParams, callback) {
+      var filters = {};
+      this.filters = filters;
+
+      if (options) {
+        Object.keys(options).forEach(function (key) {
+          var filter = new FilterItem(options[key]);
+
+          if (typeof callback === 'function') {
+            callback(key, filter);
+          }
+
+          filters[key] = filter;
+        });
+        this.deserialize(this.filters, initialParams);
+      }
+    }
+
+    var _proto = FilterService.prototype;
+
+    _proto.getParamsCount = function getParamsCount(params) {
+      if (params) {
+        var paramsCount = Object.keys(params).reduce(function (p, c, i) {
+          var values = params[c];
+          return p + (values ? values.length : 0);
+        }, 0);
+        return paramsCount;
+      } else {
+        return 0;
+      }
+    };
+
+    _proto.deserialize = function deserialize(filters, initialParams) {
+      var params;
+
+      if (initialParams && this.getParamsCount(initialParams)) {
+        params = initialParams;
+      }
+
+      var locationParams = LocationService.deserialize('filters');
+
+      if (locationParams && this.getParamsCount(locationParams)) {
+        params = locationParams;
+      }
+
+      if (params) {
+        Object.keys(filters).forEach(function (key) {
+          filters[key].values = params[key] || [];
+        });
+      }
+
+      return filters;
+    };
+
+    _proto.serialize = function serialize(filters) {
+      var params = {};
+      var any = false;
+      Object.keys(filters).forEach(function (x) {
+        var filter = filters[x];
+
+        if (filter.values && filter.values.length > 0) {
+          params[x] = filter.values;
+          any = true;
+        }
+      });
+
+      if (!any) {
+        params = null;
+      } // console.log('FilterService.serialize', params);
+
+
+      LocationService.serialize('filters', params);
+      return params;
+    };
+
+    _proto.items$ = function items$(items) {
+      var _this = this;
+
+      var filters = this.filters;
+      var changes = Object.keys(filters).map(function (key) {
+        return filters[key].change$;
+      });
+      this.updateFilterStates(filters, items, true);
+      return rxjs.merge.apply(void 0, changes).pipe(operators.auditTime(1), // tap(() => console.log(filters)),
+      operators.tap(function () {
+        return _this.serialize(filters);
+      }), operators.map(function () {
+        return _this.filterItems(items);
+      }), operators.tap(function () {
+        return _this.updateFilterStates(filters, items);
+      }));
+    };
+
+    _proto.filterItems = function filterItems(items, skipFilter) {
+      var _this2 = this;
+
+      var filters = Object.keys(this.filters).map(function (x) {
+        return _this2.filters[x];
+      }).filter(function (x) {
+        return x.values && x.values.length > 0;
+      });
+      items = items.filter(function (item) {
+        var has = true;
+        filters.forEach(function (filter) {
+          if (filter !== skipFilter) {
+            has = has && filter.match(item);
+          }
+        });
+        return has;
+      });
+      return items;
+    };
+
+    _proto.updateFilterStates = function updateFilterStates(filters, items, initialCount) {
+      var _this3 = this;
+
+      Object.keys(filters).forEach(function (x) {
+        var filter = filters[x];
+        var filteredItems = initialCount ? items : _this3.filterItems(items, filter);
+        filter.options.forEach(function (option) {
+          var count = 0;
+
+          if (option.value) {
+            var i = 0;
+
+            while (i < filteredItems.length) {
+              var item = filteredItems[i];
+
+              if (filter.filter(item, option.value)) {
+                count++;
+              }
+
+              i++;
+            }
+          } else {
+            count = filteredItems.length;
+          }
+
+          initialCount ? option.initialCount = count : option.count = count;
+          option.disabled = count === 0;
+        });
+
+        if (initialCount) {
+          filter.options.sort(function (a, b) {
+            return b.initialCount - a.initialCount;
+          });
+        }
+      });
+    };
+
+    return FilterService;
+  }();
+
+  var ProductsPageComponent = /*#__PURE__*/function (_PageComponent) {
+    _inheritsLoose(ProductsPageComponent, _PageComponent);
+
+    function ProductsPageComponent() {
+      return _PageComponent.apply(this, arguments) || this;
+    }
+
+    var _proto = ProductsPageComponent.prototype;
+
+    _proto.onInit = function onInit() {
+      var _this = this;
+
+      var initialParams = window.params || {};
+      var items = this.items = window.products || [];
+      var filters = window.filters || {};
+      Object.keys(filters).forEach(function (key) {
+        filters[key].mode = FilterMode.SELECT;
+      });
+      var filterService = new FilterService(filters, initialParams, function (key, filter) {
+        switch (key) {
+          /*
+          case 'categories':
+          	filter.filter = (item, value) => {
+          		return item.category === value;
+          	};
+          	break;
+          	*/
+          default:
+            filter.filter = function (item, value) {
+              return item.features.indexOf(value) !== -1;
+            };
+
+        }
+      });
+      filterService.items$(items).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (items) {
+        _this.items = items;
+
+        _this.pushChanges(); // console.log('MediaLibraryComponent.items', items.length);
+
+      });
+      this.filterService = filterService;
+      this.filters = filterService.filters;
+    };
+
+    _proto.toggleFilter = function toggleFilter(filter) {
+      var _this2 = this;
+
+      Object.keys(this.filters).forEach(function (key) {
+        var f = _this2.filters[key];
+
+        if (f === filter) {
+          f.active = !f.active;
+        } else {
+          f.active = false;
+        }
+      });
+      this.pushChanges();
+    };
+
+    return ProductsPageComponent;
+  }(PageComponent);
+  ProductsPageComponent.meta = {
+    selector: '[products-page]'
+  };
 
   var ScrollToDirective = /*#__PURE__*/function (_Directive) {
     _inheritsLoose(ScrollToDirective, _Directive);
@@ -6837,7 +7254,7 @@
   }(rxcomp.Module);
   AppModule.meta = {
     imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
+    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
     bootstrap: AppComponent
   };
 

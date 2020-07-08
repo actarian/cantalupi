@@ -1,7 +1,7 @@
 import { combineLatest, of } from 'rxjs';
 import PageComponent from '../page/page.component';
 
-export default class IndexPageComponent extends PageComponent {
+export default class EmotionalPageComponent extends PageComponent {
 
 	onInit() {
 		/*
@@ -22,6 +22,6 @@ export default class IndexPageComponent extends PageComponent {
 
 }
 
-IndexPageComponent.meta = {
-	selector: '[index-page]',
+EmotionalPageComponent.meta = {
+	selector: '[emotional-page]',
 };
