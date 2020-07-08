@@ -47,6 +47,7 @@
           "input": [
             "node_modules/gsap/dist/EasePack.js",
             "node_modules/gsap/dist/gsap.js",
+            "node_modules/glsl-canvas-js/dist/umd/glsl-canvas.js",
             "node_modules/rxjs/bundles/rxjs.umd.js",
             "node_modules/rxcomp/dist/iife/rxcomp.js",
             "node_modules/rxcomp-form/dist/iife/rxcomp-form.js",

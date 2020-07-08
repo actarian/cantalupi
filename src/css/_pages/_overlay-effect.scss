@@ -74,6 +74,25 @@
 	*/
 }
 
+.overlay-webgl {
+	position: static;
+	pointer-events: none;
+	z-index: 100001;
+
+	canvas {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		pointer-events: none;
+
+		&:first-child {
+			mix-blend-mode: overlay;
+		}
+	}
+}
+
 @keyframes overlay-animation {
 	0% {
 		opacity: 1;

@@ -16,6 +16,7 @@ import LocomotiveDirective from './locomotive/locomotive.directive';
 import ModalOutletComponent from './modal/modal-outlet.component';
 import ModalComponent from './modal/modal.component';
 import OverlayEffectDirective from './overlay-effect/overlay-effect.directive';
+import OverlayWebglDirective from './overlay-effect/overlay-webgl.directive';
 import ScrollToDirective from './scroll-to/scroll-to.directive';
 import SecureDirective from './secure/secure.directive';
 import SlugPipe from './slug/slug.pipe';
@@ -45,6 +46,7 @@ AppModule.meta = {
 		ModalComponent,
 		ModalOutletComponent,
 		OverlayEffectDirective,
+		OverlayWebglDirective,
 		ScrollToDirective,
 		SecureDirective,
 		SlugPipe,

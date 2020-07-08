@@ -71,14 +71,14 @@
 		overflow: hidden;
 		flex: none;
 
-		animation: title-animation 10000ms cubic-bezier(.5, 0, .5, 1) both;
+		animation: title-animation 8000ms cubic-bezier(.5, 0, .5, 1) both;
 
 		&.splitting .char {
 			position: relative;
 			display: inline;
 			opacity: 0;
 			animation: slide-in 1000ms cubic-bezier(.5, 0, .5, 1) both;
-			animation-delay: calc(15ms * var(--char-index) + 1500ms);
+			animation-delay: calc(60ms * var(--char-index) + 1500ms);
 		}
 	}
 

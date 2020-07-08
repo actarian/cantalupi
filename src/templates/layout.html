@@ -42,10 +42,14 @@
 				<!-- @@include ./shared/footer.html -->
 				<!-- include ./shared/modal-outlet.html -->
 			</main>
-			<div class="overlay-effect" overlay-effect></div>
 			<!-- include ./shared/notification.html -->
 		</div>
 		<!-- @@include ./shared/cover.html -->
+		<!--
+		<div class="overlay-effect" overlay-effect></div>
+		<div class="overlay-effect--dark" overlay-effect inertia="0.2"></div>
+		-->
+		<div class="overlay-webgl" overlay-webgl></div>
 	</div>
 	<script src="https://polyfill.io/v3/polyfill.min.js?features=es5%2CArray.prototype.fill%2CArray.prototype.find%2CArray.from%2Cfetch%2CObject.assign%2CURLSearchParams%2CElement.prototype.classList%2CNode.prototype.contains"></script>
 	<script src="<!--@@var=baseHref-->js/vendors.min.js"></script>

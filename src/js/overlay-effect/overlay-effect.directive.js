@@ -14,10 +14,11 @@ export class OverlayLerp {
 	tick(event) {
 		if (event.clientX) {
 			const inertia = this.inertia ? Number(this.inertia) : 0.01;
+			const dy = 0; // this.dy;
 			this.ex = event.clientX;
 			this.ey = event.clientY;
 			this.x += (this.ex - this.x) * inertia;
-			this.y += ((this.ey + this.dy) - this.y) * inertia;
+			this.y += ((this.ey + dy) - this.y) * inertia;
 		}
 	}
 

@@ -5544,10 +5544,12 @@
     _proto.tick = function tick(event) {
       if (event.clientX) {
         var inertia = this.inertia ? Number(this.inertia) : 0.01;
+        var dy = 0; // this.dy;
+
         this.ex = event.clientX;
         this.ey = event.clientY;
         this.x += (this.ex - this.x) * inertia;
-        this.y += (this.ey + this.dy - this.y) * inertia;
+        this.y += (this.ey + dy - this.y) * inertia;
       }
     };
 
@@ -5598,6 +5600,111 @@
     inputs: ['inertia']
   };
   OverlayEffectDirective.rafWindow = rxjs.of(rxjs.animationFrame);
+
+  var FRAGMENT_SHARED =
+  /* glsl */
+  "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_mx;\nuniform float u_my;\nuniform float u_speed;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvec2 coord(in vec2 p) {\n\tp = p / u_resolution.xy;\n    if (u_resolution.x > u_resolution.y) {\n        p.x *= u_resolution.x / u_resolution.y;\n        p.x += (u_resolution.y - u_resolution.x) / u_resolution.y / 2.0;\n    } else {\n        p.y *= u_resolution.y / u_resolution.x;\n\t    p.y += (u_resolution.x - u_resolution.y) / u_resolution.x / 2.0;\n    }\n    p -= 0.5;\n    p *= vec2(-1.0, 1.0);\n\treturn p;\n}\n#define uv gl_FragCoord.xy / u_resolution.xy\n#define st coord(gl_FragCoord.xy)\n#define mx coord(vec2(u_mx, u_my))\n#define ee noise(gl_FragCoord.xy / u_resolution.xy)\n#define rx 1.0 / min(u_resolution.x, u_resolution.y)\n\nfloat sCircle(in vec2 p, in float w) {\n    return length(p) * 2.0 - w;\n}\n";
+  var FRAGMENT_SHADER_1 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(1.0);\n\tfloat noise = random(p) * 0.1;\n\tcolor = vec3(clamp(0.0, 1.0, color.r - noise));\n\tfloat circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);\n\tcircle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);\n\tcircle = clamp(0.0, 1.0, circle);\n\tfloat alpha = smoothstep(0.0, 0.99, 1.0 - circle) * 0.7;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
+  var FRAGMENT_SHADER_2 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(0.0);\n\tfloat noise = random(p) * 0.2;\n\tcolor = vec3(clamp(0.0, 1.0, color.r + noise));\n\tfloat circle = sCircle(p, 1.5 - 1.5 * u_speed + cos(u_time) * 0.05);\n\tfloat alpha = clamp(0.0, 1.0, circle * 0.4); // smoothstep(0.0, 0.99, circle) * 0.7;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
+
+  var OverlayLerp$1 = /*#__PURE__*/function () {
+    function OverlayLerp() {
+      this.w = window.innerWidth;
+      this.h = window.innerHeight;
+      this.x = this.ex = this.w / 2;
+      this.y = this.ey = this.h / 2;
+      this.speed = this.espeed = 0;
+      this.dy = 0;
+    }
+
+    var _proto = OverlayLerp.prototype;
+
+    _proto.tick = function tick(event) {
+      if (event.clientX) {
+        var inertia = this.inertia ? Number(this.inertia) : 0.01;
+        var dy = 0; // this.dy;
+
+        this.ex = event.clientX;
+        this.ey = event.clientY;
+        this.x += (this.ex - this.x) * inertia;
+        this.y += (this.ey + dy - this.y) * inertia;
+        this.speed += (this.espeed - this.speed) * 0.01;
+      }
+    };
+
+    _proto.setSpeed = function setSpeed(speed) {
+      this.espeed = Math.abs(speed / 50);
+    };
+
+    return OverlayLerp;
+  }();
+
+  var OverlayWebglDirective = /*#__PURE__*/function (_Directive) {
+    _inheritsLoose(OverlayWebglDirective, _Directive);
+
+    function OverlayWebglDirective() {
+      return _Directive.apply(this, arguments) || this;
+    }
+
+    var _proto2 = OverlayWebglDirective.prototype;
+
+    _proto2.onInit = function onInit() {
+      var _this = this;
+
+      var lerp = this.lerp = new OverlayLerp$1();
+      this.raf$ = rxjs.interval(0, rxjs.animationFrame);
+      this.move$ = rxjs.fromEvent(document, 'mousemove');
+
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      var canvas1 = document.createElement('canvas');
+      node.appendChild(canvas1);
+      var glsl1 = new window.glsl.Canvas(canvas1, {
+        fragmentString: FRAGMENT_SHADER_1,
+        premultipliedAlpha: false
+      });
+      var canvas2 = document.createElement('canvas');
+      node.appendChild(canvas2);
+      var glsl2 = new window.glsl.Canvas(canvas2, {
+        fragmentString: FRAGMENT_SHADER_2,
+        premultipliedAlpha: false
+      });
+      this.animation$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (lerp) {
+        glsl1.setUniforms({
+          'u_mx': lerp.x,
+          'u_my': lerp.y,
+          'u_speed': lerp.speed
+        });
+        glsl2.setUniforms({
+          'u_mx': lerp.x,
+          'u_my': lerp.y,
+          'u_speed': lerp.speed
+        });
+      });
+      LocomotiveService.scroll$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
+        _this.lerp.setSpeed(event.speed);
+
+        _this.lerp.dy = event.scroll.y;
+      });
+    };
+
+    _proto2.animation$ = function animation$() {
+      var _this2 = this;
+
+      return this.raf$.pipe(operators.withLatestFrom(this.move$), operators.map(function (event) {
+        var lerp = _this2.lerp;
+        lerp.tick(event[1]);
+        return lerp;
+      }), operators.startWith(this.lerp));
+    };
+
+    return OverlayWebglDirective;
+  }(rxcomp.Directive);
+  OverlayWebglDirective.meta = {
+    selector: "[overlay-webgl]"
+  };
+  OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);
 
   var ScrollToDirective = /*#__PURE__*/function (_Directive) {
     _inheritsLoose(ScrollToDirective, _Directive);
@@ -6730,7 +6837,7 @@
   }(rxcomp.Module);
   AppModule.meta = {
     imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
+    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
     bootstrap: AppComponent
   };
 
