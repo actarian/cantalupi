@@ -48,8 +48,10 @@ void main() {
 	vec3 color = vec3(1.0);
 	// float noise = random(p) * 0.1;
 	// color = vec3(clamp(0.0, 1.0, color.r - noise));
-	float circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);
-	circle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);
+	// float circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);
+	// circle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);
+	float circle = sCircle(p, 0.2 + cos(u_time) * 0.1);
+	circle += sCircle(p, 0.05 + cos(u_time) * 0.025);
 	circle = clamp(0.0, 1.0, circle);
 	float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);
 	gl_FragColor = vec4(color, alpha);
@@ -63,7 +65,8 @@ void main() {
 	float noise = random(p) * 0.1;
 	color = vec3(clamp(0.0, 1.0, color.r + noise));
 	// float circle = sCircle(p, 4.0 - 2.5 * u_speed + cos(u_time) * 0.05);
-	float circle = sGradient(p * (0.25 + 1.75 * u_speed));
+	// float circle = sGradient(p * (0.25 + 1.75 * u_speed));
+	float circle = sGradient(p * 0.25);
 	float alpha = clamp(0.0, 1.0, circle * 0.5); // smoothstep(0.0, 0.99, circle) * 0.7;
 	gl_FragColor = vec4(color, alpha);
 }
