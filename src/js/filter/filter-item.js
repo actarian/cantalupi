@@ -8,6 +8,10 @@ export const FilterMode = {
 
 export default class FilterItem {
 
+	get empty() {
+		return this.values.length === 0;
+	}
+
 	constructor(filter) {
 		this.change$ = new BehaviorSubject();
 		this.mode = FilterMode.SELECT;
@@ -58,6 +62,10 @@ export default class FilterItem {
 		}
 	}
 
+	hasAny() {
+		return this.values.length > 0;
+	}
+
 	has(item) {
 		return this.values.indexOf(item.value) !== -1;
 	}
@@ -102,6 +110,16 @@ export default class FilterItem {
 
 	toggleActive() {
 		this.active = !this.active;
+	}
+
+	clear() {
+		this.values = [];
+		if (this.mode === FilterMode.SELECT) {
+			const first = this.options[0];
+			this.placeholder = first.label;
+		}
+		// console.log('FilterItem.clear', item);
+		this.change$.next();
 	}
 
 }

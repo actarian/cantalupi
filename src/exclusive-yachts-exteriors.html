@@ -6,7 +6,7 @@
 	window.filters = {
 		families: {
 			label: 'Famiglia',
-			placeholder: 'scegli la famiglia',
+			placeholder: 'Scegli la famiglia',
 			mode: 'or',
 			options: [{
 				label: 'Top 5',
@@ -21,7 +21,7 @@
 		},
 		areas: {
 			label: 'Ambiente',
-			placeholder: 'scegli l\'ambiente',
+			placeholder: 'Scegli l\'ambiente',
 			mode: 'or',
 			options: [{
 				label: 'Small',
@@ -36,7 +36,7 @@
 		},
 		types: {
 			label: 'Tipologia di illuminazione',
-			placeholder: 'scegli la tipologia',
+			placeholder: 'Scegli la tipologia',
 			mode: 'or',
 			options: [{
 				label: 'Ceiling Recessed',
@@ -51,7 +51,7 @@
 		},
 		shapes: {
 			label: 'Shape',
-			placeholder: 'seleziona',
+			placeholder: 'Seleziona',
 			mode: 'or',
 			options: [{
 				label: 'Narrow',
@@ -66,7 +66,7 @@
 		},
 		frames: {
 			label: 'Frame',
-			placeholder: 'seleziona',
+			placeholder: 'Seleziona',
 			mode: 'or',
 			options: [{
 				label: 'Frame',
@@ -259,18 +259,24 @@
 			<!-- filters -->
 			<div class="listing--filters">
 				<div class="listing__item" *for="let [key, filter] of filters" [class]="{ active: filter.active }">
-					<div class="name" [innerHTML]="filter.label"></div>
-					<div class="control" (click)="toggleFilter(filter)">
-						<span [innerHTML]="filter.getLabel()"></span> <svg class="icon icon--caret-down"><use xlink:href="#caret-down"></use></svg>
+					<div class="group--control">
+						<div class="category" [innerHTML]="filter.label"></div>
+						<div class="control" (click)="toggleFilter(filter)" (clickOutside)="filter.active = false;">
+							<span [innerHTML]="filter.getLabel()"></span>
+							<svg class="caret-down" *if="filter.empty"><use xlink:href="#caret-down"></use></svg>
+							<svg class="close" *if="filter.hasAny()" (click)="clearFilter($event, filter)"><use xlink:href="#close"></use></svg>
+						</div>
+						<ul class="nav--options" *if="filter.active">
+							<li class="nav--options__item" *for="let item of filter.options">
+								<span class="option" [class]="{ active: filter.has(item), disabled: item.disabled }" (click)="filter.set(item)">
+									<span class="name" [innerHTML]="item.label"></span>
+									<!--
+									<span class="count" [innerHTML]="item.count || ''"></span>
+									-->
+								</span>
+							</li>
+						</ul>
 					</div>
-					<ul class="nav--options" *if="filter.active">
-						<li class="nav--options__item" *for="let item of filter.options">
-							<span class="option" [class]="{ active: filter.has(item), disabled: item.disabled }" (click)="filter.toggle(item)">
-								<span class="name" [innerHTML]="item.label"></span>
-								<span class="count" [innerHTML]="item.count || ''"></span>
-							</span>
-						</li>
-					</ul>
 				</div>
 				<div class="listing__item">
 					<div class="btn--secondary" data-title="Aggiungi filtri alla ricerca">Aggiungi filtri alla ricerca</div>

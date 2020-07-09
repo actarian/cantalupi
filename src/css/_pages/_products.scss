@@ -90,9 +90,11 @@
 		align-items: flex-end;
 
 		.listing__item {
-			// @include as-col(2, 12, $gutter);
+			@include as-col(2, 12, $gutter);
 			position: relative;
 			white-space: nowrap;
+			flex: 1 1 auto;
+			max-width: unset;
 		}
 	}
 
@@ -104,26 +106,79 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		font-size: 14px;
+		height: 54px;
 		line-height: 1;
-		color: black;
-		border-bottom: 1px solid black;
+		border-bottom: 1px solid #1D1D1B;
 
-		svg {
-			display: none;
+		span {
+			font-size: 14px;
+			line-height: 1;
+			// color: #A3A3A3;
+			color: black;
+		}
+
+		.caret-down {
+			width: 16px;
+			height: 14px;
+			fill: #425356;
+			transition: transform ease-in-out 400ms;
+		}
+
+		.close {
+			width: 14px;
+			height: 14px;
+		}
+	}
+
+	.group--control {
+		padding: 10px;
+		transform: translateY(10px);
+		transition: all ease-in-out 400ms;
+	}
+
+	.listing__item {
+		cursor: pointer;
+		z-index: 1;
+
+		&:hover,
+		&.active {
+			.group--control {
+				box-shadow: 0 30px 30px -5px rgba(0, 0, 0, 0.15);
+			}
+		}
+
+		&.active {
+			.control {
+				.caret-down {
+					fill: #A28850;
+					transform: rotateZ(180deg);
+				}
+			}
 		}
 	}
 }
 
 .nav--options {
 	@extend %nav-vertical;
+	align-items: flex-start;
 	position: absolute;
+	width: 100%;
+	padding: 10px;
+	background: white;
+	left: 0;
 
 	&__item {
 		@extend %nav-item;
+		line-height: 40px;
 
 		&>span {
 			@extend %btn;
+			font-size: 14px;
+			color: #1D1D1B;
+
+			&.active {
+				color: #A28850;
+			}
 		}
 	}
 }

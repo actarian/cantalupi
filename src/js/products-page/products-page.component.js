@@ -50,6 +50,13 @@ export default class ProductsPageComponent extends PageComponent {
 		this.pushChanges();
 	}
 
+	clearFilter(event, filter) {
+		event.preventDefault();
+		event.stopImmediatePropagation();
+		filter.clear();
+		this.pushChanges();
+	}
+
 }
 
 ProductsPageComponent.meta = {

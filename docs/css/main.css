@@ -4750,23 +4750,63 @@ errors-component {
       margin-right: -6px;
       align-items: flex-end; }
       .listing--filters .listing__item {
+        width: 100%;
+        flex: 0 0 calc(16.66667% - 12px);
+        max-width: calc(16.66667% - 12px);
+        margin-left: 6px;
+        margin-right: 6px;
         position: relative;
-        white-space: nowrap; } }
+        white-space: nowrap;
+        flex: 1 1 auto;
+        max-width: unset; } }
   .listing--filters .category {
     font-size: 10px; }
   .listing--filters .control {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 14px;
+    height: 54px;
     line-height: 1;
-    color: black;
-    border-bottom: 1px solid black; }
-    .listing--filters .control svg {
-      display: none; }
+    border-bottom: 1px solid #1D1D1B; }
+    .listing--filters .control span {
+      font-size: 14px;
+      line-height: 1;
+      color: black; }
+    .listing--filters .control .caret-down {
+      width: 16px;
+      height: 14px;
+      fill: #425356;
+      transition: transform ease-in-out 400ms; }
+    .listing--filters .control .close {
+      width: 14px;
+      height: 14px; }
+  .listing--filters .group--control {
+    padding: 10px;
+    transform: translateY(10px);
+    transition: all ease-in-out 400ms; }
+  .listing--filters .listing__item {
+    cursor: pointer;
+    z-index: 1; }
+    .listing--filters .listing__item:hover .group--control, .listing--filters .listing__item.active .group--control {
+      box-shadow: 0 30px 30px -5px rgba(0, 0, 0, 0.15); }
+    .listing--filters .listing__item.active .control .caret-down {
+      fill: #A28850;
+      transform: rotateZ(180deg); }
 
 .nav--options {
-  position: absolute; }
+  align-items: flex-start;
+  position: absolute;
+  width: 100%;
+  padding: 10px;
+  background: white;
+  left: 0; }
+  .nav--options__item {
+    line-height: 40px; }
+    .nav--options__item > span {
+      font-size: 14px;
+      color: #1D1D1B; }
+      .nav--options__item > span.active {
+        color: #A28850; }
 
 .card--product {
   display: block;

@@ -36,6 +36,10 @@ vec2 coord(in vec2 p) {
 float sCircle(in vec2 p, in float w) {
     return length(p) * 2.0 - w;
 }
+
+float sGradient(in vec2 p) {
+    return length(p);
+}
 `;
 
 export const FRAGMENT_SHADER_1 = FRAGMENT_SHARED + `
@@ -56,10 +60,11 @@ export const FRAGMENT_SHADER_2 = FRAGMENT_SHARED + `
 void main() {
 	vec2 p = st - vec2(mx.x, mx.y * -1.0);
 	vec3 color = vec3(0.0);
-	float noise = random(p) * 0.2;
+	float noise = random(p) * 0.1;
 	color = vec3(clamp(0.0, 1.0, color.r + noise));
-	float circle = sCircle(p, 1.5 - 1.5 * u_speed + cos(u_time) * 0.05);
-	float alpha = clamp(0.0, 1.0, circle * 0.4); // smoothstep(0.0, 0.99, circle) * 0.7;
+	// float circle = sCircle(p, 4.0 - 2.5 * u_speed + cos(u_time) * 0.05);
+	float circle = sGradient(p * (0.25 + 1.75 * u_speed));
+	float alpha = clamp(0.0, 1.0, circle * 0.5); // smoothstep(0.0, 0.99, circle) * 0.7;
 	gl_FragColor = vec4(color, alpha);
 }
 `;
