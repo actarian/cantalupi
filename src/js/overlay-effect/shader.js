@@ -53,7 +53,8 @@ void main() {
 	float circle = sCircle(p, 0.2 + cos(u_time) * 0.1);
 	circle += sCircle(p, 0.05 + cos(u_time) * 0.025);
 	circle = clamp(0.0, 1.0, circle);
-	float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);
+	// float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);
+	float alpha = smoothstep(0.0, 0.8, 1.0 - circle) * 0.6;
 	gl_FragColor = vec4(color, alpha);
 }
 `;
