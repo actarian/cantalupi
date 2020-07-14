@@ -1,9 +1,11 @@
 import { Directive, getContext } from 'rxcomp';
-import { animationFrame, fromEvent, interval, of } from 'rxjs';
+import { animationFrame, fromEvent, interval, merge, of } from 'rxjs';
 // import { map, startWith, withLatestFrom } from 'rxjs/operators';
 import { map, startWith, takeUntil, withLatestFrom } from 'rxjs/operators';
 import LocomotiveService from '../locomotive/locomotive.service';
 import { FRAGMENT_SHADER_1, FRAGMENT_SHADER_2 } from './shader';
+
+const USE_EVENTS = false;
 
 export class OverlayLerp {
 
@@ -13,7 +15,9 @@ export class OverlayLerp {
 		this.x = this.ex = this.w / 2;
 		this.y = this.ey = this.h / 2;
 		this.speed = this.espeed = 0;
+		this.opacity = 1;
 		this.dy = 0;
+		this.isOver = true;
 	}
 
 	tick(event) {
@@ -25,6 +29,7 @@ export class OverlayLerp {
 			this.x += (this.ex - this.x) * inertia;
 			this.y += ((this.ey + dy) - this.y) * inertia;
 			this.speed += (this.espeed - this.speed) * 0.01;
+			this.opacity += ((this.isOver ? 1 : 0) - this.opacity) * 0.01;
 		}
 	}
 
@@ -60,11 +65,13 @@ export default class OverlayWebglDirective extends Directive {
 				'u_mx': lerp.x,
 				'u_my': lerp.y,
 				'u_speed': lerp.speed,
+				'u_opacity': lerp.opacity,
 			});
 			glsl2.setUniforms({
 				'u_mx': lerp.x,
 				'u_my': lerp.y,
 				'u_speed': lerp.speed,
+				'u_opacity': lerp.opacity,
 			});
 		});
 		LocomotiveService.scroll$.pipe(
@@ -73,6 +80,22 @@ export default class OverlayWebglDirective extends Directive {
 			this.lerp.setSpeed(event.speed);
 			this.lerp.dy = event.scroll.y;
 		});
+
+		if (USE_EVENTS) {
+			setTimeout(() => {
+				const imgs = Array.prototype.slice.call(document.querySelectorAll('img'));
+				console.log(imgs);
+				merge(imgs.map(x => fromEvent(x, 'mouseover'))).pipe(
+					takeUntil(this.unsubscribe$),
+				).subscribe(() => lerp.isOver = true);
+				merge(imgs.map(x => fromEvent(x, 'mouseout'))).pipe(
+					takeUntil(this.unsubscribe$),
+				).subscribe(() => {
+					lerp.isOver = false;
+					console.log('mouseout');
+				});
+			}, 100);
+		}
 	}
 
 	animation$() {

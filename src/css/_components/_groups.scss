@@ -1,5 +1,7 @@
 .group--cta {
 	display: flex;
+	flex-wrap: wrap;
+	white-space: nowrap;
 	margin-top: 20px;
 	margin-bottom: 20px;
 }

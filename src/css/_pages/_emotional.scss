@@ -83,6 +83,15 @@
 .section--intro {
 	padding: 120px 0 0 0;
 
+	.title {
+		font-family: $font-secondary;
+		font-size: 54px;
+		font-style: italic;
+		line-height: 1.1;
+		margin-bottom: 30px;
+		color: #03191D;
+	}
+
 	.category {
 		font-size: 16px;
 		margin-bottom: 20px;
@@ -94,12 +103,27 @@
 		font-size: 36px;
 		line-height: 1.15;
 		margin-bottom: 20px;
+
+		p {
+			margin: 0 0 30px 0;
+		}
 	}
 
 	.description {
 		font-size: 16px;
+
+		p {
+			margin: 0 0 30px 0;
+		}
 	}
 
+	.group--cta {
+		@include media-up(md) {
+			.btn--contact {
+				margin-right: 30px;
+			}
+		}
+	}
 }
 
 %emotional-background {

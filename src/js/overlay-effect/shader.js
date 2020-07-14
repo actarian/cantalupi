@@ -9,6 +9,7 @@ uniform float u_time;
 uniform float u_mx;
 uniform float u_my;
 uniform float u_speed;
+uniform float u_opacity;
 
 float random(vec2 st) {
 	return fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));
@@ -54,7 +55,7 @@ void main() {
 	circle += sCircle(p, 0.05 + cos(u_time) * 0.025);
 	circle = clamp(0.0, 1.0, circle);
 	// float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);
-	float alpha = smoothstep(0.0, 0.8, 1.0 - circle) * 0.6;
+	float alpha = smoothstep(0.0, 0.8, 1.0 - circle) * 0.6 * u_opacity;
 	gl_FragColor = vec4(color, alpha);
 }
 `;
@@ -68,7 +69,7 @@ void main() {
 	// float circle = sCircle(p, 4.0 - 2.5 * u_speed + cos(u_time) * 0.05);
 	// float circle = sGradient(p * (0.25 + 1.75 * u_speed));
 	float circle = sGradient(p * 0.25);
-	float alpha = clamp(0.0, 1.0, circle * 0.5); // smoothstep(0.0, 0.99, circle) * 0.7;
+	float alpha = clamp(0.0, 1.0, circle * 0.5) * u_opacity; // smoothstep(0.0, 0.99, circle) * 0.7;
 	gl_FragColor = vec4(color, alpha);
 }
 `;

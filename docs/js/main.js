@@ -2174,276 +2174,6 @@
     "\n\t<div class=\"inner\" [style]=\"{ display: control.invalid && control.touched ? 'block' : 'none' }\">\n\t\t<div class=\"error\" *for=\"let [key, value] of control.errors\">\n\t\t\t<span [innerHTML]=\"getLabel(key, value)\"></span>\n\t\t\t<!-- <span class=\"key\" [innerHTML]=\"key\"></span> <span class=\"value\" [innerHTML]=\"value | json\"></span> -->\n\t\t</div>\n\t</div>\n\t"
   };
 
-  var CssService = /*#__PURE__*/function () {
-    function CssService() {}
-
-    CssService.height$ = function height$() {
-      var style = document.documentElement.style;
-      return rxjs.fromEvent(window, 'resize').pipe(operators.map(function (event) {
-        return window.innerHeight;
-      }), operators.startWith(window.innerHeight), operators.tap(function (height) {
-        // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
-        var vh = height * 0.01; // Then we set the value in the --vh custom property to the root of the document
-
-        style.setProperty('--vh', vh + "px");
-      }));
-    };
-
-    return CssService;
-  }();
-
-  var HeaderComponent = /*#__PURE__*/function (_Component) {
-    _inheritsLoose(HeaderComponent, _Component);
-
-    function HeaderComponent() {
-      return _Component.apply(this, arguments) || this;
-    }
-
-    var _proto = HeaderComponent.prototype;
-
-    _proto.onInit = function onInit() {
-      this.mainActive = false;
-      CssService.height$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (height) {
-        console.log('HeaderComponent.height$', height);
-      });
-    };
-
-    _proto.onMainToggle = function onMainToggle() {
-      this.mainActive = !this.mainActive;
-
-      var _getContext = rxcomp.getContext(this),
-          node = _getContext.node;
-
-      var items = Array.prototype.slice.call(node.querySelectorAll('.nav--primary-menu > li'));
-      gsap.to(items, {
-        opacity: this.mainActive ? 1 : 0,
-        duration: 0.35,
-        stagger: {
-          each: 0.05,
-          ease: Power3.easeOut
-        }
-      });
-      this.pushChanges();
-      this.toggle.next(this.mainActive);
-    };
-
-    _proto.onOpenSub = function onOpenSub(subId) {
-      this.subId = subId;
-      this.pushChanges();
-    };
-
-    _proto.onCloseSub = function onCloseSub(subId) {
-      if (this.subId === subId) {
-        this.subId = null;
-        this.pushChanges();
-      }
-    };
-
-    _proto.isSubOpen = function isSubOpen(subId) {
-      return this.subId === subId;
-    };
-
-    _proto.isPrimaryHidden = function isPrimaryHidden() {
-      return this.subId != null;
-    };
-
-    return HeaderComponent;
-  }(rxcomp.Component);
-  HeaderComponent.meta = {
-    selector: 'header',
-    outputs: ['toggle']
-  };
-
-  /*
-  ['quot', 'amp', 'apos', 'lt', 'gt', 'nbsp', 'iexcl', 'cent', 'pound', 'curren', 'yen', 'brvbar', 'sect', 'uml', 'copy', 'ordf', 'laquo', 'not', 'shy', 'reg', 'macr', 'deg', 'plusmn', 'sup2', 'sup3', 'acute', 'micro', 'para', 'middot', 'cedil', 'sup1', 'ordm', 'raquo', 'frac14', 'frac12', 'frac34', 'iquest', 'Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'AElig', 'Ccedil', 'Egrave', 'Eacute', 'Ecirc', 'Euml', 'Igrave', 'Iacute', 'Icirc', 'Iuml', 'ETH', 'Ntilde', 'Ograve', 'Oacute', 'Ocirc', 'Otilde', 'Ouml', 'times', 'Oslash', 'Ugrave', 'Uacute', 'Ucirc', 'Uuml', 'Yacute', 'THORN', 'szlig', 'agrave', 'aacute', 'atilde', 'auml', 'aring', 'aelig', 'ccedil', 'egrave', 'eacute', 'ecirc', 'euml', 'igrave', 'iacute', 'icirc', 'iuml', 'eth', 'ntilde', 'ograve', 'oacute', 'ocirc', 'otilde', 'ouml', 'divide', 'oslash', 'ugrave', 'uacute', 'ucirc', 'uuml', 'yacute', 'thorn', 'yuml', 'amp', 'bull', 'deg', 'infin', 'permil', 'sdot', 'plusmn', 'dagger', 'mdash', 'not', 'micro', 'perp', 'par', 'euro', 'pound', 'yen', 'cent', 'copy', 'reg', 'trade', 'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa', 'lambda', 'mu', 'nu', 'xi', 'omicron', 'pi', 'rho', 'sigma', 'tau', 'upsilon', 'phi', 'chi', 'psi', 'omega', 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega'];
-  ['"', '&', ''', '<', '>', ' ', '¡', '¢', '£', '¤', '¥', '¦', '§', '¨', '©', 'ª', '«', '¬', '­', '®', '¯', '°', '±', '²', '³', '´', 'µ', '¶', '·', '¸', '¹', 'º', '»', '¼', '½', '¾', '¿', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', '×', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'Þ', 'ß', 'à', 'á', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', '÷', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'þ', 'ÿ', '&', '•', '°', '∞', '‰', '⋅', '±', '†', '—', '¬', 'µ', '⊥', '∥', '€', '£', '¥', '¢', '©', '®', '™', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω', 'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'];
-  */
-
-  var HtmlPipe = /*#__PURE__*/function (_Pipe) {
-    _inheritsLoose(HtmlPipe, _Pipe);
-
-    function HtmlPipe() {
-      return _Pipe.apply(this, arguments) || this;
-    }
-
-    HtmlPipe.transform = function transform(value) {
-      if (value) {
-        value = value.replace(/&#(\d+);/g, function (m, n) {
-          return String.fromCharCode(parseInt(n));
-        });
-        var escapes = ['quot', 'amp', 'apos', 'lt', 'gt', 'nbsp', 'iexcl', 'cent', 'pound', 'curren', 'yen', 'brvbar', 'sect', 'uml', 'copy', 'ordf', 'laquo', 'not', 'shy', 'reg', 'macr', 'deg', 'plusmn', 'sup2', 'sup3', 'acute', 'micro', 'para', 'middot', 'cedil', 'sup1', 'ordm', 'raquo', 'frac14', 'frac12', 'frac34', 'iquest', 'Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'AElig', 'Ccedil', 'Egrave', 'Eacute', 'Ecirc', 'Euml', 'Igrave', 'Iacute', 'Icirc', 'Iuml', 'ETH', 'Ntilde', 'Ograve', 'Oacute', 'Ocirc', 'Otilde', 'Ouml', 'times', 'Oslash', 'Ugrave', 'Uacute', 'Ucirc', 'Uuml', 'Yacute', 'THORN', 'szlig', 'agrave', 'aacute', 'atilde', 'auml', 'aring', 'aelig', 'ccedil', 'egrave', 'eacute', 'ecirc', 'euml', 'igrave', 'iacute', 'icirc', 'iuml', 'eth', 'ntilde', 'ograve', 'oacute', 'ocirc', 'otilde', 'ouml', 'divide', 'oslash', 'ugrave', 'uacute', 'ucirc', 'uuml', 'yacute', 'thorn', 'yuml', 'amp', 'bull', 'deg', 'infin', 'permil', 'sdot', 'plusmn', 'dagger', 'mdash', 'not', 'micro', 'perp', 'par', 'euro', 'pound', 'yen', 'cent', 'copy', 'reg', 'trade', 'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa', 'lambda', 'mu', 'nu', 'xi', 'omicron', 'pi', 'rho', 'sigma', 'tau', 'upsilon', 'phi', 'chi', 'psi', 'omega', 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega'];
-        var unescapes = ['"', '&', '\'', '<', '>', ' ', '¡', '¢', '£', '¤', '¥', '¦', '§', '¨', '©', 'ª', '«', '¬', '­', '®', '¯', '°', '±', '²', '³', '´', 'µ', '¶', '·', '¸', '¹', 'º', '»', '¼', '½', '¾', '¿', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', '×', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'Þ', 'ß', 'à', 'á', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', '÷', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'þ', 'ÿ', '&', '•', '°', '∞', '‰', '⋅', '±', '†', '—', '¬', 'µ', '⊥', '∥', '€', '£', '¥', '¢', '©', '®', '™', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω', 'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'];
-        var rx = new RegExp("(&" + escapes.join(';)|(&') + ";)", 'g');
-        value = value.replace(rx, function () {
-          for (var i = 1; i < arguments.length; i++) {
-            if (arguments[i]) {
-              // console.log(arguments[i], unescapes[i - 1]);
-              return unescapes[i - 1];
-            }
-          }
-        }); // console.log(value);
-
-        return value;
-      }
-    };
-
-    return HtmlPipe;
-  }(rxcomp.Pipe);
-  HtmlPipe.meta = {
-    name: 'html'
-  };
-
-  var PageComponent = /*#__PURE__*/function (_Component) {
-    _inheritsLoose(PageComponent, _Component);
-
-    function PageComponent() {
-      return _Component.apply(this, arguments) || this;
-    }
-
-    var _proto = PageComponent.prototype;
-
-    _proto.onInit = function onInit() {};
-
-    return PageComponent;
-  }(rxcomp.Component);
-  PageComponent.meta = {
-    selector: '[page]'
-  };
-
-  var EmotionalPageComponent = /*#__PURE__*/function (_PageComponent) {
-    _inheritsLoose(EmotionalPageComponent, _PageComponent);
-
-    function EmotionalPageComponent() {
-      return _PageComponent.apply(this, arguments) || this;
-    }
-
-    var _proto = EmotionalPageComponent.prototype;
-
-    _proto.onInit = function onInit() {
-      /*
-      this.data01 = this.data02 = null;
-      this.load$().pipe(
-      	first(),
-      ).subscribe(data => {
-      	this.data01 = data[0];
-      	this.data02 = data[1];
-      	this.pushChanges();
-      });
-      */
-    };
-
-    _proto.load$ = function load$() {
-      return rxjs.combineLatest(rxjs.of(1), rxjs.of(2));
-    };
-
-    return EmotionalPageComponent;
-  }(PageComponent);
-  EmotionalPageComponent.meta = {
-    selector: '[emotional-page]'
-  };
-
-  var UID = 0;
-
-  var ImageService = /*#__PURE__*/function () {
-    function ImageService() {}
-
-    ImageService.worker = function worker() {
-      if (!this.worker_) {
-        this.worker_ = new Worker("/cantalupi/js/workers/image.service.worker.js"); // this.worker_ = new Worker(`${getResourceRoot()}js/workers/image.service.worker.js`);
-      }
-
-      return this.worker_;
-    };
-
-    ImageService.load$ = function load$(src) {
-      // if (!('Worker' in window) || this.isBlob(src) || this.isCors(src)) {
-      if (!('Worker' in window) || this.isBlob(src)) {
-        return rxjs.of(src);
-      }
-
-      var id = ++UID;
-      var worker = this.worker();
-      worker.postMessage({
-        src: src,
-        id: id
-      });
-      return rxjs.fromEvent(worker, 'message').pipe(operators.filter(function (event) {
-        return event.data.src === src;
-      }), operators.map(function (event) {
-        var url = URL.createObjectURL(event.data.blob);
-        return url;
-      }), operators.first(), operators.finalize(function (url) {
-        worker.postMessage({
-          id: id
-        });
-
-        if (url) {
-          URL.revokeObjectURL(url);
-        }
-      }));
-    };
-
-    ImageService.isCors = function isCors(src) {
-      return src.indexOf('//') !== -1 && src.indexOf(window.location.host) === -1;
-    };
-
-    ImageService.isBlob = function isBlob(src) {
-      return src.indexOf('blob:') === 0;
-    };
-
-    return ImageService;
-  }();
-
-  var IntersectionService = /*#__PURE__*/function () {
-    function IntersectionService() {}
-
-    IntersectionService.observer = function observer() {
-      var _this = this;
-
-      if (!this.observer_) {
-        this.readySubject_ = new rxjs.BehaviorSubject(false);
-        this.observerSubject_ = new rxjs.Subject();
-        this.observer_ = new IntersectionObserver(function (entries) {
-          _this.observerSubject_.next(entries);
-        });
-      }
-
-      return this.observer_;
-    };
-
-    IntersectionService.intersection$ = function intersection$(node) {
-      if ('IntersectionObserver' in window) {
-        var observer = this.observer();
-        observer.observe(node);
-        return this.observerSubject_.pipe( // tap(entries => console.log(entries.length)),
-        operators.map(function (entries) {
-          return entries.find(function (entry) {
-            return entry.target === node;
-          });
-        }), operators.filter(function (entry) {
-          return entry !== undefined;
-        }), // tap(entry => console.log('IntersectionService.intersection$', entry)),
-        operators.finalize(function () {
-          return observer.unobserve(node);
-        }));
-      } else {
-        return rxjs.of({
-          target: node,
-          isIntersecting: true
-        });
-      }
-    };
-
-    IntersectionService.firstIntersection$ = function firstIntersection$(node) {
-      return this.intersection$(node).pipe(operators.filter(function (entry) {
-        return entry.isIntersecting;
-      }), // entry.intersectionRatio > 0
-      operators.first());
-    };
-
-    return IntersectionService;
-  }();
-
   /* locomotive-scroll v3.5.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -5114,6 +4844,356 @@
     });
   }));
 
+  var GalleryLerp = /*#__PURE__*/function () {
+    function GalleryLerp() {
+      this.x = 0;
+      this.y = 0;
+      this.dy = 0;
+    }
+
+    var _proto = GalleryLerp.prototype;
+
+    _proto.tick = function tick(coords) {
+      if (coords.x) {
+        var inertia = this.inertia ? Number(this.inertia) : 0.01;
+        this.x += (coords.x - this.x) * inertia;
+        this.y += (coords.y + this.dy - this.y) * inertia;
+      }
+    };
+
+    return GalleryLerp;
+  }();
+
+  var GalleryComponent = /*#__PURE__*/function (_Component) {
+    _inheritsLoose(GalleryComponent, _Component);
+
+    function GalleryComponent() {
+      return _Component.apply(this, arguments) || this;
+    }
+
+    var _proto2 = GalleryComponent.prototype;
+
+    _proto2.onInit = function onInit() {
+      var _this = this;
+
+      var lerp = this.lerp = new GalleryLerp();
+      this.raf$ = rxjs.interval(0, rxjs.animationFrame);
+
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      var buttonSpan = node.querySelector('.btn--gallery > span');
+      var coords = {
+        x: 0,
+        y: 0
+      };
+      this.move$ = rxjs.fromEvent(window, 'mousemove').pipe(operators.map(function (event) {
+        coords.x = -window.innerWidth * 0.25 + event.clientX;
+        coords.y = -window.innerWidth * 0.25 + event.clientY;
+        return coords;
+      }));
+      LocomotiveService.scroll$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
+        _this.lerp.dy = event.scroll.y;
+      });
+      this.animation$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (lerp) {
+        gsap.set(buttonSpan, {
+          backgroundPosition: lerp.x + "px " + lerp.y + "px"
+        });
+      });
+    };
+
+    _proto2.animation$ = function animation$() {
+      var _this2 = this;
+
+      return this.raf$.pipe(operators.withLatestFrom(this.move$), operators.map(function (event) {
+        var lerp = _this2.lerp;
+        lerp.tick(event[1]);
+        return lerp;
+      }), operators.startWith(this.lerp));
+    };
+
+    _proto2.onOpenGallery = function onOpenGallery(event) {
+      console.log('GalleryComponent.onOpenGallery');
+      console.log(this.items);
+    };
+
+    return GalleryComponent;
+  }(rxcomp.Component);
+  GalleryComponent.meta = {
+    selector: '[gallery]',
+    inputs: ['items']
+  };
+
+  var CssService = /*#__PURE__*/function () {
+    function CssService() {}
+
+    CssService.height$ = function height$() {
+      var style = document.documentElement.style;
+      return rxjs.fromEvent(window, 'resize').pipe(operators.map(function (event) {
+        return window.innerHeight;
+      }), operators.startWith(window.innerHeight), operators.tap(function (height) {
+        // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+        var vh = height * 0.01; // Then we set the value in the --vh custom property to the root of the document
+
+        style.setProperty('--vh', vh + "px");
+      }));
+    };
+
+    return CssService;
+  }();
+
+  var HeaderComponent = /*#__PURE__*/function (_Component) {
+    _inheritsLoose(HeaderComponent, _Component);
+
+    function HeaderComponent() {
+      return _Component.apply(this, arguments) || this;
+    }
+
+    var _proto = HeaderComponent.prototype;
+
+    _proto.onInit = function onInit() {
+      this.mainActive = false;
+      CssService.height$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (height) {
+        console.log('HeaderComponent.height$', height);
+      });
+    };
+
+    _proto.onMainToggle = function onMainToggle() {
+      this.mainActive = !this.mainActive;
+
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      var items = Array.prototype.slice.call(node.querySelectorAll('.nav--primary-menu > li'));
+      gsap.to(items, {
+        opacity: this.mainActive ? 1 : 0,
+        duration: 0.35,
+        stagger: {
+          each: 0.05,
+          ease: Power3.easeOut
+        }
+      });
+      this.pushChanges();
+      this.toggle.next(this.mainActive);
+    };
+
+    _proto.onOpenSub = function onOpenSub(subId) {
+      this.subId = subId;
+      this.pushChanges();
+    };
+
+    _proto.onCloseSub = function onCloseSub(subId) {
+      if (this.subId === subId) {
+        this.subId = null;
+        this.pushChanges();
+      }
+    };
+
+    _proto.isSubOpen = function isSubOpen(subId) {
+      return this.subId === subId;
+    };
+
+    _proto.isPrimaryHidden = function isPrimaryHidden() {
+      return this.subId != null;
+    };
+
+    return HeaderComponent;
+  }(rxcomp.Component);
+  HeaderComponent.meta = {
+    selector: 'header',
+    outputs: ['toggle']
+  };
+
+  /*
+  ['quot', 'amp', 'apos', 'lt', 'gt', 'nbsp', 'iexcl', 'cent', 'pound', 'curren', 'yen', 'brvbar', 'sect', 'uml', 'copy', 'ordf', 'laquo', 'not', 'shy', 'reg', 'macr', 'deg', 'plusmn', 'sup2', 'sup3', 'acute', 'micro', 'para', 'middot', 'cedil', 'sup1', 'ordm', 'raquo', 'frac14', 'frac12', 'frac34', 'iquest', 'Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'AElig', 'Ccedil', 'Egrave', 'Eacute', 'Ecirc', 'Euml', 'Igrave', 'Iacute', 'Icirc', 'Iuml', 'ETH', 'Ntilde', 'Ograve', 'Oacute', 'Ocirc', 'Otilde', 'Ouml', 'times', 'Oslash', 'Ugrave', 'Uacute', 'Ucirc', 'Uuml', 'Yacute', 'THORN', 'szlig', 'agrave', 'aacute', 'atilde', 'auml', 'aring', 'aelig', 'ccedil', 'egrave', 'eacute', 'ecirc', 'euml', 'igrave', 'iacute', 'icirc', 'iuml', 'eth', 'ntilde', 'ograve', 'oacute', 'ocirc', 'otilde', 'ouml', 'divide', 'oslash', 'ugrave', 'uacute', 'ucirc', 'uuml', 'yacute', 'thorn', 'yuml', 'amp', 'bull', 'deg', 'infin', 'permil', 'sdot', 'plusmn', 'dagger', 'mdash', 'not', 'micro', 'perp', 'par', 'euro', 'pound', 'yen', 'cent', 'copy', 'reg', 'trade', 'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa', 'lambda', 'mu', 'nu', 'xi', 'omicron', 'pi', 'rho', 'sigma', 'tau', 'upsilon', 'phi', 'chi', 'psi', 'omega', 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega'];
+  ['"', '&', ''', '<', '>', ' ', '¡', '¢', '£', '¤', '¥', '¦', '§', '¨', '©', 'ª', '«', '¬', '­', '®', '¯', '°', '±', '²', '³', '´', 'µ', '¶', '·', '¸', '¹', 'º', '»', '¼', '½', '¾', '¿', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', '×', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'Þ', 'ß', 'à', 'á', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', '÷', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'þ', 'ÿ', '&', '•', '°', '∞', '‰', '⋅', '±', '†', '—', '¬', 'µ', '⊥', '∥', '€', '£', '¥', '¢', '©', '®', '™', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω', 'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'];
+  */
+
+  var HtmlPipe = /*#__PURE__*/function (_Pipe) {
+    _inheritsLoose(HtmlPipe, _Pipe);
+
+    function HtmlPipe() {
+      return _Pipe.apply(this, arguments) || this;
+    }
+
+    HtmlPipe.transform = function transform(value) {
+      if (value) {
+        value = value.replace(/&#(\d+);/g, function (m, n) {
+          return String.fromCharCode(parseInt(n));
+        });
+        var escapes = ['quot', 'amp', 'apos', 'lt', 'gt', 'nbsp', 'iexcl', 'cent', 'pound', 'curren', 'yen', 'brvbar', 'sect', 'uml', 'copy', 'ordf', 'laquo', 'not', 'shy', 'reg', 'macr', 'deg', 'plusmn', 'sup2', 'sup3', 'acute', 'micro', 'para', 'middot', 'cedil', 'sup1', 'ordm', 'raquo', 'frac14', 'frac12', 'frac34', 'iquest', 'Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'AElig', 'Ccedil', 'Egrave', 'Eacute', 'Ecirc', 'Euml', 'Igrave', 'Iacute', 'Icirc', 'Iuml', 'ETH', 'Ntilde', 'Ograve', 'Oacute', 'Ocirc', 'Otilde', 'Ouml', 'times', 'Oslash', 'Ugrave', 'Uacute', 'Ucirc', 'Uuml', 'Yacute', 'THORN', 'szlig', 'agrave', 'aacute', 'atilde', 'auml', 'aring', 'aelig', 'ccedil', 'egrave', 'eacute', 'ecirc', 'euml', 'igrave', 'iacute', 'icirc', 'iuml', 'eth', 'ntilde', 'ograve', 'oacute', 'ocirc', 'otilde', 'ouml', 'divide', 'oslash', 'ugrave', 'uacute', 'ucirc', 'uuml', 'yacute', 'thorn', 'yuml', 'amp', 'bull', 'deg', 'infin', 'permil', 'sdot', 'plusmn', 'dagger', 'mdash', 'not', 'micro', 'perp', 'par', 'euro', 'pound', 'yen', 'cent', 'copy', 'reg', 'trade', 'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa', 'lambda', 'mu', 'nu', 'xi', 'omicron', 'pi', 'rho', 'sigma', 'tau', 'upsilon', 'phi', 'chi', 'psi', 'omega', 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega'];
+        var unescapes = ['"', '&', '\'', '<', '>', ' ', '¡', '¢', '£', '¤', '¥', '¦', '§', '¨', '©', 'ª', '«', '¬', '­', '®', '¯', '°', '±', '²', '³', '´', 'µ', '¶', '·', '¸', '¹', 'º', '»', '¼', '½', '¾', '¿', 'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', '×', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'Þ', 'ß', 'à', 'á', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', '÷', 'ø', 'ù', 'ú', 'û', 'ü', 'ý', 'þ', 'ÿ', '&', '•', '°', '∞', '‰', '⋅', '±', '†', '—', '¬', 'µ', '⊥', '∥', '€', '£', '¥', '¢', '©', '®', '™', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω', 'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω'];
+        var rx = new RegExp("(&" + escapes.join(';)|(&') + ";)", 'g');
+        value = value.replace(rx, function () {
+          for (var i = 1; i < arguments.length; i++) {
+            if (arguments[i]) {
+              // console.log(arguments[i], unescapes[i - 1]);
+              return unescapes[i - 1];
+            }
+          }
+        }); // console.log(value);
+
+        return value;
+      }
+    };
+
+    return HtmlPipe;
+  }(rxcomp.Pipe);
+  HtmlPipe.meta = {
+    name: 'html'
+  };
+
+  var PageComponent = /*#__PURE__*/function (_Component) {
+    _inheritsLoose(PageComponent, _Component);
+
+    function PageComponent() {
+      return _Component.apply(this, arguments) || this;
+    }
+
+    var _proto = PageComponent.prototype;
+
+    _proto.onInit = function onInit() {};
+
+    return PageComponent;
+  }(rxcomp.Component);
+  PageComponent.meta = {
+    selector: '[page]'
+  };
+
+  var EmotionalPageComponent = /*#__PURE__*/function (_PageComponent) {
+    _inheritsLoose(EmotionalPageComponent, _PageComponent);
+
+    function EmotionalPageComponent() {
+      return _PageComponent.apply(this, arguments) || this;
+    }
+
+    var _proto = EmotionalPageComponent.prototype;
+
+    _proto.onInit = function onInit() {
+      /*
+      this.data01 = this.data02 = null;
+      this.load$().pipe(
+      	first(),
+      ).subscribe(data => {
+      	this.data01 = data[0];
+      	this.data02 = data[1];
+      	this.pushChanges();
+      });
+      */
+    };
+
+    _proto.load$ = function load$() {
+      return rxjs.combineLatest(rxjs.of(1), rxjs.of(2));
+    };
+
+    return EmotionalPageComponent;
+  }(PageComponent);
+  EmotionalPageComponent.meta = {
+    selector: '[emotional-page]'
+  };
+
+  var UID = 0;
+
+  var ImageService = /*#__PURE__*/function () {
+    function ImageService() {}
+
+    ImageService.worker = function worker() {
+      if (!this.worker_) {
+        this.worker_ = new Worker("/cantalupi/js/workers/image.service.worker.js"); // this.worker_ = new Worker(`${getResourceRoot()}js/workers/image.service.worker.js`);
+      }
+
+      return this.worker_;
+    };
+
+    ImageService.load$ = function load$(src) {
+      // if (!('Worker' in window) || this.isBlob(src) || this.isCors(src)) {
+      if (!('Worker' in window) || this.isBlob(src)) {
+        return rxjs.of(src);
+      }
+
+      var id = ++UID;
+      var worker = this.worker();
+      worker.postMessage({
+        src: src,
+        id: id
+      });
+      return rxjs.fromEvent(worker, 'message').pipe(operators.filter(function (event) {
+        return event.data.src === src;
+      }), operators.map(function (event) {
+        var url = URL.createObjectURL(event.data.blob);
+        return url;
+      }), operators.first(), operators.finalize(function (url) {
+        worker.postMessage({
+          id: id
+        });
+
+        if (url) {
+          URL.revokeObjectURL(url);
+        }
+      }));
+    };
+
+    ImageService.isCors = function isCors(src) {
+      return src.indexOf('//') !== -1 && src.indexOf(window.location.host) === -1;
+    };
+
+    ImageService.isBlob = function isBlob(src) {
+      return src.indexOf('blob:') === 0;
+    };
+
+    return ImageService;
+  }();
+
+  var IntersectionService = /*#__PURE__*/function () {
+    function IntersectionService() {}
+
+    IntersectionService.observer = function observer() {
+      var _this = this;
+
+      if (!this.observer_) {
+        this.readySubject_ = new rxjs.BehaviorSubject(false);
+        this.observerSubject_ = new rxjs.Subject();
+        this.observer_ = new IntersectionObserver(function (entries) {
+          _this.observerSubject_.next(entries);
+        });
+      }
+
+      return this.observer_;
+    };
+
+    IntersectionService.intersection$ = function intersection$(node) {
+      if ('IntersectionObserver' in window) {
+        var observer = this.observer();
+        observer.observe(node);
+        return this.observerSubject_.pipe( // tap(entries => console.log(entries.length)),
+        operators.map(function (entries) {
+          return entries.find(function (entry) {
+            return entry.target === node;
+          });
+        }), operators.filter(function (entry) {
+          return entry !== undefined;
+        }), // tap(entry => console.log('IntersectionService.intersection$', entry)),
+        operators.finalize(function () {
+          return observer.unobserve(node);
+        }));
+      } else {
+        return rxjs.of({
+          target: node,
+          isIntersecting: true
+        });
+      }
+    };
+
+    IntersectionService.firstIntersection$ = function firstIntersection$(node) {
+      return this.intersection$(node).pipe(operators.filter(function (entry) {
+        return entry.isIntersecting;
+      }), // entry.intersectionRatio > 0
+      operators.first());
+    };
+
+    return IntersectionService;
+  }();
+
   var LazyCache = /*#__PURE__*/function () {
     function LazyCache() {}
 
@@ -5603,9 +5683,9 @@
 
   var FRAGMENT_SHARED =
   /* glsl */
-  "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_mx;\nuniform float u_my;\nuniform float u_speed;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvec2 coord(in vec2 p) {\n\tp = p / u_resolution.xy;\n    if (u_resolution.x > u_resolution.y) {\n        p.x *= u_resolution.x / u_resolution.y;\n        p.x += (u_resolution.y - u_resolution.x) / u_resolution.y / 2.0;\n    } else {\n        p.y *= u_resolution.y / u_resolution.x;\n\t    p.y += (u_resolution.x - u_resolution.y) / u_resolution.x / 2.0;\n    }\n    p -= 0.5;\n    p *= vec2(-1.0, 1.0);\n\treturn p;\n}\n#define uv gl_FragCoord.xy / u_resolution.xy\n#define st coord(gl_FragCoord.xy)\n#define mx coord(vec2(u_mx, u_my))\n#define ee noise(gl_FragCoord.xy / u_resolution.xy)\n#define rx 1.0 / min(u_resolution.x, u_resolution.y)\n\nfloat sCircle(in vec2 p, in float w) {\n    return length(p) * 2.0 - w;\n}\n\nfloat sGradient(in vec2 p) {\n    return length(p);\n}\n";
-  var FRAGMENT_SHADER_1 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(1.0);\n\t// float noise = random(p) * 0.1;\n\t// color = vec3(clamp(0.0, 1.0, color.r - noise));\n\t// float circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);\n\t// circle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);\n\tfloat circle = sCircle(p, 0.2 + cos(u_time) * 0.1);\n\tcircle += sCircle(p, 0.05 + cos(u_time) * 0.025);\n\tcircle = clamp(0.0, 1.0, circle);\n\t// float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);\n\tfloat alpha = smoothstep(0.0, 0.8, 1.0 - circle) * 0.6;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
-  var FRAGMENT_SHADER_2 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(0.0);\n\tfloat noise = random(p) * 0.1;\n\tcolor = vec3(clamp(0.0, 1.0, color.r + noise));\n\t// float circle = sCircle(p, 4.0 - 2.5 * u_speed + cos(u_time) * 0.05);\n\t// float circle = sGradient(p * (0.25 + 1.75 * u_speed));\n\tfloat circle = sGradient(p * 0.25);\n\tfloat alpha = clamp(0.0, 1.0, circle * 0.5); // smoothstep(0.0, 0.99, circle) * 0.7;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
+  "\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_mx;\nuniform float u_my;\nuniform float u_speed;\nuniform float u_opacity;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvec2 coord(in vec2 p) {\n\tp = p / u_resolution.xy;\n    if (u_resolution.x > u_resolution.y) {\n        p.x *= u_resolution.x / u_resolution.y;\n        p.x += (u_resolution.y - u_resolution.x) / u_resolution.y / 2.0;\n    } else {\n        p.y *= u_resolution.y / u_resolution.x;\n\t    p.y += (u_resolution.x - u_resolution.y) / u_resolution.x / 2.0;\n    }\n    p -= 0.5;\n    p *= vec2(-1.0, 1.0);\n\treturn p;\n}\n#define uv gl_FragCoord.xy / u_resolution.xy\n#define st coord(gl_FragCoord.xy)\n#define mx coord(vec2(u_mx, u_my))\n#define ee noise(gl_FragCoord.xy / u_resolution.xy)\n#define rx 1.0 / min(u_resolution.x, u_resolution.y)\n\nfloat sCircle(in vec2 p, in float w) {\n    return length(p) * 2.0 - w;\n}\n\nfloat sGradient(in vec2 p) {\n    return length(p);\n}\n";
+  var FRAGMENT_SHADER_1 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(1.0);\n\t// float noise = random(p) * 0.1;\n\t// color = vec3(clamp(0.0, 1.0, color.r - noise));\n\t// float circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);\n\t// circle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);\n\tfloat circle = sCircle(p, 0.2 + cos(u_time) * 0.1);\n\tcircle += sCircle(p, 0.05 + cos(u_time) * 0.025);\n\tcircle = clamp(0.0, 1.0, circle);\n\t// float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);\n\tfloat alpha = smoothstep(0.0, 0.8, 1.0 - circle) * 0.6 * u_opacity;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
+  var FRAGMENT_SHADER_2 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(0.0);\n\tfloat noise = random(p) * 0.1;\n\tcolor = vec3(clamp(0.0, 1.0, color.r + noise));\n\t// float circle = sCircle(p, 4.0 - 2.5 * u_speed + cos(u_time) * 0.05);\n\t// float circle = sGradient(p * (0.25 + 1.75 * u_speed));\n\tfloat circle = sGradient(p * 0.25);\n\tfloat alpha = clamp(0.0, 1.0, circle * 0.5) * u_opacity; // smoothstep(0.0, 0.99, circle) * 0.7;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
 
   var OverlayLerp$1 = /*#__PURE__*/function () {
     function OverlayLerp() {
@@ -5614,7 +5694,9 @@
       this.x = this.ex = this.w / 2;
       this.y = this.ey = this.h / 2;
       this.speed = this.espeed = 0;
+      this.opacity = 1;
       this.dy = 0;
+      this.isOver = true;
     }
 
     var _proto = OverlayLerp.prototype;
@@ -5629,6 +5711,7 @@
         this.x += (this.ex - this.x) * inertia;
         this.y += (this.ey + dy - this.y) * inertia;
         this.speed += (this.espeed - this.speed) * 0.01;
+        this.opacity += ((this.isOver ? 1 : 0) - this.opacity) * 0.01;
       }
     };
 
@@ -5674,12 +5757,14 @@
         glsl1.setUniforms({
           'u_mx': lerp.x,
           'u_my': lerp.y,
-          'u_speed': lerp.speed
+          'u_speed': lerp.speed,
+          'u_opacity': lerp.opacity
         });
         glsl2.setUniforms({
           'u_mx': lerp.x,
           'u_my': lerp.y,
-          'u_speed': lerp.speed
+          'u_speed': lerp.speed,
+          'u_opacity': lerp.opacity
         });
       });
       LocomotiveService.scroll$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
@@ -7284,7 +7369,7 @@
   }(rxcomp.Module);
   AppModule.meta = {
     imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
+    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, GalleryComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
     bootstrap: AppComponent
   };
 

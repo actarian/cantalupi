@@ -1,0 +1,89 @@
+.section--hero-heritage {
+	@extend .section--hero-products;
+}
+
+.section--pictures {
+	padding: 120px 0 0 0;
+
+	&:last-child {
+		padding-bottom: 120px;
+	}
+
+	.row {
+		align-items: stretch;
+
+		&>div {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+
+			&:first-child {
+				align-items: flex-end;
+
+				.picture {
+					&:first-child {
+						margin-left: 30%;
+					}
+				}
+			}
+		}
+	}
+
+	.title {
+		font-family: $font-secondary;
+		font-size: 54px;
+		font-style: italic;
+		line-height: 1;
+		margin: 40px 0;
+		color: #03191D;
+	}
+
+	.category {
+		font-size: 16px;
+		margin-bottom: 20px;
+	}
+
+	.abstract {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 36px;
+		line-height: 1.15;
+		margin-bottom: 20px;
+
+		p {
+			margin: 0 0 30px 0;
+		}
+	}
+
+	.description {
+		font-size: 21px;
+		line-height: 1.42;
+		margin-bottom: 40px;
+
+		p {
+			margin: 0 0 30px 0;
+		}
+	}
+
+	.group--cta {
+		@include media-up(md) {
+			.btn--contact {
+				margin-right: 30px;
+			}
+		}
+	}
+}
+
+.nav--anchor {
+	@extend %nav-vertical;
+	align-items: flex-start;
+
+	&__item {
+		@extend %nav-item;
+
+		&>a,
+		&>span {
+			@extend %btn;
+		}
+	}
+}

@@ -24,6 +24,16 @@
 			object-fit: cover;
 			@extend %lazy;
 		}
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background: radial-gradient(ellipse at center, rgba(0, 0, 0, .05) 50%, rgba(0, 0, 0, .3) 90%);
+		}
 	}
 
 	.container {
@@ -35,10 +45,24 @@
 	}
 
 	.category {
+		@extend %btn;
+		display: flex;
+		align-items: center;
+		margin-left: 10px;
 		font-family: $font-secondary;
 		font-style: italic;
 		font-size: 18px;
 		text-transform: uppercase;
+
+		em {
+			font-size: 0;
+			line-height: 1;
+			display: block;
+			width: 14px;
+			height: 1px;
+			margin: 0 4px 0 7px;
+			background: #fff;
+		}
 	}
 
 	.title {
@@ -268,6 +292,7 @@
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity ease-in-out 400ms;
+		padding-bottom: 20px;
 
 		.btn--link {
 

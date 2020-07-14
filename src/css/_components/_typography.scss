@@ -3,7 +3,7 @@ body {
 	font-weight: $font-light;
 	line-height: $line-height;
 	background: $background;
-	color: $foreground-secondary;
+	color: $foreground;
 
 	@include media-up(sm) {
 		font-size: $font-size;

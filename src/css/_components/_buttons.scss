@@ -160,6 +160,44 @@
 	}
 }
 
+%btn-rect-secondary {
+	@extend %btn-animated;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 15px 20px; // 20px 30px;
+
+	span {
+		display: block;
+	}
+
+	&:before {
+		background: #2D2D2B;
+	}
+
+	&:after {
+		top: 15px;
+		left: 20px;
+		color: #888888;
+	}
+
+	&,
+	&:active,
+	&:focus,
+	&:visited,
+	&:hover {
+		background: #1D1D1B;
+		color: #ffffff;
+	}
+
+	&:hover,
+	&.active {
+		&:after {
+			width: calc(100% - 40px);
+		}
+	}
+}
+
 %btn-link {
 	@extend %btn;
 	display: flex;
@@ -192,41 +230,75 @@
 	}
 }
 
-%btn-rect-secondary {
-	@extend %btn-animated;
+%btn-gallery {
+	@extend %btn;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 20px 30px;
+	padding: 15px 0;
 
+	&,
 	span {
 		display: block;
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 36px;
+		font-weight: 600;
+		line-height: 1;
+		text-transform: uppercase;
 	}
 
-	&:before {
-		background: #2D2D2B;
-	}
-
-	&:after {
-		top: 20px;
-		left: 30px;
-		color: #888888;
+	span {
+		background: radial-gradient(circle, rgba(white, 1) 0%, rgba(white, 0) 40%);
+		background-clip: text;
+		background-size: 50vw 50vw;
+		background-repeat: no-repeat;
+		background-position: calc(-25vw + 1400px) calc(-25vw + 500px);
+		background-attachment: fixed;
+		-webkit-text-fill-color: transparent;
 	}
 
 	&,
 	&:active,
 	&:focus,
-	&:visited,
-	&:hover {
-		background: #1D1D1B;
-		color: #ffffff;
+	&:hover,
+	&:visited {
+		color: white;
+	}
+}
+
+%btn-download {
+	@extend %btn;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 15px 0;
+
+	svg {
+		width: 24px;
+		height: 24px;
+		margin-left: -10px;
+		margin-right: 10px;
 	}
 
+	span {
+		display: block;
+	}
+
+	&,
+	span {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 18px;
+		text-decoration: underline;
+	}
+
+	&,
+	&:active,
+	&:focus,
 	&:hover,
-	&.active {
-		&:after {
-			width: calc(100% - 60px);
-		}
+	&:visited {
+		color: $foreground;
 	}
 }
 
@@ -248,6 +320,39 @@
 
 .btn--link {
 	@extend %btn-link;
+}
+
+.btn--download {
+	@extend %btn-rect-stroked;
+
+	&:before {
+		background: $foreground;
+	}
+
+	&:after {
+		top: 15px;
+		left: 25px;
+		color: white;
+	}
+
+	&,
+	&:active,
+	&:focus,
+	&:visited,
+	&:hover {
+		background: transparent;
+		border-color: $foreground;
+		color: $foreground;
+	}
+
+}
+
+.btn--download-secondary {
+	@extend %btn-download;
+}
+
+.btn--gallery {
+	@extend %btn-gallery;
 }
 
 %badge {

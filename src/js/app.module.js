@@ -7,6 +7,7 @@ import DatePipe from './date/date.pipe';
 import DropdownItemDirective from './dropdown/dropdown-item.directive';
 import DropdownDirective from './dropdown/dropdown.directive';
 import ErrorsComponent from './forms/errors.component';
+import GalleryComponent from './gallery/gallery.component';
 import HeaderComponent from './header/header.component';
 import HtmlPipe from './html/html.pipe';
 import { default as EmotionalPageComponent, default as IndexPageComponent } from './index/index-page.component';
@@ -38,6 +39,7 @@ AppModule.meta = {
 		DropdownItemDirective,
 		EmotionalPageComponent,
 		ErrorsComponent,
+		GalleryComponent,
 		HeaderComponent,
 		HtmlPipe,
 		IndexPageComponent,

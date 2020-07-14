@@ -35,10 +35,6 @@
 	}
 
 	@include media-up(lg) {
-		.container {
-			max-width: 66%;
-		}
-
 		.title {
 			font-style: 87px;
 		}

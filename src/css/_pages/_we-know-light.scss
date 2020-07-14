@@ -1,0 +1,162 @@
+.section--hero-we-know-light {
+	position: relative;
+	color: white;
+	min-height: 100vh;
+
+	.background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+
+		&>img {
+			object-fit: cover;
+			@extend %lazy;
+		}
+	}
+
+	.container {
+		padding-top: 120px;
+		padding-bottom: 120px;
+	}
+
+	.prefix {
+		font-size: 24px;
+	}
+
+	.title {
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 250px;
+		line-height: 0.9;
+		text-transform: uppercase;
+	}
+
+	.abstract {
+		font-family: $font-secondary;
+		line-height: 1.14;
+	}
+
+	.description {
+		font-size: 21px;
+		line-height: 1.42;
+	}
+
+	a {
+		@extend %btn;
+		transition: none;
+		display: inline-block;
+		margin-right: 0.25em;
+
+		&,
+		&:active,
+		&:focus,
+		&:hover,
+		&:visited {
+			color: #A28850;
+			font-style: italic;
+		}
+	}
+
+	@include media-up(lg) {
+		.title {
+			font-size: 250px;
+		}
+
+		.abstract {
+			font-size: 54px;
+		}
+
+		.description {
+			font-size: 21px;
+		}
+	}
+
+	@include media-between(sm, lg) {
+		.title {
+			font-size: 13.025vw;
+		}
+
+		.abstract {
+			font-size: 2.81vw;
+		}
+
+		.description {
+			font-size: 1.08vw;
+		}
+	}
+
+	@include media-between(xs, sm) {
+		.title {
+			font-size: 13.025vw * 1.5;
+		}
+
+		.abstract {
+			font-size: 2.81vw * 1.5;
+		}
+
+		.description {
+			font-size: 1.08vw * 1.5;
+		}
+	}
+
+	@include media-down(xs) {
+		.title {
+			font-size: 13.025vw * 1.5;
+		}
+
+		.abstract {
+			font-size: 2.81vw * 1.8;
+		}
+
+		.description {
+			font-size: 16px;
+		}
+	}
+
+	// .group--cta {}
+}
+
+.btn--hover {
+	@extend %btn;
+	position: relative;
+	display: inline-block;
+
+	&:hover {
+		.card--hover {
+			opacity: 1;
+		}
+	}
+}
+
+.card--hover {
+	display: block;
+	position: absolute;
+	left: 50%;
+	bottom: 100%;
+	transform: translateX(-50%);
+	opacity: 0;
+	transition: opacity ease-in-out 350ms;
+	pointer-events: none;
+
+	.picture {
+		@include aspect-clip(480, 280);
+		display: flex;
+
+		&>img {
+			object-fit: cover;
+		}
+	}
+
+	&:before {
+		content: '';
+		position: absolute;
+	}
+
+	@include media-up(md) {
+		width: 480px;
+	}
+}
