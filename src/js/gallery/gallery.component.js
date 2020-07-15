@@ -1,7 +1,11 @@
 import { Component, getContext } from 'rxcomp';
 import { animationFrame, fromEvent, interval } from 'rxjs';
 import { map, startWith, takeUntil, withLatestFrom } from 'rxjs/operators';
+import { BASE_HREF } from '../environment';
 import LocomotiveService from '../locomotive/locomotive.service';
+import ModalService from '../modal/modal.service';
+
+const GALLERY_MODAL = BASE_HREF + 'gallery-modal.html';
 
 export class GalleryLerp {
 
@@ -46,6 +50,13 @@ export default class GalleryComponent extends Component {
 		).subscribe((lerp) => {
 			gsap.set(buttonSpan, {
 				backgroundPosition: `${lerp.x}px ${lerp.y}px`,
+			});
+		});
+		node.addEventListener('click', () => {
+			ModalService.open$({ src: GALLERY_MODAL, data: [1, 2, 3, 4, 5, 6] }).pipe(
+				takeUntil(this.unsubscribe$)
+			).subscribe(event => {
+				// this.pushChanges();
 			});
 		});
 	}

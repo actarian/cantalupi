@@ -128,6 +128,7 @@
       var showCover = SessionStorageService.get('showCover');
       this.showCover = !showCover;
       SessionStorageService.set('showCover', true);
+      this.sliderItems = [1, 2, 3];
     };
 
     _proto.onSkipCover = function onSkipCover(event) {
@@ -2173,6 +2174,264 @@
     /* html */
     "\n\t<div class=\"inner\" [style]=\"{ display: control.invalid && control.touched ? 'block' : 'none' }\">\n\t\t<div class=\"error\" *for=\"let [key, value] of control.errors\">\n\t\t\t<span [innerHTML]=\"getLabel(key, value)\"></span>\n\t\t\t<!-- <span class=\"key\" [innerHTML]=\"key\"></span> <span class=\"value\" [innerHTML]=\"value | json\"></span> -->\n\t\t</div>\n\t</div>\n\t"
   };
+
+  var ModalEvent = function ModalEvent(data) {
+    this.data = data;
+  };
+  var ModalResolveEvent = /*#__PURE__*/function (_ModalEvent) {
+    _inheritsLoose(ModalResolveEvent, _ModalEvent);
+
+    function ModalResolveEvent() {
+      return _ModalEvent.apply(this, arguments) || this;
+    }
+
+    return ModalResolveEvent;
+  }(ModalEvent);
+  var ModalRejectEvent = /*#__PURE__*/function (_ModalEvent2) {
+    _inheritsLoose(ModalRejectEvent, _ModalEvent2);
+
+    function ModalRejectEvent() {
+      return _ModalEvent2.apply(this, arguments) || this;
+    }
+
+    return ModalRejectEvent;
+  }(ModalEvent);
+
+  var ModalService = /*#__PURE__*/function () {
+    function ModalService() {}
+
+    ModalService.open$ = function open$(modal) {
+      var _this = this;
+
+      return this.getTemplate$(modal.src).pipe(operators.map(function (template) {
+        return {
+          node: _this.getNode(template),
+          data: modal.data,
+          modal: modal
+        };
+      }), operators.tap(function (node) {
+        return _this.modal$.next(node);
+      }), operators.switchMap(function (node) {
+        return _this.events$;
+      }));
+    };
+
+    ModalService.load$ = function load$(modal) {};
+
+    ModalService.getTemplate$ = function getTemplate$(url) {
+      return rxjs.from(fetch(url).then(function (response) {
+        return response.text();
+      }));
+    };
+
+    ModalService.getNode = function getNode(template) {
+      var div = document.createElement("div");
+      div.innerHTML = template;
+      var node = div.firstElementChild;
+      return node;
+    };
+
+    ModalService.reject = function reject(data) {
+      this.modal$.next(null);
+      this.events$.next(new ModalRejectEvent(data));
+    };
+
+    ModalService.resolve = function resolve(data) {
+      this.modal$.next(null);
+      this.events$.next(new ModalResolveEvent(data));
+    };
+
+    return ModalService;
+  }();
+  ModalService.modal$ = new rxjs.Subject();
+  ModalService.events$ = new rxjs.Subject();
+
+  var ModalOutletComponent = /*#__PURE__*/function (_Component) {
+    _inheritsLoose(ModalOutletComponent, _Component);
+
+    function ModalOutletComponent() {
+      return _Component.apply(this, arguments) || this;
+    }
+
+    var _proto = ModalOutletComponent.prototype;
+
+    _proto.onInit = function onInit() {
+      var _this = this;
+
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      this.modalNode = node.querySelector('.modal-outlet__modal');
+      ModalService.modal$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (modal) {
+        _this.modal = modal;
+      });
+    };
+
+    _proto.onRegister = function onRegister(event) {
+      // console.log('ModalComponent.onRegister');
+      this.pushChanges();
+    };
+
+    _proto.onLogin = function onLogin(event) {
+      // console.log('ModalComponent.onLogin');
+      this.pushChanges();
+    };
+
+    _proto.reject = function reject(event) {
+      ModalService.reject();
+    };
+
+    _createClass(ModalOutletComponent, [{
+      key: "modal",
+      get: function get() {
+        return this.modal_;
+      },
+      set: function set(modal) {
+        // console.log('ModalOutletComponent set modal', modal, this);
+        var _getContext2 = rxcomp.getContext(this),
+            module = _getContext2.module;
+
+        if (this.modal_ && this.modal_.node) {
+          module.remove(this.modal_.node, this);
+          this.modalNode.removeChild(this.modal_.node);
+        }
+
+        if (modal && modal.node) {
+          this.modal_ = modal;
+          this.modalNode.appendChild(modal.node);
+          var instances = module.compile(modal.node);
+        }
+
+        this.modal_ = modal;
+        this.pushChanges();
+      }
+    }]);
+
+    return ModalOutletComponent;
+  }(rxcomp.Component);
+  ModalOutletComponent.meta = {
+    selector: '[modal-outlet]',
+    template:
+    /* html */
+    "\n\t<div class=\"modal-outlet__container\" [class]=\"{ active: modal }\">\n\t\t<div class=\"modal-outlet__background\" (click)=\"reject($event)\"></div>\n\t\t<div class=\"modal-outlet__modal\"></div>\n\t</div>\n\t"
+  };
+
+  var GalleryModalComponent = /*#__PURE__*/function (_Component) {
+    _inheritsLoose(GalleryModalComponent, _Component);
+
+    function GalleryModalComponent() {
+      return _Component.apply(this, arguments) || this;
+    }
+
+    var _proto = GalleryModalComponent.prototype;
+
+    _proto.onInit = function onInit() {
+      _Component.prototype.onInit.call(this);
+
+      var _getContext = rxcomp.getContext(this),
+          parentInstance = _getContext.parentInstance,
+          node = _getContext.node;
+
+      if (parentInstance instanceof ModalOutletComponent) {
+        var data = this.data = parentInstance.modal.data;
+        this.sliderItems = data;
+      }
+    };
+
+    _proto.close = function close() {
+      ModalService.reject();
+    };
+
+    _proto.onChange = function onChange(event) {
+      console.log('onChange', event);
+    };
+
+    _proto.onTween = function onTween(event) {
+      console.log('onTween', event);
+    };
+
+    return GalleryModalComponent;
+  }(rxcomp.Component);
+  GalleryModalComponent.meta = {
+    selector: '[gallery-modal]'
+  };
+
+  var NODE = typeof module !== 'undefined' && module.exports;
+  var PARAMS = NODE ? {
+    get: function get() {}
+  } : new URLSearchParams(window.location.search);
+  var DEBUG =  PARAMS.get('debug') != null;
+  var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
+  var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io');
+  var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
+  var PRODUCTION = !DEVELOPMENT;
+  var ENV = {
+    NAME: 'cantalupi',
+    STATIC: STATIC,
+    DEVELOPMENT: DEVELOPMENT,
+    PRODUCTION: PRODUCTION,
+    RESOURCE: '/docs/',
+    STATIC_RESOURCE: './',
+    API: '/api',
+    STATIC_API: DEVELOPMENT && !STATIC ? '/Modules/Events/Client/docs/api' : './api'
+  };
+  function getApiUrl(url, useStatic) {
+    var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
+    var json = useStatic || STATIC ? '.json' : '';
+    return "" + base + url + json;
+  }
+  function getSlug(url) {
+    if (!url) {
+      return url;
+    }
+
+    if (url.indexOf("/" + ENV.NAME) !== 0) {
+      return url;
+    }
+
+    if (STATIC) {
+      console.log(url);
+      return url;
+    }
+
+    url = url.replace("/" + ENV.NAME, '');
+    url = url.replace('.html', '');
+    return "/it/it" + url;
+  }
+  var Environment = /*#__PURE__*/function () {
+    _createClass(Environment, [{
+      key: "href",
+      get: function get() {
+        if (window.location.host.indexOf('herokuapp') !== -1) {
+          return 'https://raw.githubusercontent.com/actarian/cantalupi/master/docs/';
+        } else {
+          return BASE_HREF;
+        }
+      }
+    }, {
+      key: "host",
+      get: function get() {
+        var host = window.location.host.replace('127.0.0.1', '192.168.1.2');
+
+        if (host.substr(host.length - 1, 1) === '/') {
+          host = host.substr(0, host.length - 1);
+        }
+
+        return window.location.protocol + "//" + host + BASE_HREF;
+      }
+    }]);
+
+    function Environment(options) {
+      if (options) {
+        Object.assign(this, options);
+      }
+    }
+
+    return Environment;
+  }();
+  var environment = new Environment({
+    port: 5000
+  });
 
   /* locomotive-scroll v3.5.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
   function _classCallCheck(instance, Constructor) {
@@ -4844,6 +5103,7 @@
     });
   }));
 
+  var GALLERY_MODAL = BASE_HREF + 'gallery-modal.html';
   var GalleryLerp = /*#__PURE__*/function () {
     function GalleryLerp() {
       this.x = 0;
@@ -4898,6 +5158,13 @@
       this.animation$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (lerp) {
         gsap.set(buttonSpan, {
           backgroundPosition: lerp.x + "px " + lerp.y + "px"
+        });
+      });
+      node.addEventListener('click', function () {
+        ModalService.open$({
+          src: GALLERY_MODAL,
+          data: [1, 2, 3, 4, 5, 6]
+        }).pipe(operators.takeUntil(_this.unsubscribe$)).subscribe(function (event) {// this.pushChanges();
         });
       });
     };
@@ -5041,55 +5308,6 @@
   }(rxcomp.Pipe);
   HtmlPipe.meta = {
     name: 'html'
-  };
-
-  var PageComponent = /*#__PURE__*/function (_Component) {
-    _inheritsLoose(PageComponent, _Component);
-
-    function PageComponent() {
-      return _Component.apply(this, arguments) || this;
-    }
-
-    var _proto = PageComponent.prototype;
-
-    _proto.onInit = function onInit() {};
-
-    return PageComponent;
-  }(rxcomp.Component);
-  PageComponent.meta = {
-    selector: '[page]'
-  };
-
-  var EmotionalPageComponent = /*#__PURE__*/function (_PageComponent) {
-    _inheritsLoose(EmotionalPageComponent, _PageComponent);
-
-    function EmotionalPageComponent() {
-      return _PageComponent.apply(this, arguments) || this;
-    }
-
-    var _proto = EmotionalPageComponent.prototype;
-
-    _proto.onInit = function onInit() {
-      /*
-      this.data01 = this.data02 = null;
-      this.load$().pipe(
-      	first(),
-      ).subscribe(data => {
-      	this.data01 = data[0];
-      	this.data02 = data[1];
-      	this.pushChanges();
-      });
-      */
-    };
-
-    _proto.load$ = function load$() {
-      return rxjs.combineLatest(rxjs.of(1), rxjs.of(2));
-    };
-
-    return EmotionalPageComponent;
-  }(PageComponent);
-  EmotionalPageComponent.meta = {
-    selector: '[emotional-page]'
   };
 
   var UID = 0;
@@ -5443,147 +5661,6 @@
     selector: '[locomotive]'
   };
 
-  var ModalEvent = function ModalEvent(data) {
-    this.data = data;
-  };
-  var ModalResolveEvent = /*#__PURE__*/function (_ModalEvent) {
-    _inheritsLoose(ModalResolveEvent, _ModalEvent);
-
-    function ModalResolveEvent() {
-      return _ModalEvent.apply(this, arguments) || this;
-    }
-
-    return ModalResolveEvent;
-  }(ModalEvent);
-  var ModalRejectEvent = /*#__PURE__*/function (_ModalEvent2) {
-    _inheritsLoose(ModalRejectEvent, _ModalEvent2);
-
-    function ModalRejectEvent() {
-      return _ModalEvent2.apply(this, arguments) || this;
-    }
-
-    return ModalRejectEvent;
-  }(ModalEvent);
-
-  var ModalService = /*#__PURE__*/function () {
-    function ModalService() {}
-
-    ModalService.open$ = function open$(modal) {
-      var _this = this;
-
-      return this.getTemplate$(modal.src).pipe(operators.map(function (template) {
-        return {
-          node: _this.getNode(template),
-          data: modal.data,
-          modal: modal
-        };
-      }), operators.tap(function (node) {
-        return _this.modal$.next(node);
-      }), operators.switchMap(function (node) {
-        return _this.events$;
-      }));
-    };
-
-    ModalService.load$ = function load$(modal) {};
-
-    ModalService.getTemplate$ = function getTemplate$(url) {
-      return rxjs.from(fetch(url).then(function (response) {
-        return response.text();
-      }));
-    };
-
-    ModalService.getNode = function getNode(template) {
-      var div = document.createElement("div");
-      div.innerHTML = template;
-      var node = div.firstElementChild;
-      return node;
-    };
-
-    ModalService.reject = function reject(data) {
-      this.modal$.next(null);
-      this.events$.next(new ModalRejectEvent(data));
-    };
-
-    ModalService.resolve = function resolve(data) {
-      this.modal$.next(null);
-      this.events$.next(new ModalResolveEvent(data));
-    };
-
-    return ModalService;
-  }();
-  ModalService.modal$ = new rxjs.Subject();
-  ModalService.events$ = new rxjs.Subject();
-
-  var ModalOutletComponent = /*#__PURE__*/function (_Component) {
-    _inheritsLoose(ModalOutletComponent, _Component);
-
-    function ModalOutletComponent() {
-      return _Component.apply(this, arguments) || this;
-    }
-
-    var _proto = ModalOutletComponent.prototype;
-
-    _proto.onInit = function onInit() {
-      var _this = this;
-
-      var _getContext = rxcomp.getContext(this),
-          node = _getContext.node;
-
-      this.modalNode = node.querySelector('.modal-outlet__modal');
-      ModalService.modal$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (modal) {
-        _this.modal = modal;
-      });
-    };
-
-    _proto.onRegister = function onRegister(event) {
-      // console.log('ModalComponent.onRegister');
-      this.pushChanges();
-    };
-
-    _proto.onLogin = function onLogin(event) {
-      // console.log('ModalComponent.onLogin');
-      this.pushChanges();
-    };
-
-    _proto.reject = function reject(event) {
-      ModalService.reject();
-    };
-
-    _createClass(ModalOutletComponent, [{
-      key: "modal",
-      get: function get() {
-        return this.modal_;
-      },
-      set: function set(modal) {
-        // console.log('ModalOutletComponent set modal', modal, this);
-        var _getContext2 = rxcomp.getContext(this),
-            module = _getContext2.module;
-
-        if (this.modal_ && this.modal_.node) {
-          module.remove(this.modal_.node, this);
-          this.modalNode.removeChild(this.modal_.node);
-        }
-
-        if (modal && modal.node) {
-          this.modal_ = modal;
-          this.modalNode.appendChild(modal.node);
-          var instances = module.compile(modal.node);
-        }
-
-        this.modal_ = modal;
-        this.pushChanges();
-      }
-    }]);
-
-    return ModalOutletComponent;
-  }(rxcomp.Component);
-  ModalOutletComponent.meta = {
-    selector: '[modal-outlet]',
-    template:
-    /* html */
-    "\n\t<div class=\"modal-outlet__container\" [class]=\"{ active: modal }\">\n\t\t<div class=\"modal-outlet__background\" (click)=\"reject($event)\"></div>\n\t\t<div class=\"modal-outlet__modal\"></div>\n\t</div>\n\t"
-  };
-
   var ModalComponent = /*#__PURE__*/function (_Component) {
     _inheritsLoose(ModalComponent, _Component);
 
@@ -5790,83 +5867,6 @@
     selector: "[overlay-webgl]"
   };
   OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);
-
-  var NODE = typeof module !== 'undefined' && module.exports;
-  var PARAMS = NODE ? {
-    get: function get() {}
-  } : new URLSearchParams(window.location.search);
-  var DEBUG =  PARAMS.get('debug') != null;
-  var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
-  var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io');
-  var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
-  var PRODUCTION = !DEVELOPMENT;
-  var ENV = {
-    NAME: 'cantalupi',
-    STATIC: STATIC,
-    DEVELOPMENT: DEVELOPMENT,
-    PRODUCTION: PRODUCTION,
-    RESOURCE: '/docs/',
-    STATIC_RESOURCE: './',
-    API: '/api',
-    STATIC_API: DEVELOPMENT && !STATIC ? '/Modules/Events/Client/docs/api' : './api'
-  };
-  function getApiUrl(url, useStatic) {
-    var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
-    var json = useStatic || STATIC ? '.json' : '';
-    return "" + base + url + json;
-  }
-  function getSlug(url) {
-    if (!url) {
-      return url;
-    }
-
-    if (url.indexOf("/" + ENV.NAME) !== 0) {
-      return url;
-    }
-
-    if (STATIC) {
-      console.log(url);
-      return url;
-    }
-
-    url = url.replace("/" + ENV.NAME, '');
-    url = url.replace('.html', '');
-    return "/it/it" + url;
-  }
-  var Environment = /*#__PURE__*/function () {
-    _createClass(Environment, [{
-      key: "href",
-      get: function get() {
-        if (window.location.host.indexOf('herokuapp') !== -1) {
-          return 'https://raw.githubusercontent.com/actarian/cantalupi/master/docs/';
-        } else {
-          return BASE_HREF;
-        }
-      }
-    }, {
-      key: "host",
-      get: function get() {
-        var host = window.location.host.replace('127.0.0.1', '192.168.1.2');
-
-        if (host.substr(host.length - 1, 1) === '/') {
-          host = host.substr(0, host.length - 1);
-        }
-
-        return window.location.protocol + "//" + host + BASE_HREF;
-      }
-    }]);
-
-    function Environment(options) {
-      if (options) {
-        Object.assign(this, options);
-      }
-    }
-
-    return Environment;
-  }();
-  var environment = new Environment({
-    port: 5000
-  });
 
   var HttpResponse = /*#__PURE__*/function () {
     _createClass(HttpResponse, [{
@@ -6404,6 +6404,23 @@
     return FilterService;
   }();
 
+  var PageComponent = /*#__PURE__*/function (_Component) {
+    _inheritsLoose(PageComponent, _Component);
+
+    function PageComponent() {
+      return _Component.apply(this, arguments) || this;
+    }
+
+    var _proto = PageComponent.prototype;
+
+    _proto.onInit = function onInit() {};
+
+    return PageComponent;
+  }(rxcomp.Component);
+  PageComponent.meta = {
+    selector: '[page]'
+  };
+
   var ProductsPageComponent = /*#__PURE__*/function (_PageComponent) {
     _inheritsLoose(ProductsPageComponent, _PageComponent);
 
@@ -6420,8 +6437,8 @@
       this.filters = {};
       this.primaryFilters = {};
       this.secondaryFilters = {};
-      this.moreFilters = false;
-      this.makeFake();
+      this.moreFilters = false; // this.makeFake();
+
       this.load$().pipe(operators.first()).subscribe(function (data) {
         _this.items = data[0];
         _this.filters = data[1];
@@ -7017,6 +7034,315 @@
     selector: '[secure]'
   };
 
+  var DragPoint = function DragPoint() {
+    this.x = 0;
+    this.y = 0;
+  };
+  var DragEvent = function DragEvent(options) {
+    if (options) {
+      Object.assign(this, options);
+    }
+  };
+  var DragDownEvent = /*#__PURE__*/function (_DragEvent) {
+    _inheritsLoose(DragDownEvent, _DragEvent);
+
+    function DragDownEvent(options) {
+      var _this;
+
+      _this = _DragEvent.call(this, options) || this;
+      _this.distance = new DragPoint();
+      _this.strength = new DragPoint();
+      _this.speed = new DragPoint();
+      return _this;
+    }
+
+    return DragDownEvent;
+  }(DragEvent);
+  var DragMoveEvent = /*#__PURE__*/function (_DragEvent2) {
+    _inheritsLoose(DragMoveEvent, _DragEvent2);
+
+    function DragMoveEvent(options) {
+      var _this2;
+
+      _this2 = _DragEvent2.call(this, options) || this;
+      _this2.distance = new DragPoint();
+      _this2.strength = new DragPoint();
+      _this2.speed = new DragPoint();
+      return _this2;
+    }
+
+    return DragMoveEvent;
+  }(DragEvent);
+  var DragUpEvent = /*#__PURE__*/function (_DragEvent3) {
+    _inheritsLoose(DragUpEvent, _DragEvent3);
+
+    function DragUpEvent(options) {
+      return _DragEvent3.call(this, options) || this;
+    }
+
+    return DragUpEvent;
+  }(DragEvent);
+
+  var DragService = /*#__PURE__*/function () {
+    function DragService() {}
+
+    DragService.getPosition = function getPosition(event, point) {
+      if (event instanceof MouseEvent) {
+        point ? (point.x = event.clientX, point.y = event.clientY) : point = {
+          x: event.clientX,
+          y: event.clientY
+        };
+      } else if (event instanceof TouchEvent) {
+        if (event.touches.length > 0) {
+          point ? (point.x = event.touches[0].pageX, point.y = event.touches[0].pageY) : point = {
+            x: event.touches[0].pageX,
+            y: event.touches[0].pageY
+          };
+        }
+      }
+
+      return point;
+    };
+
+    DragService.down$ = function down$(target, events$) {
+      var _this3 = this;
+
+      var downEvent;
+      return rxjs.merge(rxjs.fromEvent(target, 'mousedown'), rxjs.fromEvent(target, 'touchstart')).pipe(operators.map(function (event) {
+        downEvent = downEvent || new DragDownEvent();
+        downEvent.node = target;
+        downEvent.target = event.target;
+        downEvent.originalEvent = event;
+        downEvent.down = _this3.getPosition(event, downEvent.down);
+
+        if (downEvent.down) {
+          downEvent.distance = new DragPoint();
+          downEvent.strength = new DragPoint();
+          downEvent.speed = new DragPoint();
+          events$.next(downEvent);
+          return downEvent;
+        }
+      }), operators.filter(function (event) {
+        return event !== undefined;
+      }));
+    };
+
+    DragService.move$ = function move$(target, events$, dismiss$, downEvent) {
+      var _this4 = this;
+
+      var moveEvent;
+      return rxjs.fromEvent(document, downEvent.originalEvent instanceof MouseEvent ? 'mousemove' : 'touchmove').pipe(operators.startWith(downEvent), operators.map(function (event) {
+        moveEvent = moveEvent || new DragMoveEvent();
+        moveEvent.node = target;
+        moveEvent.target = event.target;
+        moveEvent.originalEvent = event;
+        moveEvent.position = _this4.getPosition(event, moveEvent.position);
+        var dragging = downEvent.down !== undefined && moveEvent.position !== undefined;
+
+        if (dragging) {
+          moveEvent.distance.x = moveEvent.position.x - downEvent.down.x;
+          moveEvent.distance.y = moveEvent.position.y - downEvent.down.y;
+          moveEvent.strength.x = moveEvent.distance.x / window.innerWidth * 2;
+          moveEvent.strength.y = moveEvent.distance.y / window.innerHeight * 2;
+          moveEvent.speed.x = downEvent.speed.x + (moveEvent.strength.x - downEvent.strength.x) * 0.1;
+          moveEvent.speed.y = downEvent.speed.y + (moveEvent.strength.y - downEvent.strength.y) * 0.1;
+          downEvent.distance.x = moveEvent.distance.x;
+          downEvent.distance.y = moveEvent.distance.y;
+          downEvent.speed.x = moveEvent.speed.x;
+          downEvent.speed.y = moveEvent.speed.y;
+          downEvent.strength.x = moveEvent.strength.x;
+          downEvent.strength.y = moveEvent.strength.y;
+          events$.next(moveEvent);
+          return moveEvent;
+        }
+      }));
+    };
+
+    DragService.up$ = function up$(target, events$, dismiss$, downEvent) {
+      var upEvent;
+      return rxjs.fromEvent(document, downEvent.originalEvent instanceof MouseEvent ? 'mouseup' : 'touchend').pipe(operators.map(function (event) {
+        upEvent = upEvent || new DragUpEvent();
+        events$.next(upEvent);
+        dismiss$.next(); // console.log(downEvent.distance);
+
+        if (Math.abs(downEvent.distance.x) > 10) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+
+        return upEvent;
+      }));
+    };
+
+    DragService.events$ = function events$(target) {
+      var _this5 = this;
+
+      target = target || document;
+      var events$ = new rxjs.ReplaySubject(1);
+      var dismiss$ = new rxjs.Subject();
+      return this.down$(target, events$).pipe(operators.switchMap(function (downEvent) {
+        return rxjs.merge(_this5.move$(target, events$, dismiss$, downEvent), _this5.up$(target, events$, dismiss$, downEvent)).pipe(operators.takeUntil(dismiss$));
+      }), operators.switchMap(function () {
+        return events$;
+      }));
+    };
+
+    return DragService;
+  }();
+
+  var SliderComponent = /*#__PURE__*/function (_Component) {
+    _inheritsLoose(SliderComponent, _Component);
+
+    function SliderComponent() {
+      return _Component.apply(this, arguments) || this;
+    }
+
+    var _proto = SliderComponent.prototype;
+
+    _proto.onInit = function onInit() {
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      this.container = node;
+      this.wrapper = node.querySelector('.slider__wrapper');
+      this.state.index = 0;
+      this.change.next(this.state.index);
+      gsap.set(this.wrapper, {
+        x: -100 * this.state.index + '%'
+      });
+      this.slider$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {// console.log('dragService', event);
+      });
+    };
+
+    _proto.slider$ = function slider$() {
+      var _this = this;
+
+      var transformX = 0,
+          transformY = 0,
+          transformZ = 0,
+          distanceX = 0,
+          distanceY = 0,
+          initialTransformX;
+      return DragService.events$(this.wrapper).pipe(operators.tap(function (event) {
+        if (event instanceof DragDownEvent) {
+          var translation = _this.getTranslation(_this.wrapper, _this.container);
+
+          initialTransformX = translation.x;
+        } else if (event instanceof DragMoveEvent) {
+          _this.container.classList.add('dragging');
+
+          distanceX = event.distance.x;
+          distanceY = event.distance.y;
+          transformX = initialTransformX + event.distance.x;
+          _this.wrapper.style.transform = "translate3d(" + transformX + "px, " + transformY + "px, " + transformZ + "px)";
+        } else if (event instanceof DragUpEvent) {
+          _this.container.classList.remove('dragging');
+
+          _this.wrapper.style.transform = null;
+          var width = _this.container.offsetWidth;
+
+          if (distanceX * -1 > width * 0.25 && _this.hasNext()) {
+            _this.navTo(_this.state.index + 1);
+          } else if (distanceX * -1 < width * -0.25 && _this.hasPrev()) {
+            _this.navTo(_this.state.index - 1);
+          } else {
+            _this.wrapper.style.transform = "translate3d(" + -100 * _this.state.index + "%, 0, 0)"; // this.navTo(this.state.index);
+          } // this.navTo(index);
+
+        }
+      }));
+    };
+
+    _proto.tweenTo = function tweenTo(index, callback) {
+      var _this2 = this;
+
+      // console.log('tweenTo', index);
+      var container = this.container;
+      var wrapper = this.wrapper;
+      var width = this.container.offsetWidth;
+      gsap.to(wrapper, 0.50, {
+        x: -100 * index + '%',
+        delay: 0,
+        ease: Power3.easeInOut,
+        overwrite: 'all',
+        onUpdate: function onUpdate() {
+          _this2.tween.next();
+        },
+        onComplete: function onComplete() {
+          if (typeof callback === 'function') {
+            callback();
+          }
+        }
+      });
+    };
+
+    _proto.navTo = function navTo(index) {
+      this.state.index = index;
+      this.pushChanges();
+      /*
+      if (this.state.index !== index) {
+      	this.tweenTo(index, () => {
+      		this.state.index = index;
+      		this.pushChanges();
+      		this.change.next(this.state.index);
+      	});
+      }
+      */
+    };
+
+    _proto.hasPrev = function hasPrev() {
+      return this.state.index - 1 >= 0;
+    };
+
+    _proto.hasNext = function hasNext() {
+      return this.state.index + 1 < this.items.length;
+    };
+
+    _proto.getTranslation = function getTranslation(node, container) {
+      var x = 0,
+          y = 0,
+          z = 0;
+      var transform = node.style.transform;
+
+      if (transform) {
+        var coords = transform.split('(')[1].split(')')[0].split(',');
+        x = parseFloat(coords[0]);
+        y = parseFloat(coords[1]);
+        z = parseFloat(coords[2]);
+        x = coords[0].indexOf('%') !== -1 ? x *= container.offsetWidth * 0.01 : x;
+        y = coords[1].indexOf('%') !== -1 ? y *= container.offsetHeight * 0.01 : y;
+      }
+
+      return {
+        x: x,
+        y: y,
+        z: z
+      };
+    };
+
+    _createClass(SliderComponent, [{
+      key: "items",
+      set: function set(items) {
+        if (this.items_ !== items) {
+          this.items_ = items;
+          this.state = {
+            index: 0
+          }; // this.state.index = Math.min(this.state.index, items ? items.length - 1 : 0);
+        }
+      },
+      get: function get() {
+        return this.items_;
+      }
+    }]);
+
+    return SliderComponent;
+  }(rxcomp.Component);
+  SliderComponent.meta = {
+    selector: '[slider]',
+    inputs: ['items'],
+    outputs: ['change', 'tween']
+  };
+
   var SlugPipe = /*#__PURE__*/function (_Pipe) {
     _inheritsLoose(SlugPipe, _Pipe);
 
@@ -7485,7 +7811,7 @@
   }(rxcomp.Module);
   AppModule.meta = {
     imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, EmotionalPageComponent, ErrorsComponent, GalleryComponent, HeaderComponent, HtmlPipe, EmotionalPageComponent, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, SlugPipe, VirtualStructure],
+    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, SliderComponent, SlugPipe, VirtualStructure],
     bootstrap: AppComponent
   };
 

@@ -1,3 +1,12 @@
+.page--we-know-light {
+	background: #000001;
+	color: white;
+
+	.container {
+		z-index: 1;
+	}
+}
+
 .section--hero-we-know-light {
 	position: relative;
 	color: white;

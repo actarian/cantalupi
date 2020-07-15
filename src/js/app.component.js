@@ -9,6 +9,7 @@ export default class AppComponent extends Component {
 		const showCover = SessionStorageService.get('showCover');
 		this.showCover = !showCover;
 		SessionStorageService.set('showCover', true);
+		this.sliderItems = [1, 2, 3];
 	}
 
 	onSkipCover(event) {

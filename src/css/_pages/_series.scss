@@ -157,6 +157,58 @@
 		p {
 			margin: 0 0 30px 0;
 		}
+
+		ul,
+		ol {
+			@extend %nav-vertical;
+			align-items: flex-start;
+			margin-bottom: 30px;
+
+			&>li {
+				@extend %nav-item;
+				display: flex;
+				align-items: center;
+			}
+		}
+
+		ol {
+			&>li {
+				font-family: $font-secondary;
+				font-size: 24px;
+				font-style: italic;
+				line-height: 1.1;
+				margin-bottom: 10px;
+
+				&:before {
+					content: '';
+					display: block;
+					background: $foreground;
+					flex: 0 0 0.5em;
+					width: 0.5em;
+					height: 1px;
+					margin-right: 10px;
+				}
+			}
+		}
+
+		ul {
+			&>li {
+				font-size: 16px;
+				line-height: 24px;
+				margin-bottom: 10px;
+
+				&:before {
+					content: '';
+					display: block;
+					flex: 0 0 10px;
+					width: 10px;
+					height: 10px;
+					border-radius: 5px;
+					background: #A28850;
+					margin-right: 15px;
+				}
+			}
+		}
 	}
 
 	.group--cta {

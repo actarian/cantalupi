@@ -7,10 +7,10 @@ import DatePipe from './date/date.pipe';
 import DropdownItemDirective from './dropdown/dropdown-item.directive';
 import DropdownDirective from './dropdown/dropdown.directive';
 import ErrorsComponent from './forms/errors.component';
+import GalleryModalComponent from './gallery/gallery-modal.component';
 import GalleryComponent from './gallery/gallery.component';
 import HeaderComponent from './header/header.component';
 import HtmlPipe from './html/html.pipe';
-import { default as EmotionalPageComponent, default as IndexPageComponent } from './index/index-page.component';
 import LazyPictureDirective from './lazy/lazy-picture.directive';
 import LazyDirective from './lazy/lazy.directive';
 import LocomotiveDirective from './locomotive/locomotive.directive';
@@ -21,6 +21,7 @@ import OverlayWebglDirective from './overlay-effect/overlay-webgl.directive';
 import ProductsPageComponent from './products-page/products-page.component';
 import ScrollToDirective from './scroll-to/scroll-to.directive';
 import SecureDirective from './secure/secure.directive';
+import SliderComponent from './slider/slider.component';
 import SlugPipe from './slug/slug.pipe';
 import VirtualStructure from './virtual/virtual.structure';
 
@@ -37,12 +38,11 @@ AppModule.meta = {
 		DatePipe,
 		DropdownDirective,
 		DropdownItemDirective,
-		EmotionalPageComponent,
 		ErrorsComponent,
 		GalleryComponent,
+		GalleryModalComponent,
 		HeaderComponent,
 		HtmlPipe,
-		IndexPageComponent,
 		LazyDirective,
 		LazyPictureDirective,
 		LocomotiveDirective,
@@ -53,6 +53,7 @@ AppModule.meta = {
 		ProductsPageComponent,
 		ScrollToDirective,
 		SecureDirective,
+		SliderComponent,
 		SlugPipe,
 		VirtualStructure
 	],

@@ -13,7 +13,7 @@ export default class ProductsPageComponent extends PageComponent {
 		this.primaryFilters = {};
 		this.secondaryFilters = {};
 		this.moreFilters = false;
-		this.makeFake();
+		// this.makeFake();
 		this.load$().pipe(
 			first(),
 		).subscribe(data => {

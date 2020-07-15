@@ -32,18 +32,15 @@
 
 <body>
 	<!-- @@include ./shared/svg.html -->
-	<!-- include ./shared/consts.html -->
 	<div class="app hidden" app-component>
 		<div class="page" locomotive *if="!showCover">
-			<!-- include ./shared/aside.html -->
 			<main class="main">
 				<!-- @@include ./shared/header.html -->
 				<!-- @@placeholder= main -->
 				<!-- @@include ./shared/footer.html -->
-				<!-- include ./shared/modal-outlet.html -->
 			</main>
-			<!-- include ./shared/notification.html -->
 		</div>
+		<!-- @@include ./shared/modal-outlet.html -->
 		<!-- @@include ./shared/cover.html -->
 		<!--
 		<div class="overlay-effect" overlay-effect></div>
