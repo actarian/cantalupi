@@ -5791,6 +5791,244 @@
   };
   OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);
 
+  var NODE = typeof module !== 'undefined' && module.exports;
+  var PARAMS = NODE ? {
+    get: function get() {}
+  } : new URLSearchParams(window.location.search);
+  var DEBUG =  PARAMS.get('debug') != null;
+  var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
+  var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io');
+  var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
+  var PRODUCTION = !DEVELOPMENT;
+  var ENV = {
+    NAME: 'cantalupi',
+    STATIC: STATIC,
+    DEVELOPMENT: DEVELOPMENT,
+    PRODUCTION: PRODUCTION,
+    RESOURCE: '/docs/',
+    STATIC_RESOURCE: './',
+    API: '/api',
+    STATIC_API: DEVELOPMENT && !STATIC ? '/Modules/Events/Client/docs/api' : './api'
+  };
+  function getApiUrl(url, useStatic) {
+    var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
+    var json = useStatic || STATIC ? '.json' : '';
+    return "" + base + url + json;
+  }
+  function getSlug(url) {
+    if (!url) {
+      return url;
+    }
+
+    if (url.indexOf("/" + ENV.NAME) !== 0) {
+      return url;
+    }
+
+    if (STATIC) {
+      console.log(url);
+      return url;
+    }
+
+    url = url.replace("/" + ENV.NAME, '');
+    url = url.replace('.html', '');
+    return "/it/it" + url;
+  }
+  var Environment = /*#__PURE__*/function () {
+    _createClass(Environment, [{
+      key: "href",
+      get: function get() {
+        if (window.location.host.indexOf('herokuapp') !== -1) {
+          return 'https://raw.githubusercontent.com/actarian/cantalupi/master/docs/';
+        } else {
+          return BASE_HREF;
+        }
+      }
+    }, {
+      key: "host",
+      get: function get() {
+        var host = window.location.host.replace('127.0.0.1', '192.168.1.2');
+
+        if (host.substr(host.length - 1, 1) === '/') {
+          host = host.substr(0, host.length - 1);
+        }
+
+        return window.location.protocol + "//" + host + BASE_HREF;
+      }
+    }]);
+
+    function Environment(options) {
+      if (options) {
+        Object.assign(this, options);
+      }
+    }
+
+    return Environment;
+  }();
+  var environment = new Environment({
+    port: 5000
+  });
+
+  var HttpResponse = /*#__PURE__*/function () {
+    _createClass(HttpResponse, [{
+      key: "static",
+      get: function get() {
+        return this.url.indexOf('.json') === this.url.length - 5;
+      }
+    }]);
+
+    function HttpResponse(response) {
+      this.data = null;
+
+      if (response) {
+        this.url = response.url;
+        this.status = response.status;
+        this.statusText = response.statusText;
+        this.ok = response.ok;
+        this.redirected = response.redirected;
+      }
+    }
+
+    return HttpResponse;
+  }();
+
+  var HttpService = /*#__PURE__*/function () {
+    function HttpService() {}
+
+    HttpService.http$ = function http$(method, url, data, format) {
+      var _this = this;
+
+      if (format === void 0) {
+        format = 'json';
+      }
+
+      method = url.indexOf('.json') !== -1 ? 'GET' : method;
+      var methods = ['POST', 'PUT', 'PATCH'];
+      var response_ = null;
+      return rxjs.from(fetch(url, {
+        method: method,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: methods.indexOf(method) !== -1 ? JSON.stringify(data) : undefined
+      }).then(function (response) {
+        response_ = new HttpResponse(response);
+        return response[format]().then(function (json) {
+          response_.data = json;
+
+          if (response.ok) {
+            return Promise.resolve(response_);
+          } else {
+            return Promise.reject(response_);
+          }
+        });
+        /*
+        if (response.ok) {
+        	return response[format]();
+        } else {
+        	return response.json().then(json => {
+        		return Promise.reject(json);
+        	});
+        }
+        */
+      })).pipe(operators.catchError(function (error) {
+        return rxjs.throwError(_this.getError(error, response_));
+      }));
+    };
+
+    HttpService.get$ = function get$(url, data, format) {
+      var query = this.query(data);
+      return this.http$('GET', "" + url + query, undefined, format);
+    };
+
+    HttpService.delete$ = function delete$(url) {
+      return this.http$('DELETE', url);
+    };
+
+    HttpService.post$ = function post$(url, data) {
+      return this.http$('POST', url, data);
+    };
+
+    HttpService.put$ = function put$(url, data) {
+      return this.http$('PUT', url, data);
+    };
+
+    HttpService.patch$ = function patch$(url, data) {
+      return this.http$('PATCH', url, data);
+    };
+
+    HttpService.query = function query(data) {
+      return ''; // todo
+    };
+
+    HttpService.getError = function getError(object, response) {
+      var error = typeof object === 'object' ? object : {};
+
+      if (!error.statusCode) {
+        error.statusCode = response ? response.status : 0;
+      }
+
+      if (!error.statusMessage) {
+        error.statusMessage = response ? response.statusText : object;
+      }
+
+      console.log('HttpService.getError', error, object);
+      return error;
+    };
+
+    return HttpService;
+  }();
+
+  var ApiService = /*#__PURE__*/function (_HttpService) {
+    _inheritsLoose(ApiService, _HttpService);
+
+    function ApiService() {
+      return _HttpService.apply(this, arguments) || this;
+    }
+
+    ApiService.get$ = function get$(url, data, format) {
+      return _HttpService.get$.call(this, getApiUrl(url), data, format);
+    };
+
+    ApiService.delete$ = function delete$(url) {
+      return _HttpService.delete$.call(this, getApiUrl(url));
+    };
+
+    ApiService.post$ = function post$(url, data) {
+      return _HttpService.post$.call(this, getApiUrl(url), data);
+    };
+
+    ApiService.put$ = function put$(url, data) {
+      return _HttpService.put$.call(this, getApiUrl(url), data);
+    };
+
+    ApiService.patch$ = function patch$(url, data) {
+      return _HttpService.patch$.call(this, getApiUrl(url), data);
+    };
+
+    ApiService.staticGet$ = function staticGet$(url, data, format) {
+      return _HttpService.get$.call(this, getApiUrl(url, true), data, format);
+    };
+
+    ApiService.staticDelete$ = function staticDelete$(url) {
+      return _HttpService.delete$.call(this, getApiUrl(url, true));
+    };
+
+    ApiService.staticPost$ = function staticPost$(url, data) {
+      return _HttpService.post$.call(this, getApiUrl(url, true), data);
+    };
+
+    ApiService.staticPut$ = function staticPut$(url, data) {
+      return _HttpService.put$.call(this, getApiUrl(url, true), data);
+    };
+
+    ApiService.staticPatch$ = function staticPatch$(url, data) {
+      return _HttpService.patch$.call(this, getApiUrl(url, true), data);
+    };
+
+    return ApiService;
+  }(HttpService);
+
   var FilterMode = {
     SELECT: 'select',
     AND: 'and',
@@ -6178,43 +6416,75 @@
     _proto.onInit = function onInit() {
       var _this = this;
 
-      var initialParams = window.params || {};
-      var items = this.items = window.products || [];
-      var filters = window.filters || {};
+      this.items = [];
+      this.filters = {};
+      this.primaryFilters = {};
+      this.secondaryFilters = {};
+      this.moreFilters = false;
+      this.makeFake();
+      this.load$().pipe(operators.first()).subscribe(function (data) {
+        _this.items = data[0];
+        _this.filters = data[1];
+
+        _this.onLoad();
+
+        _this.pushChanges();
+      });
+    };
+
+    _proto.load$ = function load$() {
+      return rxjs.combineLatest(ApiService.get$('/products/yachts-exteriors').pipe(operators.map(function (response) {
+        return response.data;
+      })), ApiService.get$('/products/filters').pipe(operators.map(function (response) {
+        return response.data;
+      })));
+    };
+
+    _proto.onLoad = function onLoad() {
+      var _this2 = this;
+
+      var items = this.items;
+      var filters = this.filters;
       Object.keys(filters).forEach(function (key) {
         filters[key].mode = FilterMode.SELECT;
       });
+      var initialParams = {};
       var filterService = new FilterService(filters, initialParams, function (key, filter) {
         switch (key) {
-          /*
-          case 'categories':
-          	filter.filter = (item, value) => {
-          		return item.category === value;
-          	};
-          	break;
-          	*/
           default:
             filter.filter = function (item, value) {
-              return item.features.indexOf(value) !== -1;
+              if (Array.isArray(item[key])) {
+                return item[key].indexOf(value) !== -1;
+              } else {
+                return item[key] === value;
+              } // return item.features.indexOf(value) !== -1;
+
             };
 
         }
       });
-      filterService.items$(items).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (items) {
-        _this.items = items;
-
-        _this.pushChanges(); // console.log('MediaLibraryComponent.items', items.length);
-
-      });
       this.filterService = filterService;
       this.filters = filterService.filters;
+      Object.keys(this.filters).forEach(function (key) {
+        if (_this2.filters[key].secondary) {
+          _this2.secondaryFilters[key] = _this2.filters[key];
+        } else {
+          _this2.primaryFilters[key] = _this2.filters[key];
+        }
+      });
+      filterService.items$(items).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (items) {
+        _this2.items = items;
+
+        _this2.pushChanges(); // console.log('MediaLibraryComponent.items', items.length);
+
+      });
     };
 
     _proto.toggleFilter = function toggleFilter(filter) {
-      var _this2 = this;
+      var _this3 = this;
 
       Object.keys(this.filters).forEach(function (key) {
-        var f = _this2.filters[key];
+        var f = _this3.filters[key];
 
         if (f === filter) {
           f.active = !f.active;
@@ -6230,6 +6500,90 @@
       event.stopImmediatePropagation();
       filter.clear();
       this.pushChanges();
+    };
+
+    _proto.onMoreFilters = function onMoreFilters(event) {
+      this.moreFilters = !this.moreFilters;
+      this.pushChanges();
+    };
+
+    _proto.makeFake = function makeFake() {
+      ApiService.get$('/products/all').pipe(operators.first()).subscribe(function (response) {
+        var filters = {};
+
+        var addFilter = function addFilter(key, valueOrArray) {
+          var filter = filters[key] ? filters[key] : filters[key] = {
+            label: key,
+            placeholder: "Scegli " + key,
+            mode: 'or',
+            options: []
+          };
+          valueOrArray = Array.isArray(valueOrArray) ? valueOrArray : [valueOrArray];
+          valueOrArray.forEach(function (value) {
+            if (!filter.options.find(function (x) {
+              return x.value === value;
+            })) {
+              filter.options.push({
+                label: value,
+                value: value
+              });
+            }
+          });
+        };
+
+        var items = response.data;
+        items.forEach(function (x, i) {
+          var splitKeys = ['lumen', 'watt', 'material', 'mounting', 'area'];
+          splitKeys.forEach(function (key) {
+            if (x[key].indexOf('/') !== -1) {
+              x[key] = x[key].split('/').map(function (x) {
+                return x.trim();
+              });
+            } else {
+              x[key] = x[key].split(',').map(function (x) {
+                return x.trim();
+              });
+            }
+          });
+
+          for (var k in x) {
+            if (['catalogue', 'category', 'menu'].indexOf(k) === -1 && typeof x[k] === 'string' && x[k].indexOf('/') !== -1) {
+              console.log(k, x[k]);
+            }
+
+            if (['id', 'name', 'catalogue', 'category', 'menu'].indexOf(k) === -1) {
+              addFilter(k, x[k]);
+            }
+          }
+
+          x.id = 1000 + i + 1;
+          x.url = '/cantalupi/exclusive-yachts-interiors-top-series.html';
+          x.image = "/cantalupi/img/exclusive-yachts-exteriors/0" + (1 + x.id % 4) + ".jpg";
+          x.imageOver = "/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg";
+          x.category = 'Exclusive Yachts Exteriors';
+          x.title = x.name;
+          x.description = x.plus;
+          x.power = x.watt + ' W';
+          x.lumen = x.lumen + ' lumen';
+        });
+        console.log('filters', filters, JSON.stringify(filters, null, 2));
+        var yachtsExteriors = items.filter(function (x) {
+          return x.yachts && x.category.indexOf('Exteriors') !== -1;
+        });
+        var yachtsInteriors = items.filter(function (x) {
+          return x.yachts && x.category.indexOf('Interiors') !== -1;
+        });
+        var villasExteriors = items.filter(function (x) {
+          return x.villas && x.category.indexOf('Exteriors') !== -1;
+        });
+        var villasInteriors = items.filter(function (x) {
+          return x.villas && x.category.indexOf('Interiors') !== -1;
+        });
+        console.log('yachtsExteriors', yachtsExteriors, JSON.stringify(yachtsExteriors, null, 2));
+        console.log('yachtsInteriors', yachtsInteriors, JSON.stringify(yachtsInteriors, null, 2));
+        console.log('villasExteriors', villasExteriors, JSON.stringify(villasExteriors, null, 2));
+        console.log('villasInteriors', villasInteriors, JSON.stringify(villasInteriors, null, 2));
+      });
     };
 
     return ProductsPageComponent;
@@ -6317,244 +6671,6 @@
   ScrollToDirective.meta = {
     selector: "[(scrollTo)]"
   };
-
-  var NODE = typeof module !== 'undefined' && module.exports;
-  var PARAMS = NODE ? {
-    get: function get() {}
-  } : new URLSearchParams(window.location.search);
-  var DEBUG =  PARAMS.get('debug') != null;
-  var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
-  var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io');
-  var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
-  var PRODUCTION = !DEVELOPMENT;
-  var ENV = {
-    NAME: 'cantalupi',
-    STATIC: STATIC,
-    DEVELOPMENT: DEVELOPMENT,
-    PRODUCTION: PRODUCTION,
-    RESOURCE: '/docs/',
-    STATIC_RESOURCE: './',
-    API: '/api',
-    STATIC_API: DEVELOPMENT && !STATIC ? '/Modules/Events/Client/docs/api' : './api'
-  };
-  function getApiUrl(url, useStatic) {
-    var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
-    var json = useStatic || STATIC ? '.json' : '';
-    return "" + base + url + json;
-  }
-  function getSlug(url) {
-    if (!url) {
-      return url;
-    }
-
-    if (url.indexOf("/" + ENV.NAME) !== 0) {
-      return url;
-    }
-
-    if (STATIC) {
-      console.log(url);
-      return url;
-    }
-
-    url = url.replace("/" + ENV.NAME, '');
-    url = url.replace('.html', '');
-    return "/it/it" + url;
-  }
-  var Environment = /*#__PURE__*/function () {
-    _createClass(Environment, [{
-      key: "href",
-      get: function get() {
-        if (window.location.host.indexOf('herokuapp') !== -1) {
-          return 'https://raw.githubusercontent.com/actarian/cantalupi/master/docs/';
-        } else {
-          return BASE_HREF;
-        }
-      }
-    }, {
-      key: "host",
-      get: function get() {
-        var host = window.location.host.replace('127.0.0.1', '192.168.1.2');
-
-        if (host.substr(host.length - 1, 1) === '/') {
-          host = host.substr(0, host.length - 1);
-        }
-
-        return window.location.protocol + "//" + host + BASE_HREF;
-      }
-    }]);
-
-    function Environment(options) {
-      if (options) {
-        Object.assign(this, options);
-      }
-    }
-
-    return Environment;
-  }();
-  var environment = new Environment({
-    port: 5000
-  });
-
-  var HttpResponse = /*#__PURE__*/function () {
-    _createClass(HttpResponse, [{
-      key: "static",
-      get: function get() {
-        return this.url.indexOf('.json') === this.url.length - 5;
-      }
-    }]);
-
-    function HttpResponse(response) {
-      this.data = null;
-
-      if (response) {
-        this.url = response.url;
-        this.status = response.status;
-        this.statusText = response.statusText;
-        this.ok = response.ok;
-        this.redirected = response.redirected;
-      }
-    }
-
-    return HttpResponse;
-  }();
-
-  var HttpService = /*#__PURE__*/function () {
-    function HttpService() {}
-
-    HttpService.http$ = function http$(method, url, data, format) {
-      var _this = this;
-
-      if (format === void 0) {
-        format = 'json';
-      }
-
-      method = url.indexOf('.json') !== -1 ? 'GET' : method;
-      var methods = ['POST', 'PUT', 'PATCH'];
-      var response_ = null;
-      return rxjs.from(fetch(url, {
-        method: method,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: methods.indexOf(method) !== -1 ? JSON.stringify(data) : undefined
-      }).then(function (response) {
-        response_ = new HttpResponse(response);
-        return response[format]().then(function (json) {
-          response_.data = json;
-
-          if (response.ok) {
-            return Promise.resolve(response_);
-          } else {
-            return Promise.reject(response_);
-          }
-        });
-        /*
-        if (response.ok) {
-        	return response[format]();
-        } else {
-        	return response.json().then(json => {
-        		return Promise.reject(json);
-        	});
-        }
-        */
-      })).pipe(operators.catchError(function (error) {
-        return rxjs.throwError(_this.getError(error, response_));
-      }));
-    };
-
-    HttpService.get$ = function get$(url, data, format) {
-      var query = this.query(data);
-      return this.http$('GET', "" + url + query, undefined, format);
-    };
-
-    HttpService.delete$ = function delete$(url) {
-      return this.http$('DELETE', url);
-    };
-
-    HttpService.post$ = function post$(url, data) {
-      return this.http$('POST', url, data);
-    };
-
-    HttpService.put$ = function put$(url, data) {
-      return this.http$('PUT', url, data);
-    };
-
-    HttpService.patch$ = function patch$(url, data) {
-      return this.http$('PATCH', url, data);
-    };
-
-    HttpService.query = function query(data) {
-      return ''; // todo
-    };
-
-    HttpService.getError = function getError(object, response) {
-      var error = typeof object === 'object' ? object : {};
-
-      if (!error.statusCode) {
-        error.statusCode = response ? response.status : 0;
-      }
-
-      if (!error.statusMessage) {
-        error.statusMessage = response ? response.statusText : object;
-      }
-
-      console.log('HttpService.getError', error, object);
-      return error;
-    };
-
-    return HttpService;
-  }();
-
-  var ApiService = /*#__PURE__*/function (_HttpService) {
-    _inheritsLoose(ApiService, _HttpService);
-
-    function ApiService() {
-      return _HttpService.apply(this, arguments) || this;
-    }
-
-    ApiService.get$ = function get$(url, data, format) {
-      return _HttpService.get$.call(this, getApiUrl(url), data, format);
-    };
-
-    ApiService.delete$ = function delete$(url) {
-      return _HttpService.delete$.call(this, getApiUrl(url));
-    };
-
-    ApiService.post$ = function post$(url, data) {
-      return _HttpService.post$.call(this, getApiUrl(url), data);
-    };
-
-    ApiService.put$ = function put$(url, data) {
-      return _HttpService.put$.call(this, getApiUrl(url), data);
-    };
-
-    ApiService.patch$ = function patch$(url, data) {
-      return _HttpService.patch$.call(this, getApiUrl(url), data);
-    };
-
-    ApiService.staticGet$ = function staticGet$(url, data, format) {
-      return _HttpService.get$.call(this, getApiUrl(url, true), data, format);
-    };
-
-    ApiService.staticDelete$ = function staticDelete$(url) {
-      return _HttpService.delete$.call(this, getApiUrl(url, true));
-    };
-
-    ApiService.staticPost$ = function staticPost$(url, data) {
-      return _HttpService.post$.call(this, getApiUrl(url, true), data);
-    };
-
-    ApiService.staticPut$ = function staticPut$(url, data) {
-      return _HttpService.put$.call(this, getApiUrl(url, true), data);
-    };
-
-    ApiService.staticPatch$ = function staticPatch$(url, data) {
-      return _HttpService.patch$.call(this, getApiUrl(url, true), data);
-    };
-
-    return ApiService;
-  }(HttpService);
 
   var DownloadService = /*#__PURE__*/function () {
     function DownloadService() {}

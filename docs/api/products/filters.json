@@ -1,0 +1,178 @@
+{
+  "family": {
+    "label": "Famiglia",
+    "placeholder": "Scegli la famiglia",
+    "mode": "or",
+    "options": [
+      {
+        "label": "TOP Downlights",
+        "value": "TOP Downlights"
+      },
+      {
+        "label": "Spot lights",
+        "value": "Spot lights"
+      },
+      {
+        "label": "Classic Downlights",
+        "value": "Classic Downlights"
+      },
+      {
+        "label": "Linear Lights",
+        "value": "Linear Lights"
+      },
+      {
+        "label": "Technical downlights",
+        "value": "Technical downlights"
+      }
+    ],
+    "secondary": false
+  },
+  "area": {
+    "label": "Zona d’installazione",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Cielino",
+        "value": "Cielino"
+      }
+    ],
+    "secondary": false
+  },
+  "range": {
+    "label": "IP range",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "40",
+        "value": "40"
+      },
+      {
+        "label": "54",
+        "value": "54"
+      },
+      {
+        "label": "20",
+        "value": "20"
+      }
+    ],
+    "secondary": false
+  },
+  "shape": {
+    "label": "Forma",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Tonda",
+        "value": "Round"
+      },
+      {
+        "label": "Quadrata",
+        "value": "Square"
+      },
+      {
+        "label": "Lineare",
+        "value": "Linear"
+      }
+    ],
+    "secondary": false
+  },
+  "frame": {
+    "label": "Cornice",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Senza cornice",
+        "value": "Frameless"
+      },
+      {
+        "label": "Con Cornice",
+        "value": "Frame"
+      }
+    ],
+    "secondary": false
+  },
+  "comfort": {
+    "label": "Comfort",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Ottica da incasso",
+        "value": "recessed optics"
+      },
+      {
+        "label": "Incasso",
+        "value": "recessed"
+      }
+    ],
+    "secondary": true
+  },
+  "tracking": {
+    "label": "Attacco",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Fisso",
+        "value": "Fix"
+      },
+      {
+        "label": "Regolabile",
+        "value": "Adj"
+      }
+    ],
+    "secondary": true
+  },
+  "mounting": {
+    "label": "Montaggio",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Pressori + Bushing",
+        "value": "Pressori+Bushing"
+      },
+      {
+        "label": "Molle",
+        "value": "springs"
+      }
+    ],
+    "secondary": true
+  },
+  "antiglare": {
+    "label": "Antiriflesso",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Sì",
+        "value": true
+      },
+      {
+        "label": "No",
+        "value": false
+      }
+    ],
+    "secondary": true
+  },
+  "ledType": {
+    "label": "Intensità luminosa",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Tunable white",
+        "value": "white"
+      },
+      {
+        "label": "RGB",
+        "value": "white + red"
+      }
+    ],
+    "secondary": true
+  }
+}

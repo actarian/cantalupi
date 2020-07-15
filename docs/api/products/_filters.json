@@ -1,0 +1,414 @@
+{
+  "family": {
+    "label": "family",
+    "placeholder": "Scegli family",
+    "mode": "or",
+    "options": [
+      {
+        "label": "TOP Downlights",
+        "value": "TOP Downlights"
+      },
+      {
+        "label": "Spot lights",
+        "value": "Spot lights"
+      },
+      {
+        "label": "Classic Downlights",
+        "value": "Classic Downlights"
+      },
+      {
+        "label": "Linear Lights",
+        "value": "Linear Lights"
+      },
+      {
+        "label": "Technical downlights",
+        "value": "Technical downlights"
+      }
+    ]
+  },
+  "area": {
+    "label": "Zona d’installazione",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Cielino",
+        "value": "Cielino"
+      }
+    ]
+  },
+  "range": {
+    "label": "IP range",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "40",
+        "value": "40"
+      },
+      {
+        "label": "54",
+        "value": "54"
+      },
+      {
+        "label": "20",
+        "value": "20"
+      }
+    ]
+  },
+  "shape": {
+    "label": "shape",
+    "placeholder": "Scegli shape",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Tonda",
+        "value": "Round"
+      },
+      {
+        "label": "Quadrata",
+        "value": "Square"
+      },
+      {
+        "label": "Lineare",
+        "value": "Linear"
+      }
+    ]
+  },
+  "frame": {
+    "label": "frame",
+    "placeholder": "Scegli frame",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Senza cornice",
+        "value": "Frameless"
+      },
+      {
+        "label": "Con Cornice",
+        "value": "Frame"
+      }
+    ]
+  },
+  "comfort": {
+    "label": "Comfort",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Ottica da incasso",
+        "value": "recessed optics"
+      },
+      {
+        "label": "Incasso",
+        "value": "recessed"
+      }
+    ]
+  },
+  "tracking": {
+    "label": "Attacco",
+    "placeholder": "Seleziona",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Fisso",
+        "value": "Fix"
+      },
+      {
+        "label": "Regolabile",
+        "value": "Adj"
+      }
+    ]
+  },
+  "mounting": {
+    "label": "mounting",
+    "placeholder": "Scegli mounting",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Pressori + Bushing",
+        "value": "Pressori+Bushing"
+      },
+      {
+        "label": "Molle",
+        "value": "springs"
+      }
+    ]
+  },
+  "antiglare": {
+    "label": "antiglare",
+    "placeholder": "Scegli antiglare",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Sì",
+        "value": true
+      },
+      {
+        "label": "No",
+        "value": false
+      }
+    ]
+  },
+  "ledType": {
+    "label": "ledType",
+    "placeholder": "Scegli ledType",
+    "mode": "or",
+    "options": [
+      {
+        "label": "Tunable white",
+        "value": "white"
+      },
+      {
+        "label": "RGB",
+        "value": "white + red"
+      }
+    ]
+  },
+  "serie": {
+    "label": "serie",
+    "placeholder": "Scegli serie",
+    "mode": "or",
+    "options": [
+      {
+        "label": "TOP 4",
+        "value": "TOP 4"
+      },
+      {
+        "label": "TOP 5",
+        "value": "TOP 5"
+      },
+      {
+        "label": "TOP 6",
+        "value": "TOP 6"
+      },
+      {
+        "label": "TOP 8",
+        "value": "TOP 8"
+      },
+      {
+        "label": "SUSY",
+        "value": "SUSY"
+      },
+      {
+        "label": "ROGER",
+        "value": "ROGER"
+      },
+      {
+        "label": "POINT",
+        "value": "POINT"
+      },
+      {
+        "label": "FIVE",
+        "value": "FIVE"
+      }
+    ]
+  },
+  "size": {
+    "label": "size",
+    "placeholder": "Scegli size",
+    "mode": "or",
+    "options": [
+      {
+        "label": "45x45",
+        "value": "45x45"
+      },
+      {
+        "label": "53x53",
+        "value": "53x53"
+      },
+      {
+        "label": "36x36",
+        "value": "36x36"
+      },
+      {
+        "label": "60x60",
+        "value": "60x60"
+      },
+      {
+        "label": "71x71",
+        "value": "71x71"
+      },
+      {
+        "label": "48x48",
+        "value": "48x48"
+      },
+      {
+        "label": "78x78",
+        "value": "78x78"
+      },
+      {
+        "label": "88x88",
+        "value": "88x88"
+      },
+      {
+        "label": "64x64",
+        "value": "64x64"
+      }
+    ]
+  },
+  "diameter": {
+    "label": "diameter",
+    "placeholder": "Scegli diameter",
+    "mode": "or",
+    "options": [
+      {
+        "label": "30",
+        "value": "30"
+      },
+      {
+        "label": "45",
+        "value": "45"
+      },
+      {
+        "label": "53",
+        "value": "53"
+      },
+      {
+        "label": "36",
+        "value": "36"
+      },
+      {
+        "label": "62",
+        "value": "62"
+      },
+      {
+        "label": "TBD",
+        "value": "TBD"
+      },
+      {
+        "label": "72",
+        "value": "72"
+      },
+      {
+        "label": "60",
+        "value": "60"
+      },
+      {
+        "label": "71",
+        "value": "71"
+      },
+      {
+        "label": "48",
+        "value": "48"
+      },
+      {
+        "label": "74",
+        "value": "74"
+      },
+      {
+        "label": "64",
+        "value": "64"
+      },
+      {
+        "label": "84",
+        "value": "84"
+      },
+      {
+        "label": "78",
+        "value": "78"
+      },
+      {
+        "label": "88",
+        "value": "88"
+      },
+      {
+        "label": "90",
+        "value": "90"
+      },
+      {
+        "label": "TBD",
+        "value": "TBD"
+      }
+    ]
+  },
+  "lumen": {
+    "label": "lumen",
+    "placeholder": "Scegli lumen",
+    "mode": "or",
+    "options": [
+      {
+        "label": "250",
+        "value": "250"
+      },
+      {
+        "label": "450",
+        "value": "450"
+      },
+      {
+        "label": "300",
+        "value": "300"
+      },
+      {
+        "label": "500",
+        "value": "500"
+      },
+      {
+        "label": "400",
+        "value": "400"
+      },
+      {
+        "label": "750",
+        "value": "750"
+      },
+      {
+        "label": "TBD",
+        "value": "TBD"
+      },
+      {
+        "label": "650",
+        "value": "650"
+      },
+      {
+        "label": "TBD",
+        "value": "TBD"
+      }
+    ]
+  },
+  "watt": {
+    "label": "watt",
+    "placeholder": "Scegli watt",
+    "mode": "or",
+    "options": [
+      {
+        "label": "4",
+        "value": "4"
+      },
+      {
+        "label": "8",
+        "value": "8"
+      },
+      {
+        "label": "6",
+        "value": "6"
+      },
+      {
+        "label": "9",
+        "value": "9"
+      },
+      {
+        "label": "TBD",
+        "value": "TBD"
+      }
+    ]
+  },
+  "material": {
+    "label": "material",
+    "placeholder": "Scegli material",
+    "mode": "or",
+    "options": [
+      {
+        "label": "alluminio",
+        "value": "alluminio"
+      },
+      {
+        "label": "alluminio (body+heatsink)",
+        "value": "alluminio (body+heatsink)"
+      },
+      {
+        "label": "acciaio inox AISI 316L(frame)",
+        "value": "acciaio inox AISI 316L(frame)"
+      }
+    ]
+  }
+}

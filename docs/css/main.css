@@ -290,10 +290,10 @@ strong {
     overflow: hidden;
     z-index: 10;
     transition-delay: 0s; }
-  .btn--primary:hover:before, .btn--download:hover:before, .btn--secondary:hover:before, .btn--contact:hover:before {
+  .btn--primary:hover:before, .btn--download:hover:before, .btn--secondary:hover:before, .btn--contact:hover:before, .active.btn--primary:before, .active.btn--download:before, .active.btn--secondary:before, .active.btn--contact:before {
     width: 100%;
     transition-delay: 0s; }
-  .btn--primary:hover:after, .btn--download:hover:after, .btn--secondary:hover:after, .btn--contact:hover:after {
+  .btn--primary:hover:after, .btn--download:hover:after, .btn--secondary:hover:after, .btn--contact:hover:after, .active.btn--primary:after, .active.btn--download:after, .active.btn--secondary:after, .active.btn--contact:after {
     width: 100%;
     transition-delay: 0.2s; }
 
@@ -4962,7 +4962,7 @@ errors-component {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 80px 0; }
+  margin: 80px 0 0 0; }
   @media (min-width: 1024px) {
     .listing--filters {
       margin-left: -6px;
@@ -4989,6 +4989,7 @@ errors-component {
     border-bottom: 1px solid #1D1D1B; }
     .listing--filters .control span {
       font-size: 14px;
+      font-weight: 600;
       line-height: 1;
       color: black; }
     .listing--filters .control .caret-down {
@@ -5000,17 +5001,26 @@ errors-component {
       width: 14px;
       height: 14px; }
   .listing--filters .group--control {
-    padding: 10px;
-    transform: translateY(10px);
+    padding: 12px;
+    /*
+		transform: translateY(10px);
+		*/
     transition: all ease-in-out 400ms; }
+  .listing--filters .btn--secondary {
+    margin-bottom: 12px; }
   .listing--filters .listing__item {
     cursor: pointer;
     z-index: 1; }
     .listing--filters .listing__item:hover .group--control, .listing--filters .listing__item.active .group--control {
       box-shadow: 0 30px 30px -5px rgba(0, 0, 0, 0.15); }
-    .listing--filters .listing__item.active .control .caret-down {
-      fill: #A28850;
-      transform: rotateZ(180deg); }
+    .listing--filters .listing__item.active {
+      z-index: 2; }
+      .listing--filters .listing__item.active .control .caret-down {
+        fill: #A28850;
+        transform: rotateZ(180deg); }
+
+.listing--filters + .listing--filters {
+  margin: 0; }
 
 .nav--options {
   align-items: flex-start;
@@ -5023,14 +5033,18 @@ errors-component {
     line-height: 40px; }
     .nav--options__item > span {
       font-size: 14px;
+      font-weight: 600;
       color: #1D1D1B; }
       .nav--options__item > span.active {
         color: #A28850; }
+      .nav--options__item > span.disabled {
+        pointer-events: none;
+        opacity: 0.2; }
 
 .card--product {
   display: block;
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   cursor: pointer;
   transition: all ease-in-out 400ms; }
   .card--product > .picture {
@@ -5069,10 +5083,11 @@ errors-component {
     color: #21293C; }
   .card--product .listing--info {
     display: inline-flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: flex-end;
     margin-top: 15px; }
     .card--product .listing--info > .listing__item {
+      flex: 1 1 25%;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
@@ -5118,20 +5133,20 @@ errors-component {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  margin: 0 0 80px 0; }
+  margin: 80px 0 80px 0; }
   @media (min-width: 1024px) {
     .listing--products {
       margin-left: -6px;
       margin-right: -6px;
       align-items: flex-end; }
-      .listing--products .listing__item {
+      .listing--products > .listing__item {
         width: 100%;
         flex: 0 0 calc(25% - 12px);
         max-width: calc(25% - 12px);
         margin-left: 6px;
         margin-right: 6px; } }
   @media (max-width: 1023.98px) {
-    .listing--products .listing__item {
+    .listing--products > .listing__item {
       width: 100%;
       flex: 0 0 calc(100% - 0px);
       max-width: calc(100% - 0px);

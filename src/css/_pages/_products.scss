@@ -105,7 +105,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
-	margin: 80px 0;
+	margin: 80px 0 0 0;
 
 	@include media-up(md) {
 		$gutter: 12px;
@@ -136,6 +136,7 @@
 
 		span {
 			font-size: 14px;
+			font-weight: 600;
 			line-height: 1;
 			// color: #A3A3A3;
 			color: black;
@@ -155,9 +156,15 @@
 	}
 
 	.group--control {
-		padding: 10px;
+		padding: 12px;
+		/*
 		transform: translateY(10px);
+		*/
 		transition: all ease-in-out 400ms;
+	}
+
+	.btn--secondary {
+		margin-bottom: 12px;
 	}
 
 	.listing__item {
@@ -166,12 +173,15 @@
 
 		&:hover,
 		&.active {
+
 			.group--control {
 				box-shadow: 0 30px 30px -5px rgba(0, 0, 0, 0.15);
 			}
 		}
 
 		&.active {
+			z-index: 2;
+
 			.control {
 				.caret-down {
 					fill: #A28850;
@@ -180,6 +190,10 @@
 			}
 		}
 	}
+}
+
+.listing--filters+.listing--filters {
+	margin: 0;
 }
 
 .nav--options {
@@ -198,10 +212,16 @@
 		&>span {
 			@extend %btn;
 			font-size: 14px;
+			font-weight: 600;
 			color: #1D1D1B;
 
 			&.active {
 				color: #A28850;
+			}
+
+			&.disabled {
+				pointer-events: none;
+				opacity: 0.2;
 			}
 		}
 	}
@@ -210,7 +230,7 @@
 .card--product {
 	display: block;
 	text-align: center;
-	margin-bottom: 60px;
+	margin-bottom: 40px;
 	cursor: pointer;
 	transition: all ease-in-out 400ms;
 
@@ -245,11 +265,12 @@
 
 	.listing--info {
 		display: inline-flex;
-		justify-content: center;
+		justify-content: space-around;
 		align-items: flex-end;
 		margin-top: 15px;
 
 		&>.listing__item {
+			flex: 1 1 25%;
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
@@ -327,7 +348,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-start;
-	margin: 0 0 80px 0;
+	margin: 80px 0 80px 0;
 
 	@include media-up(md) {
 		$gutter: 12px;
@@ -335,13 +356,13 @@
 		margin-right: - $gutter / 2;
 		align-items: flex-end;
 
-		.listing__item {
+		&>.listing__item {
 			@include as-col(3, 12, $gutter);
 		}
 	}
 
 	@include media-down(sm) {
-		.listing__item {
+		&>.listing__item {
 			@include as-col(12, 12, 0px);
 		}
 	}
