@@ -21,6 +21,7 @@ import OverlayWebglDirective from './overlay-effect/overlay-webgl.directive';
 import ProductsPageComponent from './products-page/products-page.component';
 import ScrollToDirective from './scroll-to/scroll-to.directive';
 import SecureDirective from './secure/secure.directive';
+import ShareComponent from './share/share.component';
 import SliderComponent from './slider/slider.component';
 import SlugPipe from './slug/slug.pipe';
 import VirtualStructure from './virtual/virtual.structure';
@@ -53,6 +54,7 @@ AppModule.meta = {
 		ProductsPageComponent,
 		ScrollToDirective,
 		SecureDirective,
+		ShareComponent,
 		SliderComponent,
 		SlugPipe,
 		VirtualStructure

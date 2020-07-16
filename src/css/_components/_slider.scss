@@ -76,6 +76,29 @@
 	}
 }
 
+.btn--next,
+.btn--prev {
+	@extend %btn;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	line-height: 1;
+
+	& {
+		color: white;
+	}
+
+	&:hover {
+		color: #A28850;
+	}
+
+	svg {
+		width: 28px;
+		height: 32px;
+		fill: currentColor;
+	}
+}
+
 .slider__pagination {
 	position: absolute;
 	display: flex;
@@ -99,15 +122,6 @@
 			visibility: hidden;
 		}
 	}
-
-	svg {
-		width: 40px;
-		height: 40px;
-		fill: rgba(255, 255, 255, 0.5);
-		stroke: rgba(0, 0, 0, 0.4);
-		stroke-width: 1;
-	}
-
 }
 
 .slider__slide {

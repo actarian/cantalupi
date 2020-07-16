@@ -4,34 +4,47 @@ import DragService, { DragDownEvent, DragMoveEvent, DragUpEvent } from '../drag/
 
 export default class SliderComponent extends Component {
 
+	get items() {
+		return this.items_ || [];
+	}
 	set items(items) {
 		if (this.items_ !== items) {
 			this.items_ = items;
-			this.state = {
-				index: 0,
-			};
-			// this.state.index = Math.min(this.state.index, items ? items.length - 1 : 0);
 		}
 	}
 
-	get items() {
-		return this.items_;
+	get current() {
+		return this.state.current || 0;
+	}
+	set current(current = 0) {
+		this.state.current = current;
+		// this.state.current = Math.min(current, items ? items.length - 1 : 0);
+	}
+
+	get state() {
+		if (!this.state_) {
+			this.state_ = {};
+		}
+		return this.state_;
 	}
 
 	onInit() {
 		const { node } = getContext(this);
 		this.container = node;
 		this.wrapper = node.querySelector('.slider__wrapper');
-		this.state.index = 0;
-		this.change.next(this.state.index);
-		gsap.set(this.wrapper, {
-			x: -100 * this.state.index + '%',
-		});
-		this.slider$().pipe(
-			takeUntil(this.unsubscribe$),
-		).subscribe(event => {
-			// console.log('dragService', event);
-		});
+		setTimeout(() => {
+			// this.change.next(this.current);
+			/*
+			gsap.set(this.wrapper, {
+				x: -100 * this.current + '%',
+			});
+			*/
+			this.slider$().pipe(
+				takeUntil(this.unsubscribe$),
+			).subscribe(event => {
+				// console.log('dragService', event);
+			});
+		}, 1);
 	}
 
 	slider$() {
@@ -57,26 +70,26 @@ export default class SliderComponent extends Component {
 					this.wrapper.style.transform = null;
 					const width = this.container.offsetWidth;
 					if (distanceX * -1 > width * 0.25 && this.hasNext()) {
-						this.navTo(this.state.index + 1);
+						this.navTo(this.current + 1);
 					} else if (distanceX * -1 < width * -0.25 && this.hasPrev()) {
-						this.navTo(this.state.index - 1);
+						this.navTo(this.current - 1);
 					} else {
-						this.wrapper.style.transform = `translate3d(${-100 * this.state.index}%, 0, 0)`;
-						// this.navTo(this.state.index);
+						this.wrapper.style.transform = `translate3d(${-100 * this.current}%, 0, 0)`;
+						// this.navTo(this.current);
 					}
-					// this.navTo(index);
+					// this.navTo(current);
 				}
 			})
 		);
 	}
 
-	tweenTo(index, callback) {
-		// console.log('tweenTo', index);
+	tweenTo(current, callback) {
+		// console.log('tweenTo', current);
 		const container = this.container;
 		const wrapper = this.wrapper;
 		const width = this.container.offsetWidth;
 		gsap.to(wrapper, 0.50, {
-			x: -100 * index + '%',
+			x: -100 * current + '%',
 			delay: 0,
 			ease: Power3.easeInOut,
 			overwrite: 'all',
@@ -91,26 +104,26 @@ export default class SliderComponent extends Component {
 		});
 	}
 
-	navTo(index) {
-		this.state.index = index;
+	navTo(current) {
+		this.current = current;
 		this.pushChanges();
 		/*
-		if (this.state.index !== index) {
-			this.tweenTo(index, () => {
-				this.state.index = index;
+		if (this.current !== current) {
+			this.tweenTo(current, () => {
+				this.current = current;
 				this.pushChanges();
-				this.change.next(this.state.index);
+				this.change.next(this.current);
 			});
 		}
 		*/
 	}
 
 	hasPrev() {
-		return this.state.index - 1 >= 0;
+		return this.current - 1 >= 0;
 	}
 
 	hasNext() {
-		return this.state.index + 1 < this.items.length;
+		return this.current + 1 < this.items.length;
 	}
 
 	getTranslation(node, container) {
@@ -133,6 +146,6 @@ export default class SliderComponent extends Component {
 
 SliderComponent.meta = {
 	selector: '[slider]',
-	inputs: ['items'],
+	inputs: ['items', 'current'],
 	outputs: ['change', 'tween'],
 };

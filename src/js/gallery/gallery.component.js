@@ -28,6 +28,7 @@ export class GalleryLerp {
 export default class GalleryComponent extends Component {
 
 	onInit() {
+		GalleryComponent.items.push(this.gallery);
 		const lerp = this.lerp = new GalleryLerp();
 		this.raf$ = interval(0, animationFrame);
 		const { node } = getContext(this);
@@ -52,13 +53,6 @@ export default class GalleryComponent extends Component {
 				backgroundPosition: `${lerp.x}px ${lerp.y}px`,
 			});
 		});
-		node.addEventListener('click', () => {
-			ModalService.open$({ src: GALLERY_MODAL, data: [1, 2, 3, 4, 5, 6] }).pipe(
-				takeUntil(this.unsubscribe$)
-			).subscribe(event => {
-				// this.pushChanges();
-			});
-		});
 	}
 
 	animation$() {
@@ -74,12 +68,20 @@ export default class GalleryComponent extends Component {
 	}
 
 	onOpenGallery(event) {
-		console.log('GalleryComponent.onOpenGallery');
-		console.log(this.items);
+		const items = GalleryComponent.items;
+		const index = items.indexOf(this.gallery);
+		// console.log('GalleryComponent.onOpenGallery', this.gallery, items, index);
+		ModalService.open$({ src: GALLERY_MODAL, data: { items, index } }).pipe(
+			takeUntil(this.unsubscribe$)
+		).subscribe(event => {
+			// this.pushChanges();
+		});
 	}
 }
 
+GalleryComponent.items = [];
+
 GalleryComponent.meta = {
 	selector: '[gallery]',
-	inputs: ['items']
+	inputs: ['gallery']
 };

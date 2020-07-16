@@ -128,7 +128,6 @@
       var showCover = SessionStorageService.get('showCover');
       this.showCover = !showCover;
       SessionStorageService.set('showCover', true);
-      this.sliderItems = [1, 2, 3];
     };
 
     _proto.onSkipCover = function onSkipCover(event) {
@@ -2334,7 +2333,8 @@
 
       if (parentInstance instanceof ModalOutletComponent) {
         var data = this.data = parentInstance.modal.data;
-        this.sliderItems = data;
+        this.sliderItems = data.items;
+        this.sliderIndex = data.index;
       }
     };
 
@@ -2342,12 +2342,10 @@
       ModalService.reject();
     };
 
-    _proto.onChange = function onChange(event) {
-      console.log('onChange', event);
+    _proto.onChange = function onChange(event) {// console.log('onChange', event);
     };
 
-    _proto.onTween = function onTween(event) {
-      console.log('onTween', event);
+    _proto.onTween = function onTween(event) {// console.log('onTween', event);
     };
 
     return GalleryModalComponent;
@@ -5136,6 +5134,7 @@
     _proto2.onInit = function onInit() {
       var _this = this;
 
+      GalleryComponent.items.push(this.gallery);
       var lerp = this.lerp = new GalleryLerp();
       this.raf$ = rxjs.interval(0, rxjs.animationFrame);
 
@@ -5160,13 +5159,6 @@
           backgroundPosition: lerp.x + "px " + lerp.y + "px"
         });
       });
-      node.addEventListener('click', function () {
-        ModalService.open$({
-          src: GALLERY_MODAL,
-          data: [1, 2, 3, 4, 5, 6]
-        }).pipe(operators.takeUntil(_this.unsubscribe$)).subscribe(function (event) {// this.pushChanges();
-        });
-      });
     };
 
     _proto2.animation$ = function animation$() {
@@ -5180,15 +5172,25 @@
     };
 
     _proto2.onOpenGallery = function onOpenGallery(event) {
-      console.log('GalleryComponent.onOpenGallery');
-      console.log(this.items);
+      var items = GalleryComponent.items;
+      var index = items.indexOf(this.gallery); // console.log('GalleryComponent.onOpenGallery', this.gallery, items, index);
+
+      ModalService.open$({
+        src: GALLERY_MODAL,
+        data: {
+          items: items,
+          index: index
+        }
+      }).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {// this.pushChanges();
+      });
     };
 
     return GalleryComponent;
   }(rxcomp.Component);
+  GalleryComponent.items = [];
   GalleryComponent.meta = {
     selector: '[gallery]',
-    inputs: ['items']
+    inputs: ['gallery']
   };
 
   var CssService = /*#__PURE__*/function () {
@@ -7034,6 +7036,83 @@
     selector: '[secure]'
   };
 
+  var ShareComponent = /*#__PURE__*/function (_Component) {
+    _inheritsLoose(ShareComponent, _Component);
+
+    function ShareComponent() {
+      return _Component.apply(this, arguments) || this;
+    }
+
+    var _proto = ShareComponent.prototype;
+
+    _proto.onInit = function onInit() {
+      console.log('ShareComponent.onInit', this.share, this.title);
+    };
+
+    _proto.onChanges = function onChanges() {
+      console.log('ShareComponent.onChanges', this.share, this.title);
+    };
+
+    _proto.getTitle = function getTitle() {
+      var title = this.title ? this.title : document.title;
+      return this.encodeURI(title);
+    };
+
+    _proto.getUrl = function getUrl() {
+      var url = this.url;
+
+      if (url) {
+        if (url.indexOf(window.location.origin) === -1) {
+          url = window.location.origin + (url.indexOf('/') === 0 ? url : '/' + url);
+        }
+      } else {
+        url = window.location.href;
+      }
+
+      return this.encodeURI(url);
+    };
+
+    _proto.encodeURI = function encodeURI(text) {
+      return encodeURIComponent(text).replace(/[!'()*]/g, function (c) {
+        return '%' + c.charCodeAt(0).toString(16);
+      });
+    };
+
+    _createClass(ShareComponent, [{
+      key: "facebookUrl",
+      get: function get() {
+        return "https://www.facebook.com/sharer/sharer.php?u=" + this.getUrl();
+      }
+    }, {
+      key: "linkedInUrl",
+      get: function get() {
+        return "https://www.linkedin.com/shareArticle?mini=true&url=" + this.getUrl() + "&title=" + this.getTitle();
+      }
+    }, {
+      key: "twitterUrl",
+      get: function get() {
+        return "https://twitter.com/home?status=" + this.getUrl();
+      }
+    }, {
+      key: "whatsappUrl",
+      get: function get() {
+        return "https://api.whatsapp.com/send?text=" + this.getUrl();
+      }
+    }, {
+      key: "mailToUrl",
+      get: function get() {
+        return "mailto:?subject=" + this.getTitle() + "&body=" + this.getUrl();
+      }
+    }]);
+
+    return ShareComponent;
+  }(rxcomp.Component);
+  ShareComponent.meta = {
+    selector: '[share]',
+    inputs: ['share', 'title'],
+    template: "\n\t<ul class=\"nav--share\">\n\t\t<li>\n\t\t\t<a [href]=\"facebookUrl\" target=\"_blank\"><svg class=\"facebook\"><use xlink:href=\"#facebook\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"linkedInUrl\" target=\"_blank\"><svg class=\"linkedin\"><use xlink:href=\"#linkedin\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"twitterUrl\" target=\"_blank\"><svg class=\"twitter\"><use xlink:href=\"#twitter\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"whatsappUrl\" target=\"_blank\"><svg class=\"whatsapp\"><use xlink:href=\"#whatsapp\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"mailToUrl\"><svg class=\"email\"><use xlink:href=\"#email\"></use></svg></a>\n\t\t</li>\n\t</ul>\n\t"
+  };
+
   var DragPoint = function DragPoint() {
     this.x = 0;
     this.y = 0;
@@ -7200,22 +7279,28 @@
     var _proto = SliderComponent.prototype;
 
     _proto.onInit = function onInit() {
+      var _this = this;
+
       var _getContext = rxcomp.getContext(this),
           node = _getContext.node;
 
       this.container = node;
       this.wrapper = node.querySelector('.slider__wrapper');
-      this.state.index = 0;
-      this.change.next(this.state.index);
-      gsap.set(this.wrapper, {
-        x: -100 * this.state.index + '%'
-      });
-      this.slider$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {// console.log('dragService', event);
-      });
+      setTimeout(function () {
+        // this.change.next(this.current);
+
+        /*
+        gsap.set(this.wrapper, {
+        	x: -100 * this.current + '%',
+        });
+        */
+        _this.slider$().pipe(operators.takeUntil(_this.unsubscribe$)).subscribe(function (event) {// console.log('dragService', event);
+        });
+      }, 1);
     };
 
     _proto.slider$ = function slider$() {
-      var _this = this;
+      var _this2 = this;
 
       var transformX = 0,
           transformY = 0,
@@ -7225,48 +7310,48 @@
           initialTransformX;
       return DragService.events$(this.wrapper).pipe(operators.tap(function (event) {
         if (event instanceof DragDownEvent) {
-          var translation = _this.getTranslation(_this.wrapper, _this.container);
+          var translation = _this2.getTranslation(_this2.wrapper, _this2.container);
 
           initialTransformX = translation.x;
         } else if (event instanceof DragMoveEvent) {
-          _this.container.classList.add('dragging');
+          _this2.container.classList.add('dragging');
 
           distanceX = event.distance.x;
           distanceY = event.distance.y;
           transformX = initialTransformX + event.distance.x;
-          _this.wrapper.style.transform = "translate3d(" + transformX + "px, " + transformY + "px, " + transformZ + "px)";
+          _this2.wrapper.style.transform = "translate3d(" + transformX + "px, " + transformY + "px, " + transformZ + "px)";
         } else if (event instanceof DragUpEvent) {
-          _this.container.classList.remove('dragging');
+          _this2.container.classList.remove('dragging');
 
-          _this.wrapper.style.transform = null;
-          var width = _this.container.offsetWidth;
+          _this2.wrapper.style.transform = null;
+          var width = _this2.container.offsetWidth;
 
-          if (distanceX * -1 > width * 0.25 && _this.hasNext()) {
-            _this.navTo(_this.state.index + 1);
-          } else if (distanceX * -1 < width * -0.25 && _this.hasPrev()) {
-            _this.navTo(_this.state.index - 1);
+          if (distanceX * -1 > width * 0.25 && _this2.hasNext()) {
+            _this2.navTo(_this2.current + 1);
+          } else if (distanceX * -1 < width * -0.25 && _this2.hasPrev()) {
+            _this2.navTo(_this2.current - 1);
           } else {
-            _this.wrapper.style.transform = "translate3d(" + -100 * _this.state.index + "%, 0, 0)"; // this.navTo(this.state.index);
-          } // this.navTo(index);
+            _this2.wrapper.style.transform = "translate3d(" + -100 * _this2.current + "%, 0, 0)"; // this.navTo(this.current);
+          } // this.navTo(current);
 
         }
       }));
     };
 
-    _proto.tweenTo = function tweenTo(index, callback) {
-      var _this2 = this;
+    _proto.tweenTo = function tweenTo(current, callback) {
+      var _this3 = this;
 
-      // console.log('tweenTo', index);
+      // console.log('tweenTo', current);
       var container = this.container;
       var wrapper = this.wrapper;
       var width = this.container.offsetWidth;
       gsap.to(wrapper, 0.50, {
-        x: -100 * index + '%',
+        x: -100 * current + '%',
         delay: 0,
         ease: Power3.easeInOut,
         overwrite: 'all',
         onUpdate: function onUpdate() {
-          _this2.tween.next();
+          _this3.tween.next();
         },
         onComplete: function onComplete() {
           if (typeof callback === 'function') {
@@ -7276,26 +7361,26 @@
       });
     };
 
-    _proto.navTo = function navTo(index) {
-      this.state.index = index;
+    _proto.navTo = function navTo(current) {
+      this.current = current;
       this.pushChanges();
       /*
-      if (this.state.index !== index) {
-      	this.tweenTo(index, () => {
-      		this.state.index = index;
+      if (this.current !== current) {
+      	this.tweenTo(current, () => {
+      		this.current = current;
       		this.pushChanges();
-      		this.change.next(this.state.index);
+      		this.change.next(this.current);
       	});
       }
       */
     };
 
     _proto.hasPrev = function hasPrev() {
-      return this.state.index - 1 >= 0;
+      return this.current - 1 >= 0;
     };
 
     _proto.hasNext = function hasNext() {
-      return this.state.index + 1 < this.items.length;
+      return this.current + 1 < this.items.length;
     };
 
     _proto.getTranslation = function getTranslation(node, container) {
@@ -7322,16 +7407,34 @@
 
     _createClass(SliderComponent, [{
       key: "items",
+      get: function get() {
+        return this.items_ || [];
+      },
       set: function set(items) {
         if (this.items_ !== items) {
           this.items_ = items;
-          this.state = {
-            index: 0
-          }; // this.state.index = Math.min(this.state.index, items ? items.length - 1 : 0);
         }
-      },
+      }
+    }, {
+      key: "current",
       get: function get() {
-        return this.items_;
+        return this.state.current || 0;
+      },
+      set: function set(current) {
+        if (current === void 0) {
+          current = 0;
+        }
+
+        this.state.current = current; // this.state.current = Math.min(current, items ? items.length - 1 : 0);
+      }
+    }, {
+      key: "state",
+      get: function get() {
+        if (!this.state_) {
+          this.state_ = {};
+        }
+
+        return this.state_;
       }
     }]);
 
@@ -7339,7 +7442,7 @@
   }(rxcomp.Component);
   SliderComponent.meta = {
     selector: '[slider]',
-    inputs: ['items'],
+    inputs: ['items', 'current'],
     outputs: ['change', 'tween']
   };
 
@@ -7811,7 +7914,7 @@
   }(rxcomp.Module);
   AppModule.meta = {
     imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, SliderComponent, SlugPipe, VirtualStructure],
+    declarations: [ClickOutsideDirective, CoverComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SlugPipe, VirtualStructure],
     bootstrap: AppComponent
   };
 

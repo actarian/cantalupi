@@ -9,7 +9,8 @@ export default class GalleryModalComponent extends Component {
 		const { parentInstance, node } = getContext(this);
 		if (parentInstance instanceof ModalOutletComponent) {
 			const data = this.data = parentInstance.modal.data;
-			this.sliderItems = data;
+			this.sliderItems = data.items;
+			this.sliderIndex = data.index;
 		}
 	}
 
@@ -18,11 +19,11 @@ export default class GalleryModalComponent extends Component {
 	}
 
 	onChange(event) {
-		console.log('onChange', event);
+		// console.log('onChange', event);
 	}
 
 	onTween(event) {
-		console.log('onTween', event);
+		// console.log('onTween', event);
 	}
 
 }

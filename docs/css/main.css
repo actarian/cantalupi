@@ -213,11 +213,11 @@ strong {
 
 */
 .btn--primary, .btn--download, .btn--secondary, .btn--contact, .btn--link, .btn--gallery, .btn--download-secondary, .btn, .btn--circle, .btn--mode,
-.btn--filter, .btn--rounded, .section--cover .btn--skip, .nav--secondary-menu > li > a,
+.btn--filter, .btn--rounded, .btn--next,
+.btn--prev, .section--cover .btn--skip, .nav--secondary-menu > li > a,
 .nav--secondary-menu > li > span, .nav--primary-menu > li > a,
-.nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .section--hero-we-know-light a, .btn--hover, .section--hero-products .category, .section--hero-series .category, .section--hero-heritage .category, .section--hero-how-we-do .category, .nav--options__item > span, .nav--anchor__item > a,
-.nav--anchor__item > span, .nav--submenu > li > a, .btn--close, .btn--next,
-.btn--prev {
+.nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .btn--close, .section--hero-we-know-light a, .btn--hover, .section--hero-products .category, .section--hero-series .category, .section--hero-heritage .category, .section--hero-how-we-do .category, .nav--options__item > span, .nav--anchor__item > a,
+.nav--anchor__item > span, .nav--submenu > li > a, .nav--share > li > a {
   display: inline-block;
   padding: 0;
   border: none;
@@ -230,48 +230,48 @@ strong {
   cursor: pointer;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
   .btn--primary, .btn--download, .btn--secondary, .btn--contact, .btn--link, .btn--gallery, .btn--download-secondary, .btn, .btn--circle, .btn--mode,
-  .btn--filter, .btn--rounded, .section--cover .btn--skip, .nav--secondary-menu > li > a,
+  .btn--filter, .btn--rounded, .btn--next,
+  .btn--prev, .section--cover .btn--skip, .nav--secondary-menu > li > a,
   .nav--secondary-menu > li > span, .nav--primary-menu > li > a,
-  .nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .section--hero-we-know-light a, .btn--hover, .section--hero-products .category, .section--hero-series .category, .section--hero-heritage .category, .section--hero-how-we-do .category, .nav--options__item > span, .nav--anchor__item > a,
-  .nav--anchor__item > span, .nav--submenu > li > a, .btn--close, .btn--next,
-  .btn--prev, .btn--primary:active, .btn--download:active, .btn--secondary:active, .btn--contact:active, .btn--link:active, .btn--gallery:active, .btn--download-secondary:active, .btn:active, .btn--circle:active, .btn--mode:active,
-  .btn--filter:active, .btn--rounded:active, .section--cover .btn--skip:active, .nav--secondary-menu > li > a:active,
+  .nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .btn--close, .section--hero-we-know-light a, .btn--hover, .section--hero-products .category, .section--hero-series .category, .section--hero-heritage .category, .section--hero-how-we-do .category, .nav--options__item > span, .nav--anchor__item > a,
+  .nav--anchor__item > span, .nav--submenu > li > a, .nav--share > li > a, .btn--primary:active, .btn--download:active, .btn--secondary:active, .btn--contact:active, .btn--link:active, .btn--gallery:active, .btn--download-secondary:active, .btn:active, .btn--circle:active, .btn--mode:active,
+  .btn--filter:active, .btn--rounded:active, .btn--next:active,
+  .btn--prev:active, .section--cover .btn--skip:active, .nav--secondary-menu > li > a:active,
   .nav--secondary-menu > li > span:active, .nav--primary-menu > li > a:active,
-  .nav--primary-menu > li > span:active, .nav--primary-menu > li > ul > li > a:active, .nav--menu-tertiary > li > a:active, .section--hero-we-know-light a:active, .btn--hover:active, .section--hero-products .category:active, .section--hero-series .category:active, .section--hero-heritage .category:active, .section--hero-how-we-do .category:active, .nav--options__item > span:active, .nav--anchor__item > a:active,
-  .nav--anchor__item > span:active, .nav--submenu > li > a:active, .btn--close:active, .btn--next:active,
-  .btn--prev:active, .btn--primary:focus, .btn--download:focus, .btn--secondary:focus, .btn--contact:focus, .btn--link:focus, .btn--gallery:focus, .btn--download-secondary:focus, .btn:focus, .btn--circle:focus, .btn--mode:focus,
-  .btn--filter:focus, .btn--rounded:focus, .section--cover .btn--skip:focus, .nav--secondary-menu > li > a:focus,
+  .nav--primary-menu > li > span:active, .nav--primary-menu > li > ul > li > a:active, .nav--menu-tertiary > li > a:active, .btn--close:active, .section--hero-we-know-light a:active, .btn--hover:active, .section--hero-products .category:active, .section--hero-series .category:active, .section--hero-heritage .category:active, .section--hero-how-we-do .category:active, .nav--options__item > span:active, .nav--anchor__item > a:active,
+  .nav--anchor__item > span:active, .nav--submenu > li > a:active, .nav--share > li > a:active, .btn--primary:focus, .btn--download:focus, .btn--secondary:focus, .btn--contact:focus, .btn--link:focus, .btn--gallery:focus, .btn--download-secondary:focus, .btn:focus, .btn--circle:focus, .btn--mode:focus,
+  .btn--filter:focus, .btn--rounded:focus, .btn--next:focus,
+  .btn--prev:focus, .section--cover .btn--skip:focus, .nav--secondary-menu > li > a:focus,
   .nav--secondary-menu > li > span:focus, .nav--primary-menu > li > a:focus,
-  .nav--primary-menu > li > span:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--menu-tertiary > li > a:focus, .section--hero-we-know-light a:focus, .btn--hover:focus, .section--hero-products .category:focus, .section--hero-series .category:focus, .section--hero-heritage .category:focus, .section--hero-how-we-do .category:focus, .nav--options__item > span:focus, .nav--anchor__item > a:focus,
-  .nav--anchor__item > span:focus, .nav--submenu > li > a:focus, .btn--close:focus, .btn--next:focus,
-  .btn--prev:focus, .btn--primary:hover, .btn--download:hover, .btn--secondary:hover, .btn--contact:hover, .btn--link:hover, .btn--gallery:hover, .btn--download-secondary:hover, .btn:hover, .btn--circle:hover, .btn--mode:hover,
-  .btn--filter:hover, .btn--rounded:hover, .section--cover .btn--skip:hover, .nav--secondary-menu > li > a:hover,
+  .nav--primary-menu > li > span:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--menu-tertiary > li > a:focus, .btn--close:focus, .section--hero-we-know-light a:focus, .btn--hover:focus, .section--hero-products .category:focus, .section--hero-series .category:focus, .section--hero-heritage .category:focus, .section--hero-how-we-do .category:focus, .nav--options__item > span:focus, .nav--anchor__item > a:focus,
+  .nav--anchor__item > span:focus, .nav--submenu > li > a:focus, .nav--share > li > a:focus, .btn--primary:hover, .btn--download:hover, .btn--secondary:hover, .btn--contact:hover, .btn--link:hover, .btn--gallery:hover, .btn--download-secondary:hover, .btn:hover, .btn--circle:hover, .btn--mode:hover,
+  .btn--filter:hover, .btn--rounded:hover, .btn--next:hover,
+  .btn--prev:hover, .section--cover .btn--skip:hover, .nav--secondary-menu > li > a:hover,
   .nav--secondary-menu > li > span:hover, .nav--primary-menu > li > a:hover,
-  .nav--primary-menu > li > span:hover, .nav--primary-menu > li > ul > li > a:hover, .nav--menu-tertiary > li > a:hover, .section--hero-we-know-light a:hover, .btn--hover:hover, .section--hero-products .category:hover, .section--hero-series .category:hover, .section--hero-heritage .category:hover, .section--hero-how-we-do .category:hover, .nav--options__item > span:hover, .nav--anchor__item > a:hover,
-  .nav--anchor__item > span:hover, .nav--submenu > li > a:hover, .btn--close:hover, .btn--next:hover,
-  .btn--prev:hover, .btn--primary:visited, .btn--download:visited, .btn--secondary:visited, .btn--contact:visited, .btn--link:visited, .btn--gallery:visited, .btn--download-secondary:visited, .btn:visited, .btn--circle:visited, .btn--mode:visited,
-  .btn--filter:visited, .btn--rounded:visited, .section--cover .btn--skip:visited, .nav--secondary-menu > li > a:visited,
+  .nav--primary-menu > li > span:hover, .nav--primary-menu > li > ul > li > a:hover, .nav--menu-tertiary > li > a:hover, .btn--close:hover, .section--hero-we-know-light a:hover, .btn--hover:hover, .section--hero-products .category:hover, .section--hero-series .category:hover, .section--hero-heritage .category:hover, .section--hero-how-we-do .category:hover, .nav--options__item > span:hover, .nav--anchor__item > a:hover,
+  .nav--anchor__item > span:hover, .nav--submenu > li > a:hover, .nav--share > li > a:hover, .btn--primary:visited, .btn--download:visited, .btn--secondary:visited, .btn--contact:visited, .btn--link:visited, .btn--gallery:visited, .btn--download-secondary:visited, .btn:visited, .btn--circle:visited, .btn--mode:visited,
+  .btn--filter:visited, .btn--rounded:visited, .btn--next:visited,
+  .btn--prev:visited, .section--cover .btn--skip:visited, .nav--secondary-menu > li > a:visited,
   .nav--secondary-menu > li > span:visited, .nav--primary-menu > li > a:visited,
-  .nav--primary-menu > li > span:visited, .nav--primary-menu > li > ul > li > a:visited, .nav--menu-tertiary > li > a:visited, .section--hero-we-know-light a:visited, .btn--hover:visited, .section--hero-products .category:visited, .section--hero-series .category:visited, .section--hero-heritage .category:visited, .section--hero-how-we-do .category:visited, .nav--options__item > span:visited, .nav--anchor__item > a:visited,
-  .nav--anchor__item > span:visited, .nav--submenu > li > a:visited, .btn--close:visited, .btn--next:visited,
-  .btn--prev:visited {
+  .nav--primary-menu > li > span:visited, .nav--primary-menu > li > ul > li > a:visited, .nav--menu-tertiary > li > a:visited, .btn--close:visited, .section--hero-we-know-light a:visited, .btn--hover:visited, .section--hero-products .category:visited, .section--hero-series .category:visited, .section--hero-heritage .category:visited, .section--hero-how-we-do .category:visited, .nav--options__item > span:visited, .nav--anchor__item > a:visited,
+  .nav--anchor__item > span:visited, .nav--submenu > li > a:visited, .nav--share > li > a:visited {
     color: inherit;
     text-decoration: none;
     outline: none; }
 
 .btn--primary, .btn--download, .btn--secondary, .btn--contact, .btn--link, .btn--gallery, .btn--download-secondary, .btn, .btn--circle, .btn--mode,
-.btn--filter, .btn--rounded, .section--cover .btn--skip, .nav--secondary-menu > li > a,
+.btn--filter, .btn--rounded, .btn--next,
+.btn--prev, .section--cover .btn--skip, .nav--secondary-menu > li > a,
 .nav--secondary-menu > li > span, .nav--primary-menu > li > a,
-.nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .section--hero-we-know-light a, .btn--hover, .section--hero-products .category, .section--hero-series .category, .section--hero-heritage .category, .section--hero-how-we-do .category, .nav--options__item > span, .nav--anchor__item > a,
-.nav--anchor__item > span, .nav--submenu > li > a, .btn--close, .btn--next,
-.btn--prev {
+.nav--primary-menu > li > span, .nav--primary-menu > li > ul > li > a, .nav--menu-tertiary > li > a, .btn--close, .section--hero-we-know-light a, .btn--hover, .section--hero-products .category, .section--hero-series .category, .section--hero-heritage .category, .section--hero-how-we-do .category, .nav--options__item > span, .nav--anchor__item > a,
+.nav--anchor__item > span, .nav--submenu > li > a, .nav--share > li > a {
   transition: ease-in-out 350ms; }
   .btn--primary[disabled], .btn--download[disabled], .btn--secondary[disabled], .btn--contact[disabled], .btn--link[disabled], .btn--gallery[disabled], .btn--download-secondary[disabled], .btn[disabled], .btn--circle[disabled], .btn--mode[disabled],
-  .btn--filter[disabled], .btn--rounded[disabled], .section--cover .btn--skip[disabled], .nav--secondary-menu > li > a[disabled],
+  .btn--filter[disabled], .btn--rounded[disabled], .btn--next[disabled],
+  .btn--prev[disabled], .section--cover .btn--skip[disabled], .nav--secondary-menu > li > a[disabled],
   .nav--secondary-menu > li > span[disabled], .nav--primary-menu > li > a[disabled],
-  .nav--primary-menu > li > span[disabled], .nav--primary-menu > li > ul > li > a[disabled], .nav--menu-tertiary > li > a[disabled], .section--hero-we-know-light a[disabled], .btn--hover[disabled], .section--hero-products .category[disabled], .section--hero-series .category[disabled], .section--hero-heritage .category[disabled], .section--hero-how-we-do .category[disabled], .nav--options__item > span[disabled], .nav--anchor__item > a[disabled],
-  .nav--anchor__item > span[disabled], .nav--submenu > li > a[disabled], .btn--close[disabled], .btn--next[disabled],
-  .btn--prev[disabled] {
+  .nav--primary-menu > li > span[disabled], .nav--primary-menu > li > ul > li > a[disabled], .nav--menu-tertiary > li > a[disabled], .btn--close[disabled], .section--hero-we-know-light a[disabled], .btn--hover[disabled], .section--hero-products .category[disabled], .section--hero-series .category[disabled], .section--hero-heritage .category[disabled], .section--hero-how-we-do .category[disabled], .nav--options__item > span[disabled], .nav--anchor__item > a[disabled],
+  .nav--anchor__item > span[disabled], .nav--submenu > li > a[disabled], .nav--share > li > a[disabled] {
     opacity: 0.5;
     pointer-events: none; }
 
@@ -3200,9 +3200,10 @@ errors-component {
   .lazyed[lazy], .section--cover .background > img.lazyed, .section--hero .background > img.lazyed, .card--serie > .picture > img.lazyed, .section--hero-we-know-light .background > img.lazyed, .section--hero-emotional .background > img.lazyed, .section--hero-products .background > img.lazyed, .section--hero-series .background > img.lazyed, .section--hero-heritage .background > img.lazyed, .section--hero-how-we-do .background > img.lazyed {
     opacity: 1; }
 
-.nav--secondary-menu > li > a, .nav--submenu > li > a,
+.nav--secondary-menu > li > a, .nav--submenu > li > a, .nav--share > li > a,
 .nav--secondary-menu > li > span,
-.nav--submenu > li > span, .nav--primary-menu > li > a, .nav--primary-menu > li > ul > li > a, .nav--options > li > a, .section--intro-02 .description ul > li > a, .section--intro-02 .description ol > li > a, .nav--anchor > li > a,
+.nav--submenu > li > span,
+.nav--share > li > span, .nav--primary-menu > li > a, .nav--primary-menu > li > ul > li > a, .nav--options > li > a, .section--intro-02 .description ul > li > a, .section--intro-02 .description ol > li > a, .nav--anchor > li > a,
 .nav--primary-menu > li > span,
 .nav--primary-menu > li > ul > li > span,
 .nav--options > li > span,
@@ -3210,7 +3211,7 @@ errors-component {
 .section--intro-02 .description ol > li > span,
 .nav--anchor > li > span, .nav--dropdown > li > a,
 .nav--dropdown > li > span, .nav--secondary-menu > li, .nav--primary-menu > li, .nav--primary-menu > li > ul > li, .nav--options__item, .section--intro-02 .description ul > li,
-.section--intro-02 .description ol > li, .nav--anchor__item, .nav--submenu > li {
+.section--intro-02 .description ol > li, .nav--anchor__item, .nav--submenu > li, .nav--share > li {
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -3226,9 +3227,10 @@ errors-component {
 		transition-property: fill, opacity;
 	}
 	*/ }
-  .nav--secondary-menu > li > a:focus, .nav--submenu > li > a:focus,
+  .nav--secondary-menu > li > a:focus, .nav--submenu > li > a:focus, .nav--share > li > a:focus,
   .nav--secondary-menu > li > span:focus,
-  .nav--submenu > li > span:focus, .nav--primary-menu > li > a:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--options > li > a:focus, .section--intro-02 .description ul > li > a:focus, .section--intro-02 .description ol > li > a:focus, .nav--anchor > li > a:focus,
+  .nav--submenu > li > span:focus,
+  .nav--share > li > span:focus, .nav--primary-menu > li > a:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--options > li > a:focus, .section--intro-02 .description ul > li > a:focus, .section--intro-02 .description ol > li > a:focus, .nav--anchor > li > a:focus,
   .nav--primary-menu > li > span:focus,
   .nav--primary-menu > li > ul > li > span:focus,
   .nav--options > li > span:focus,
@@ -3236,27 +3238,27 @@ errors-component {
   .section--intro-02 .description ol > li > span:focus,
   .nav--anchor > li > span:focus, .nav--dropdown > li > a:focus,
   .nav--dropdown > li > span:focus, .nav--secondary-menu > li:focus, .nav--primary-menu > li:focus, .nav--primary-menu > li > ul > li:focus, .nav--options__item:focus, .section--intro-02 .description ul > li:focus,
-  .section--intro-02 .description ol > li:focus, .nav--anchor__item:focus, .nav--submenu > li:focus {
+  .section--intro-02 .description ol > li:focus, .nav--anchor__item:focus, .nav--submenu > li:focus, .nav--share > li:focus {
     outline: 0; }
 
-.nav--secondary-menu, .nav--submenu, .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .section--intro-02 .description ul,
+.nav--secondary-menu, .nav--submenu, .nav--share, .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .section--intro-02 .description ul,
 .section--intro-02 .description ol, .nav--anchor, .nav--dropdown, .nav--menu-tertiary, .nav--social {
   list-style: none;
   padding: 0;
   margin: 0; }
 
-.nav--secondary-menu, .nav--submenu {
+.nav--secondary-menu, .nav--submenu, .nav--share {
   width: 100%; }
-  .nav--secondary-menu > li, .nav--submenu > li {
+  .nav--secondary-menu > li, .nav--submenu > li, .nav--share > li {
     position: relative;
     display: block;
     flex: 1 1 auto; }
   @media (min-width: 768px) {
-    .nav--secondary-menu, .nav--submenu {
+    .nav--secondary-menu, .nav--submenu, .nav--share {
       display: flex;
       justify-content: flex-start; } }
   @media (max-width: 767.98px) {
-    .nav--secondary-menu, .nav--submenu {
+    .nav--secondary-menu, .nav--submenu, .nav--share {
       display: block; } }
 
 .nav--primary-menu > li, .nav--primary-menu > li > ul > li, .nav--options > li, .section--intro-02 .description ul > li, .section--intro-02 .description ol > li, .nav--anchor > li {
@@ -3668,6 +3670,24 @@ errors-component {
   .slider__bullet:hover:after, .slider__bullet.active:after {
     background: #A28850; }
 
+.btn--next,
+.btn--prev {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1; }
+  .btn--next,
+  .btn--prev {
+    color: white; }
+  .btn--next:hover,
+  .btn--prev:hover {
+    color: #A28850; }
+  .btn--next svg,
+  .btn--prev svg {
+    width: 28px;
+    height: 32px;
+    fill: currentColor; }
+
 .slider__pagination {
   position: absolute;
   display: flex;
@@ -3686,12 +3706,6 @@ errors-component {
     .slider__pagination .btn--next.disabled {
       pointer-events: none;
       visibility: hidden; }
-  .slider__pagination svg {
-    width: 40px;
-    height: 40px;
-    fill: rgba(255, 255, 255, 0.5);
-    stroke: rgba(0, 0, 0, 0.4);
-    stroke-width: 1; }
 
 .slider__slide {
   display: inline-flex;
@@ -4083,6 +4097,8 @@ errors-component {
   display: flex;
   align-items: center;
   justify-content: space-between; }
+  .nav--social svg {
+    fill: #C0C6C7; }
   .nav--social .facebook {
     width: 7px;
     height: 13px; }
@@ -4105,6 +4121,35 @@ errors-component {
   align-items: center;
   font-size: 12px;
   color: #425356; }
+
+.btn--close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1; }
+  .btn--close, .btn--close:hover {
+    color: white; }
+  .btn--close:hover {
+    transition: all ease-in-out 350ms;
+    transform: rotateZ(90deg); }
+  .btn--close svg {
+    fill: currentColor; }
+
+.modal--gallery .modal__header {
+  padding: 20px; }
+
+.modal--gallery .picture {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: calc(100vh - 128px);
+  width: 100vw; }
+  .modal--gallery .picture > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; }
 
 .overlay-effect {
   position: fixed;
@@ -5398,47 +5443,11 @@ errors-component {
       .nav--submenu > li > a {
         font-size: 18px; } }
 
-.modal--gallery .modal__header {
-  padding: 20px; }
-
-.modal--gallery .picture {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  height: calc(100vh - 128px);
-  width: 100vw; }
-  .modal--gallery .picture > img {
-    display: block;
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; }
-
-.btn--close {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: 1; }
-  .btn--close, .btn--close:hover {
-    color: white; }
-  .btn--close:hover {
-    transition: all ease-in-out 350ms;
-    transform: rotateZ(90deg); }
-  .btn--close svg {
-    fill: currentColor; }
-
-.btn--next,
-.btn--prev {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: 1; }
-  .btn--next,
-  .btn--prev {
-    color: white; }
-  .btn--next:hover,
-  .btn--prev:hover {
-    color: #A28850; }
-  .btn--next svg,
-  .btn--prev svg {
-    fill: currentColor; }
+.nav--share {
+  justify-content: space-around; }
+  .nav--share > li {
+    flex-grow: 0; }
+    .nav--share > li > a svg {
+      max-width: 16px;
+      max-height: 16px;
+      fill: #1D1D1B; }
