@@ -2360,7 +2360,7 @@
   } : new URLSearchParams(window.location.search);
   var DEBUG =  PARAMS.get('debug') != null;
   var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
-  var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io');
+  var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io' || window.location.host === 'cantalupi.herokuapp.com');
   var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
   var PRODUCTION = !DEVELOPMENT;
   var ENV = {
@@ -2371,7 +2371,7 @@
     RESOURCE: '/docs/',
     STATIC_RESOURCE: './',
     API: '/api',
-    STATIC_API: DEVELOPMENT && !STATIC ? '/Modules/Events/Client/docs/api' : './api'
+    STATIC_API: DEVELOPMENT && !STATIC ? '/Client/docs/api' : './api'
   };
   function getApiUrl(url, useStatic) {
     var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
