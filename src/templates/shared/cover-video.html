@@ -1,0 +1,15 @@
+<div class="section--cover-video" cover-video *if="showCover" (skip)="onSkipCover($event)">
+	<div class="background">
+		<video oncanplay="this.muted = true;" playsinline muted>
+			<source src="/cantalupi/img/cover/splash.mp4">
+		</video>
+	</div>
+	<div class="container">
+		<div class="brand"><svg class="cantalupi-light-engineering"><use xlink:href="#cantalupi-light-engineering"></use></svg></div>
+		<div class="content">
+			<div class="title">Progettiamo la luce per far risplendere la bellezza</div>
+			<div class="firm"><img src="/cantalupi/img/bespoke/firma-cantalupi.png"></div>
+		</div>
+		<div class="btn--skip" (click)="onSkip(event)">Skip intro</div>
+	</div>
+</div>

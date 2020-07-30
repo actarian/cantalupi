@@ -5,8 +5,11 @@
 <div class="page--index">
 
 	<section class="section--hero">
-		<div class="background">
-			<img lazy="/cantalupi/img/index/hero.jpg" />
+		<div class="background fading-gallery" fading-gallery>
+			<img src="/cantalupi/img/index/hero-01.jpg" [class]="{ active: index === 0 }" />
+			<img src="/cantalupi/img/index/hero-02.jpg" [class]="{ active: index === 1 }" />
+			<img src="/cantalupi/img/index/hero-03.jpg" [class]="{ active: index === 2 }" />
+			<img src="/cantalupi/img/index/hero-04.jpg" [class]="{ active: index === 3 }" />
 		</div>
 		<div class="container">
 			<div class="row">
@@ -30,41 +33,52 @@
 		<div class="container-fluid">
 			<div class="listing--series columns--2">
 				<div class="listing__item">
-					<div class="card--serie">
+					<div class="card--serie" card-serie>
 						<div class="picture o-image">
-							<img lazy="/cantalupi/img/index/serie-villas.jpg" />
+							<img lazy="/cantalupi/img/index/serie-yachts-interiors.jpg" [class]="{ active: index === 0 }" />
+							<img src="/cantalupi/img/index/serie-yachts-exteriors.jpg" [class]="{ active: index === 1 }" />
 						</div>
 						<div class="content">
-							<div class="title">Exclusive Villas</div>
+							<div class="title">Yacht Lighting Collection</div>
 							<div class="group--cta">
-								<a href="#" class="btn--secondary" data-title="For Interiors">For Interiors</a>
-								<a href="#" class="btn--secondary" data-title="For Exteriors">For Exteriors</a>
+								<a href="/cantalupi/exclusive-yachts-exteriors.html" class="btn--secondary" data-title="For Interiors" (mouseover)="onOver(0)">For Interiors</a>
+								<a href="/cantalupi/exclusive-yachts-exteriors.html" class="btn--secondary" data-title="For Exteriors" (mouseover)="onOver(1)">For Exteriors</a>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="listing__item">
-					<div class="card--serie">
+					<div class="card--serie" card-serie>
 						<div class="picture o-image">
-							<img lazy="/cantalupi/img/index/serie-yachts.jpg" />
+							<img lazy="/cantalupi/img/index/serie-villas-interiors.jpg" [class]="{ active: index === 0 }" />
+							<img src="/cantalupi/img/index/serie-villas-exteriors.jpg" [class]="{ active: index === 1 }" />
 						</div>
 						<div class="content">
-							<div class="title">Exclusive Yachts</div>
+							<div class="title">Villa Lighting Collection</div>
 							<div class="group--cta">
-								<a href="/cantalupi/exclusive-yachts-exteriors.html" class="btn--secondary" data-title="For Interiors">For Interiors</a>
-								<a href="/cantalupi/exclusive-yachts-exteriors.html" class="btn--secondary" data-title="For Exteriors">For Exteriors</a>
+								<a href="#" class="btn--secondary" data-title="For Interiors" (mouseover)="onOver(0)">For Interiors</a>
+								<a href="#" class="btn--secondary" data-title="For Exteriors" (mouseover)="onOver(1)">For Exteriors</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</section>
+
+	<section class="section--series background--negative">
 		<div class="container">
+			<div class="section--series__content">
+				<div class="title">Exclusive Creations</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="section--series_title"></div>
 			<div class="listing--series columns--3">
 				<div class="listing__item">
 					<div class="card--serie">
 						<div class="picture">
-							<img lazy="/cantalupi/img/index/02-otto.jpg" />
+							<img lazy="/cantalupi/img/index/01-otto-black.jpg" />
 						</div>
 						<div class="content">
 							<div class="title">Otto-Portable</div>
@@ -77,7 +91,7 @@
 				<div class="listing__item">
 					<div class="card--serie">
 						<div class="picture">
-							<img lazy="/cantalupi/img/index/01-bespoke.jpg" />
+							<img lazy="/cantalupi/img/index/02-bespoke-black.jpg" />
 						</div>
 						<div class="content">
 							<div class="title">Bespoke</div>
@@ -90,7 +104,7 @@
 				<div class="listing__item">
 					<div class="card--serie">
 						<div class="picture">
-							<img lazy="/cantalupi/img/index/03-lighting-system.jpg" />
+							<img lazy="/cantalupi/img/index/03-lighting-system-black.jpg" />
 						</div>
 						<div class="content">
 							<div class="title">Lighting Systems</div>

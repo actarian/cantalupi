@@ -69,8 +69,8 @@
 				<div class="listing__item" *for="let item of items">
 					<div class="card--product" appear>
 						<div class="picture">
-							<img [lazy]="item.image" />
-							<img class="over" [lazy]="item.imageOver" *if="item.imageOver" />
+							<img [src]="item.image" />
+							<img class="over" [src]="item.imageOver" *if="item.imageOver" />
 						</div>
 						<div class="content">
 							<div class="category" [innerHTML]="item.category"></div>

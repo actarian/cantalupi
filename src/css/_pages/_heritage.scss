@@ -72,6 +72,15 @@
 			}
 		}
 	}
+
+	@include media-down(xs) {
+		padding: 60px 0;
+
+		&:last-child {
+			padding-bottom: 60px;
+		}
+
+	}
 }
 
 .nav--anchor {
@@ -85,5 +94,25 @@
 		&>span {
 			@extend %btn;
 		}
+	}
+
+	@include media-down(sm) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+		margin-bottom: 60px;
+		padding-bottom: 20px;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+		&__item {
+
+			&>a,
+			&>span {
+				justify-content: center;
+				text-align: center;
+			}
+		}
+
 	}
 }

@@ -309,14 +309,29 @@
 
 .btn--primary {
 	@extend %btn-rect-stroked;
+
+	@include media-down(xs) {
+		padding: 10px 15px;
+		font-size: 14px;
+	}
 }
 
 .btn--secondary {
 	@extend %btn-rect;
+
+	@include media-down(xs) {
+		padding: 10px 15px;
+		font-size: 14px;
+	}
 }
 
 .btn--contact {
 	@extend %btn-rect-secondary;
+
+	@include media-down(xs) {
+		padding: 10px 15px;
+		font-size: 14px;
+	}
 }
 
 .btn--link {
@@ -344,6 +359,11 @@
 		background: transparent;
 		border-color: $foreground;
 		color: $foreground;
+	}
+
+	@include media-down(xs) {
+		padding: 10px 15px;
+		font-size: 14px;
 	}
 
 }

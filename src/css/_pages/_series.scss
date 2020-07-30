@@ -4,6 +4,10 @@
 
 .section--cards {
 	padding: 80px 0 130px 0;
+
+	@include media-down(sm) {
+		padding: 40px 0 60px 0;
+	}
 }
 
 .listing--cards {
@@ -17,6 +21,15 @@
 		flex: 0 0 360px;
 		max-width: 360px;
 		margin-bottom: 30px;
+	}
+
+	@include media-down(sm) {
+		align-items: flex-start;
+
+		&__item {
+			flex: 0 0 50%;
+			max-width: 50%;
+		}
 	}
 }
 
@@ -56,6 +69,25 @@
 		}
 
 		.title {
+			opacity: 1;
+		}
+	}
+
+	@include media-down(sm) {
+		padding: 0 12px;
+		box-shadow: 0 30px 30px -10px rgba(0, 0, 0, 0.15);
+
+		.picture {
+			img {
+				transform: none;
+			}
+		}
+
+		.title {
+			min-height: 38px;
+			margin-bottom: 10px;
+			font-size: 13px;
+			text-align: center;
 			opacity: 1;
 		}
 	}
@@ -218,10 +250,30 @@
 			}
 		}
 	}
+
+	@include media-down(sm) {
+		padding: 60px 0 0 0;
+
+		&:last-child {
+			padding-bottom: 60px;
+		}
+
+		.picture {
+			margin-bottom: 25px;
+		}
+	}
 }
 
 .section--picture-full {
 	padding: 120px 0 0 0;
+
+	@include media-down(sm) {
+		padding: 60px 0 0 0;
+
+		.picture {
+			@include aspect-clip(1, 1);
+		}
+	}
 }
 
 [gallery] {

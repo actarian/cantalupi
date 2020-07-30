@@ -1,11 +1,14 @@
 import { CoreModule, Module } from 'rxcomp';
 import { FormModule } from 'rxcomp-form';
 import AppComponent from './app.component';
+import CardSerieComponent from './card/card-serie';
 import ClickOutsideDirective from './click-outside/click-outside.directive';
+import CoverVideoComponent from './cover/cover-video.component';
 import CoverComponent from './cover/cover.component';
 import DatePipe from './date/date.pipe';
 import DropdownItemDirective from './dropdown/dropdown-item.directive';
 import DropdownDirective from './dropdown/dropdown.directive';
+import FadingGalleryComponent from './fading-gallery/fading-gallery.component';
 import ErrorsComponent from './forms/errors.component';
 import GalleryModalComponent from './gallery/gallery-modal.component';
 import GalleryComponent from './gallery/gallery.component';
@@ -34,12 +37,15 @@ AppModule.meta = {
 		FormModule,
 	],
 	declarations: [
+		CardSerieComponent,
 		ClickOutsideDirective,
 		CoverComponent,
+		CoverVideoComponent,
 		DatePipe,
 		DropdownDirective,
 		DropdownItemDirective,
 		ErrorsComponent,
+		FadingGalleryComponent,
 		GalleryComponent,
 		GalleryModalComponent,
 		HeaderComponent,

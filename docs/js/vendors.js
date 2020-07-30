@@ -18878,7 +18878,7 @@
 
 
 /**
- * @license rxcomp v1.0.0-beta.10
+ * @license rxcomp v1.0.0-beta.11
  * (c) 2020 Luca Zampetti <lzampetti@gmail.com>
  * License: MIT
  */
@@ -18976,8 +18976,13 @@ var rxcomp = (function (exports, rxjs, operators) {
     _proto.onDestroy = function onDestroy() {};
 
     _proto.pushChanges = function pushChanges() {
-      this.changes$.next(this);
-      this.onView();
+      var _getContext = getContext(this),
+          module = _getContext.module;
+
+      if (module.instances) {
+        this.changes$.next(this);
+        this.onView();
+      }
     };
 
     return Factory;
@@ -19115,9 +19120,11 @@ var rxcomp = (function (exports, rxjs, operators) {
           module = _getContext.module,
           node = _getContext.node;
 
-      this.changes$.next(this);
-      module.parse(node, this);
-      this.onView();
+      if (module.instances) {
+        this.changes$.next(this);
+        module.parse(node, this);
+        this.onView();
+      }
     };
 
     return Component;
@@ -19128,7 +19135,7 @@ var rxcomp = (function (exports, rxjs, operators) {
   var Context = function (_Component) {
     _inheritsLoose(Context, _Component);
 
-    function Context(instance, descriptors) {
+    function Context(parentInstance, descriptors) {
       var _this;
 
       if (descriptors === void 0) {
@@ -19136,11 +19143,33 @@ var rxcomp = (function (exports, rxjs, operators) {
       }
 
       _this = _Component.call(this) || this;
-      descriptors = Context.mergeDescriptors(instance, instance, descriptors);
-      descriptors = Context.mergeDescriptors(Object.getPrototypeOf(instance), instance, descriptors);
+      descriptors = Context.mergeDescriptors(parentInstance, parentInstance, descriptors);
+      descriptors = Context.mergeDescriptors(Object.getPrototypeOf(parentInstance), parentInstance, descriptors);
       Object.defineProperties(_assertThisInitialized(_this), descriptors);
       return _this;
     }
+
+    var _proto = Context.prototype;
+
+    _proto.pushChanges = function pushChanges() {
+      var _this2 = this;
+
+      var context = getContext(this);
+
+      if (!context.keys) {
+        context.keys = Object.keys(context.parentInstance).filter(function (key) {
+          return RESERVED_PROPERTIES.indexOf(key) === -1;
+        });
+      }
+
+      if (context.module.instances) {
+        context.keys.forEach(function (key) {
+          _this2[key] = context.parentInstance[key];
+        });
+      }
+
+      _Component.prototype.pushChanges.call(this);
+    };
 
     Context.mergeDescriptors = function mergeDescriptors(source, instance, descriptors) {
       if (descriptors === void 0) {
@@ -19276,8 +19305,7 @@ var rxcomp = (function (exports, rxjs, operators) {
             var _instance = module.makeInstance(clonedNode, ForItem, context.selector, context.parentInstance, args);
 
             if (_instance) {
-              var forItemContext = getContext(_instance);
-              module.compile(clonedNode, forItemContext.instance);
+              module.compile(clonedNode, _instance);
               this.instances.push(_instance);
             }
           }
@@ -19463,6 +19491,32 @@ var rxcomp = (function (exports, rxjs, operators) {
     inputs: ['innerHTML']
   };
 
+  var JsonComponent = function (_Component) {
+    _inheritsLoose(JsonComponent, _Component);
+
+    function JsonComponent() {
+      var _this;
+
+      _this = _Component.apply(this, arguments) || this;
+      _this.active = false;
+      return _this;
+    }
+
+    var _proto = JsonComponent.prototype;
+
+    _proto.onToggle = function onToggle() {
+      this.active = !this.active;
+      this.pushChanges();
+    };
+
+    return JsonComponent;
+  }(Component);
+  JsonComponent.meta = {
+    selector: 'json-component',
+    inputs: ['item'],
+    template: "\n\t\t<div class=\"rxc-block\">\n\t\t\t<div class=\"rxc-head\">\n\t\t\t\t<span class=\"rxc-head__title\" (click)=\"onToggle()\">\n\t\t\t\t\t<span *if=\"!active\">+ json </span>\n\t\t\t\t\t<span *if=\"active\">- json </span>\n\t\t\t\t\t<span [innerHTML]=\"item\"></span>\n\t\t\t\t</span>\n\t\t\t</div>\n\t\t\t<ul class=\"rxc-list\" *if=\"active\">\n\t\t\t\t<li class=\"rxc-list__item\">\n\t\t\t\t\t<span class=\"rxc-list__value\" [innerHTML]=\"item | json\"></span>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</div>"
+  };
+
   var Pipe = function () {
     function Pipe() {}
 
@@ -19481,7 +19535,19 @@ var rxcomp = (function (exports, rxjs, operators) {
     }
 
     JsonPipe.transform = function transform(value) {
-      return JSON.stringify(value, null, '\t');
+      var cache = new Map();
+      var json = JSON.stringify(value, function (key, value) {
+        if (typeof value === 'object' && value != null) {
+          if (cache.has(value)) {
+            return '#ref';
+          }
+
+          cache.set(value, true);
+        }
+
+        return value;
+      }, 2);
+      return json;
     };
 
     return JsonPipe;
@@ -19590,7 +19656,7 @@ var rxcomp = (function (exports, rxjs, operators) {
 
         if (child.nodeType === 1) {
           var element = child;
-          var context = getContextByNode(element);
+          var context = getParsableContextByNode(element);
 
           if (!context) {
             this.parse(element, instance);
@@ -19659,26 +19725,30 @@ var rxcomp = (function (exports, rxjs, operators) {
         expressions = this.parseTextNodeExpression(node.wholeText);
       }
 
-      var replacedText = expressions.reduce(function (p, c) {
-        var text;
+      if (expressions.length) {
+        var replacedText = expressions.reduce(function (p, c) {
+          var text;
 
-        if (typeof c === 'function') {
-          text = _this4.resolve(c, instance, instance);
+          if (typeof c === 'function') {
+            text = _this4.resolve(c, instance, instance);
 
-          if (text == undefined) {
-            text = '';
+            if (text == undefined) {
+              text = '';
+            }
+          } else {
+            text = c;
           }
-        } else {
-          text = c;
+
+          return p + text;
+        }, '');
+
+        if (node.nodeValue !== replacedText) {
+          var textNode = document.createTextNode(replacedText);
+          textNode.nodeExpressions = expressions;
+          node.parentNode.replaceChild(textNode, node);
         }
-
-        return p + text;
-      }, '');
-
-      if (node.nodeValue !== replacedText) {
-        var textNode = document.createTextNode(replacedText);
-        textNode.nodeExpressions = expressions;
-        node.parentNode.replaceChild(textNode, node);
+      } else {
+        node.nodeExpressions = expressions;
       }
     };
 
@@ -19711,7 +19781,13 @@ var rxcomp = (function (exports, rxjs, operators) {
         this.pushFragment(nodeValue, lastIndex, length, expressions);
       }
 
-      return expressions;
+      if (expressions.find(function (x) {
+        return typeof x === 'function';
+      })) {
+        return expressions;
+      } else {
+        return [];
+      }
     };
 
     _proto.makeHosts = function makeHosts(meta, instance, node) {
@@ -20090,7 +20166,7 @@ var rxcomp = (function (exports, rxjs, operators) {
 
     return Module;
   }();
-  function getContextByNode(node) {
+  function getParsableContextByNode(node) {
     var context;
     var rxcompId = node.rxcompId;
 
@@ -20108,6 +20184,15 @@ var rxcomp = (function (exports, rxjs, operators) {
           }
         }, undefined);
       }
+    }
+
+    return context;
+  }
+  function getContextByNode(node) {
+    var context = getParsableContextByNode(node);
+
+    if (context && context.factory.prototype instanceof Structure) {
+      context = undefined;
     }
 
     return context;
@@ -20220,7 +20305,7 @@ var rxcomp = (function (exports, rxjs, operators) {
     inputs: ['style']
   };
 
-  var factories = [ClassDirective, EventDirective, ForStructure, HrefDirective, IfStructure, InnerHtmlDirective, SrcDirective, StyleDirective];
+  var factories = [ClassDirective, EventDirective, ForStructure, HrefDirective, IfStructure, InnerHtmlDirective, JsonComponent, SrcDirective, StyleDirective];
   var pipes = [JsonPipe];
 
   var CoreModule = function (_Module) {
@@ -20267,6 +20352,7 @@ var rxcomp = (function (exports, rxjs, operators) {
       var module = new moduleFactory();
       module.meta = meta;
       var instances = module.compile(meta.node, window);
+      module.instances = instances;
       var root = instances[0];
       root.pushChanges();
       return module;
@@ -20441,6 +20527,10 @@ var rxcomp = (function (exports, rxjs, operators) {
 
     return Platform;
   }();
+  var PLATFORM_BROWSER = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+  var PLATFORM_JS_DOM = typeof window !== 'undefined' && window.name === 'nodejs' || navigator.userAgent.includes('Node.js') || navigator.userAgent.includes('jsdom');
+  var PLATFORM_NODE = typeof process !== 'undefined' && process.versions != null && process.versions.node != null;
+  var PLATFORM_WEB_WORKER = typeof self === 'object' && self.constructor && self.constructor.name === 'DedicatedWorkerGlobalScope';
 
   var Browser = function (_Platform) {
     _inheritsLoose(Browser, _Platform);
@@ -20465,8 +20555,13 @@ var rxcomp = (function (exports, rxjs, operators) {
   exports.HrefDirective = HrefDirective;
   exports.IfStructure = IfStructure;
   exports.InnerHtmlDirective = InnerHtmlDirective;
+  exports.JsonComponent = JsonComponent;
   exports.JsonPipe = JsonPipe;
   exports.Module = Module;
+  exports.PLATFORM_BROWSER = PLATFORM_BROWSER;
+  exports.PLATFORM_JS_DOM = PLATFORM_JS_DOM;
+  exports.PLATFORM_NODE = PLATFORM_NODE;
+  exports.PLATFORM_WEB_WORKER = PLATFORM_WEB_WORKER;
   exports.Pipe = Pipe;
   exports.Platform = Platform;
   exports.SrcDirective = SrcDirective;
@@ -20475,6 +20570,7 @@ var rxcomp = (function (exports, rxjs, operators) {
   exports.getContext = getContext;
   exports.getContextByNode = getContextByNode;
   exports.getHost = getHost;
+  exports.getParsableContextByNode = getParsableContextByNode;
 
   return exports;
 

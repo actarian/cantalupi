@@ -99,15 +99,44 @@
 	}
 }
 
+.group--main-menu {
+	display: flex;
+	flex-direction: column;
+	min-height: calc(100vh - 76px);
+	justify-content: center;
+
+	@include media-up(md) {
+
+		&>.container {
+			max-width: 74%;
+		}
+
+	}
+}
+
+/*
+._group--main-menu {
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	flex: 1 1 auto;
+	align-items: center;
+
+	@include media-down(sm) {
+		flex-direction: column;
+	}
+}
+*/
+
 .main-menu {
 	position: fixed;
 	display: flex;
 	flex-direction: column;
 	width: 100vw;
-	height: 100vh;
+	min-height: 100vh;
 	top: 0;
-	background: #ad7937;
-	background: radial-gradient(ellipse at center, #a57334 0%, #9c6d32 100%);
+	background: #4a4a49;
+	background: radial-gradient(ellipse at center, #4a4a49 0%, #252525 100%);
 	pointer-events: none;
 	opacity: 0;
 	transition: opacity ease-in-out 350ms;
@@ -134,6 +163,7 @@
 		}
 	}
 
+	/*
 	.nav--secondary-menu {
 
 		&>li {
@@ -142,6 +172,7 @@
 			}
 		}
 	}
+	*/
 
 	@include media-up(lg) {
 		&>.container-fluid {
@@ -153,8 +184,16 @@
 .nav--primary-menu {
 	@extend %nav-vertical;
 	align-items: flex-start;
-	width: auto;
-	flex: 1 1 auto;
+
+	@include media-up(md) {
+		width: 100%;
+		flex: 1 1 100%;
+	}
+
+	@include media-down(sm) {
+		width: auto;
+		flex: 1 1 auto;
+	}
 
 	&>li {
 		@extend %nav-item;
@@ -171,6 +210,11 @@
 			transition: all ease-in-out 350ms;
 		}
 
+		&:after {
+			flex: 1 0 18vw;
+			min-width: 18vw;
+		}
+
 		&>a,
 		&>span {
 			@extend %btn;
@@ -179,23 +223,42 @@
 			text-transform: uppercase;
 			line-height: 1.5;
 			padding: 0 1vw;
+			white-space: nowrap;
 
 			&,
 			&:active,
 			&:focus,
 			&:visited,
 			&:hover {
-				color: #03191D;
+				color: white;
+			}
+		}
+
+		&.secondary {
+
+			&>a,
+			&>span {
+
+				&,
+				&:active,
+				&:focus,
+				&:visited,
+				&:hover {
+					color: #b4a268;
+				}
 			}
 		}
 
 		&>ul {
-			@extend %nav-vertical;
-			align-items: flex-start;
+			@extend %nav-reset;
 			position: absolute;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: flex-end;
 			top: 50%;
 			right: 0;
-			transform: translateX(calc(100% + 1vw)) translateY(-50%);
+			transform: translateX(0) translateY(-50%);
 			display: none;
 
 			&>li {
@@ -206,7 +269,8 @@
 					font-family: $font-secondary;
 					font-size: 2vw;
 					font-style: italic;
-					text-transform: uppercase;
+					text-transform: none;
+					text-align: right;
 					line-height: 1.5;
 
 					&,
@@ -217,31 +281,34 @@
 						color: white;
 					}
 				}
+
+				&:first-child {
+					&>a {
+
+						&,
+						&:active,
+						&:focus,
+						&:visited,
+						&:hover {
+							color: #b4a268;
+						}
+					}
+				}
 			}
 		}
 
 		&:before {
 			width: 0;
-			background: white;
+			background: #b4a268;
 		}
 
 		&:after {
-			width: 10vw;
 			background: transparent;
 		}
 
 		&:hover {
 			&:before {
 				width: 1vw;
-			}
-
-			&:after {
-				width: 9vw;
-			}
-
-			&>a,
-			&>span {
-				color: white;
 			}
 		}
 
@@ -251,13 +318,7 @@
 			}
 
 			&:after {
-				width: 4vw;
-				background: white;
-			}
-
-			&>a,
-			&>span {
-				color: white;
+				background: rgba(255, 255, 255, 0.5);
 			}
 
 			&>ul {
@@ -276,7 +337,8 @@
 
 			&>a,
 			&>span {
-				font-size: 80px;
+				font-size: 64px;
+				line-height: 1.1;
 			}
 
 			&>ul {
@@ -284,7 +346,8 @@
 
 					&>a,
 					&>span {
-						font-size: 80px * 0.3;
+						font-size: 64px * 0.5;
+						line-height: 1;
 					}
 				}
 			}
@@ -297,6 +360,7 @@
 			&>a,
 			&>span {
 				font-size: 4vw;
+				line-height: 1.1;
 			}
 
 			&>ul {
@@ -304,7 +368,8 @@
 
 					&>a,
 					&>span {
-						font-size: 4vw * 0.3;
+						font-size: 4vw * 0.5;
+						line-height: 1;
 					}
 				}
 			}
@@ -313,6 +378,12 @@
 
 	@include media-down(sm) {
 		&>li {
+
+			&:after {
+				flex: 1 0 8vw;
+				min-width: 8vw;
+				line-height: 1.2;
+			}
 
 			&>a,
 			&>span {
@@ -324,18 +395,40 @@
 
 					&>a,
 					&>span {
-						font-size: 40px * 0.3;
+						font-size: 40px * 0.5;
+						line-height: 1;
 					}
 				}
 			}
 		}
 	}
-}
 
-.group--main-menu {
-	display: flex;
-	justify-content: space-around;
-	width: 100%;
-	flex: 1 1 auto;
-	align-items: center;
+	@include media-down(xs) {
+		&>li {
+
+
+			&:after {
+				flex: 1 0 80px;
+				min-width: 80px;
+				line-height: 1.2;
+			}
+
+			&>a,
+			&>span {
+				font-size: 24px;
+				font-weight: 600;
+			}
+
+			&>ul {
+				&>li {
+
+					&>a,
+					&>span {
+						font-size: 16px;
+					}
+				}
+			}
+		}
+	}
+
 }
