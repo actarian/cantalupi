@@ -3965,7 +3965,7 @@ errors-component {
       color: white; }
   @media (min-width: 1440px) {
     .section--cover-video .title {
-      font-style: 69.6px; } }
+      font-size: 69.6px; } }
   @media (min-width: 768px) and (max-width: 1919.98px) {
     .section--cover-video .title {
       font-size: 4.4vw; } }
