@@ -49,9 +49,12 @@
 				<li class="spacer"></li>
 				<li><a href="/cantalupi/how-we-do.html#producing">Producing</a></li>
 				<li class="spacer"></li>
-				<li><a href="/cantalupi/how-we-do.html#delivery">Delivery</a></li>
+				<li><a href="/cantalupi/how-we-do.html#delivering">Delivery</a></li>
 				<li class="spacer"></li>
 			</ul>
+			<div class="group--cta">
+				<a href="/cantalupi/how-we-do.html#service" class="btn--contact hidden-sm-down" data-title="How do we collaborate with lighting designers?">How do we collaborate with lighting designers?</a>
+			</div>
 		</div>
 	</section>
 
@@ -211,6 +214,281 @@
 					<div class="picture" gallery="/cantalupi/img/how-we-do/06.jpg">
 						<img lazy="/cantalupi/img/how-we-do/06.jpg" (click)="onOpenGallery($event)" />
 						<button class="btn--gallery"><span>View Gallery</span></button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section--service" id="service">
+		<div class="container">
+			<div class="section--service__title">Servizi per Lighting Designers</div>
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card--service" card-service>
+						<div class="slider">
+							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
+								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
+									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/01-03-materials.jpg" title="Materials" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/01-01-sketch.jpg" title="Sketch" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/01-02-materials.jpg" title="Materials" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/01-04-lenses.jpg" title="Lenses" ondragstart="return false;" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="content">
+									<div class="title">Materials</div>
+									<div class="slider__pagination">
+										<button type="button" class="btn--prev" [class]="{ disabled: !hasPrev() }" (click)="navTo(state.current - 1)">
+											<svg class="caret-left"><use xlink:href="#caret-left"></use></svg>
+										</button>
+										<div class="counter"><span [innerHTML]="currentLabel"></span> di <span [innerHTML]="totalLabel"></span></div>
+										<button type="button" class="btn--next" [class]="{ disabled: !hasNext() }" (click)="navTo(state.current + 1)">
+											<svg class="caret-right"><use xlink:href="#caret-right"></use></svg>
+										</button>
+									</div>
+								</div>
+								<div class="description">
+									Sviluppiamo prodotti full custom per qualsiasi contesto unendo la professionalità dei lighting designer e le loro idee al nostro know-how ed esperienza maturata in anni di continua sperimentazione su tecnologie, materiali e finiture. Li affianchiamo in tutte le fasi del progetto parlando la loro stessa lingua in un continuo dialogo tra questioni tecniche ed estetiche.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card--service" card-service>
+						<div class="slider">
+							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
+								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
+									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/02-01-3d-prototipation.jpg" title="3D Prototipation" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/02-02-prototipation.jpg" title="Prototipation" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/02-03-untitled.jpg" title="Untitled" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/02-04-untitled.jpg" title="Untitled" ondragstart="return false;" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="content">
+									<div class="title">3D Prototipation</div>
+									<div class="slider__pagination">
+										<button type="button" class="btn--prev" [class]="{ disabled: !hasPrev() }" (click)="navTo(state.current - 1)">
+											<svg class="caret-left"><use xlink:href="#caret-left"></use></svg>
+										</button>
+										<div class="counter"><span [innerHTML]="currentLabel"></span> di <span [innerHTML]="totalLabel"></span></div>
+										<button type="button" class="btn--next" [class]="{ disabled: !hasNext() }" (click)="navTo(state.current + 1)">
+											<svg class="caret-right"><use xlink:href="#caret-right"></use></svg>
+										</button>
+									</div>
+								</div>
+								<div class="description">
+									Realizziamo prototipi concettuali del prodotto in stampa 3d e prototipi pre-serie direttamente nella nostra officina.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card--service" card-service>
+						<div class="slider">
+							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
+								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
+									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/03-01-measures-photogoniometer.jpg" title="Measures Photogoniometer" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/03-02-ip-test.jpg" title="Untitled" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/03-03-ip-test.jpg" title="Untitled" ondragstart="return false;" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="content">
+									<div class="title">Measures Photogoniometer</div>
+									<div class="slider__pagination">
+										<button type="button" class="btn--prev" [class]="{ disabled: !hasPrev() }" (click)="navTo(state.current - 1)">
+											<svg class="caret-left"><use xlink:href="#caret-left"></use></svg>
+										</button>
+										<div class="counter"><span [innerHTML]="currentLabel"></span> di <span [innerHTML]="totalLabel"></span></div>
+										<button type="button" class="btn--next" [class]="{ disabled: !hasNext() }" (click)="navTo(state.current + 1)">
+											<svg class="caret-right"><use xlink:href="#caret-right"></use></svg>
+										</button>
+									</div>
+								</div>
+								<div class="description">
+									Corrediamo il prodotto custom con un Datasheet contenente tutti i dati tecnici relativi derivanti da prove tecniche realizzate nei nostri laboratori tra le quali ad esempio rilievi fotometrici tramite fotogoniometro, prove colorimetriche rilevando Tc e CRI, test termici, test IP ecc.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card--service" card-service>
+						<div class="slider">
+							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
+								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
+									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/04-01-led-integration.jpg" title="Led Integration" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/04-02-untitled.jpg" title="Untitled" ondragstart="return false;" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="content">
+									<div class="title">Led Integration</div>
+									<div class="slider__pagination">
+										<button type="button" class="btn--prev" [class]="{ disabled: !hasPrev() }" (click)="navTo(state.current - 1)">
+											<svg class="caret-left"><use xlink:href="#caret-left"></use></svg>
+										</button>
+										<div class="counter"><span [innerHTML]="currentLabel"></span> di <span [innerHTML]="totalLabel"></span></div>
+										<button type="button" class="btn--next" [class]="{ disabled: !hasNext() }" (click)="navTo(state.current + 1)">
+											<svg class="caret-right"><use xlink:href="#caret-right"></use></svg>
+										</button>
+									</div>
+								</div>
+								<div class="description">
+									Mettiamo a disposizione la nostra lunga esperienza per dare supporto nell'individuazione e sviluppo di soluzioni di luce integrata nelle superfici
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card--service" card-service>
+						<div class="slider">
+							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
+								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
+									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/05-02-control-box.jpg" title="Control Box" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/05-01-project-control-box.jpg" title="Project Control Box" ondragstart="return false;" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="content">
+									<div class="title">Control Box</div>
+									<div class="slider__pagination">
+										<button type="button" class="btn--prev" [class]="{ disabled: !hasPrev() }" (click)="navTo(state.current - 1)">
+											<svg class="caret-left"><use xlink:href="#caret-left"></use></svg>
+										</button>
+										<div class="counter"><span [innerHTML]="currentLabel"></span> di <span [innerHTML]="totalLabel"></span></div>
+										<button type="button" class="btn--next" [class]="{ disabled: !hasNext() }" (click)="navTo(state.current + 1)">
+											<svg class="caret-right"><use xlink:href="#caret-right"></use></svg>
+										</button>
+									</div>
+								</div>
+								<div class="description">
+									Realizziamo impianti elettrici e corrediamo il prodotto, quando richiesto, con control box in grado di far dialogare la sorgente LED con i principali sistemi domotici.
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card--service" card-service>
+						<div class="slider">
+							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
+								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)' }">
+									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/06-03-light-cycle-dinner-interactive-lightmix.jpg" title="Light Cycle Dinner Interactive Lightmix" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/06-01-light-cycle-daylight-interactive-lightmix.jpg" title="Light Cycle Daylight Interactive Lightmix" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/06-02-light-cycle-lounge-interactive-lightmix.jpg" title="Light Cycle Lounge Interactive Lightmix" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/06-04-light-cycle-relax-interactive-lightmix.jpg" title="Light Cycle Relax Interactive Lightmix" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/06-05-light-cycle-party-interactive-lightmix.jpg" title="Light Cycle Party Interactive Lightmix" ondragstart="return false;" />
+											</div>
+										</div>
+										<div class="slider__slide">
+											<div class="picture picture--slider">
+												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/06-06-light-cycle-night-interactive-lightmix.jpg" title="Light Cycle Night Interactive Lightmix" ondragstart="return false;" />
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="content">
+									<div class="title">Light Cycle Dinner Interactive Lightmix</div>
+									<div class="slider__pagination">
+										<button type="button" class="btn--prev" [class]="{ disabled: !hasPrev() }" (click)="navTo(state.current - 1)">
+											<svg class="caret-left"><use xlink:href="#caret-left"></use></svg>
+										</button>
+										<div class="counter"><span [innerHTML]="currentLabel"></span> di <span [innerHTML]="totalLabel"></span></div>
+										<button type="button" class="btn--next" [class]="{ disabled: !hasNext() }" (click)="navTo(state.current + 1)">
+											<svg class="caret-right"><use xlink:href="#caret-right"></use></svg>
+										</button>
+									</div>
+								</div>
+								<div class="description">
+									Siamo di supporto al progettista nell'individuazione delle migliori soluzioni impiantistiche per garantire in ogni momento il completo controllo della luce in ogni contesto e per qualsiasi sorgente luminosa (luce bianca, dynamic white o RGBW)
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

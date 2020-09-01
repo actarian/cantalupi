@@ -160,6 +160,46 @@ AppComponent.meta = {
 }(rxcomp.Component);
 CardSerieComponent.meta = {
   selector: '[card-serie]'
+};var CardServiceComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(CardServiceComponent, _Component);
+
+  function CardServiceComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = CardServiceComponent.prototype;
+
+  _proto.onTween = function onTween() {
+    var _getContext = rxcomp.getContext(this),
+        node = _getContext.node;
+
+    var title = node.querySelector('.title');
+    this.title = title.innerHTML;
+  };
+
+  _proto.onChange = function onChange(index) {
+    var _getContext2 = rxcomp.getContext(this),
+        node = _getContext2.node;
+
+    this.items = Array.prototype.slice.call(node.querySelectorAll('.slider__slide')).map(function (node, index) {
+      var image = node.querySelector('img');
+      var title = image.getAttribute('title') || image.getAttribute('alt');
+      var url = image.getAttribute('lazy');
+      return {
+        node: node,
+        url: url,
+        title: title,
+        id: index + 10000001
+      };
+    });
+    this.title = this.items[index].title;
+    this.index = index;
+  };
+
+  return CardServiceComponent;
+}(rxcomp.Component);
+CardServiceComponent.meta = {
+  selector: '[card-service]'
 };var ClickOutsideDirective = /*#__PURE__*/function (_Directive) {
   _inheritsLoose(ClickOutsideDirective, _Directive);
 
@@ -2205,7 +2245,7 @@ DropdownItemDirective.meta = {
 
     var images = this.images = Array.prototype.slice.call(node.querySelectorAll('img'));
     this.index = 0;
-    rxjs.interval(4000).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function () {
+    rxjs.interval(2500).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function () {
       _this.onNext();
     });
   };
@@ -7391,7 +7431,8 @@ var DragService = /*#__PURE__*/function () {
   };
 
   _proto.navTo = function navTo(current) {
-    this.current = current;
+    this.current = current; // console.log('SliderCompoentn.navTo', current);
+
     this.pushChanges();
     /*
     if (this.current !== current) {
@@ -7460,7 +7501,9 @@ var DragService = /*#__PURE__*/function () {
     key: "state",
     get: function get() {
       if (!this.state_) {
-        this.state_ = {};
+        this.state_ = {
+          current: 0
+        };
       }
 
       return this.state_;
@@ -7472,6 +7515,52 @@ var DragService = /*#__PURE__*/function () {
 SliderComponent.meta = {
   selector: '[slider]',
   inputs: ['items', 'current'],
+  outputs: ['change', 'tween']
+};var SliderServiceComponent = /*#__PURE__*/function (_SliderComponent) {
+  _inheritsLoose(SliderServiceComponent, _SliderComponent);
+
+  function SliderServiceComponent() {
+    return _SliderComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = SliderServiceComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    _SliderComponent.prototype.onInit.call(this);
+
+    var _getContext = rxcomp.getContext(this),
+        node = _getContext.node;
+
+    this.items = Array.prototype.slice.call(node.querySelectorAll('.slider__slide')).map(function (node, index) {
+      var image = node.querySelector('img');
+      var title = image.getAttribute('title') || image.getAttribute('alt');
+      var url = image.getAttribute('lazy');
+      return {
+        node: node,
+        url: url,
+        title: title,
+        id: index + 10000001
+      };
+    });
+    console.log('SliderServiceComponent.onInit', this.items);
+  };
+
+  _createClass(SliderServiceComponent, [{
+    key: "currentLabel",
+    get: function get() {
+      return this.current + 1;
+    }
+  }, {
+    key: "totalLabel",
+    get: function get() {
+      return this.items.length;
+    }
+  }]);
+
+  return SliderServiceComponent;
+}(SliderComponent);
+SliderServiceComponent.meta = {
+  selector: '[slider-service]',
   outputs: ['change', 'tween']
 };var SlugPipe = /*#__PURE__*/function (_Pipe) {
   _inheritsLoose(SlugPipe, _Pipe);
@@ -7935,6 +8024,6 @@ VirtualStructure.meta = {
 }(rxcomp.Module);
 AppModule.meta = {
   imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-  declarations: [CardSerieComponent, ClickOutsideDirective, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SlugPipe, VirtualStructure],
+  declarations: [CardServiceComponent, CardSerieComponent, ClickOutsideDirective, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderServiceComponent, SlugPipe, VirtualStructure],
   bootstrap: AppComponent
 };rxcomp.Browser.bootstrap(AppModule);})));

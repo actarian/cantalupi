@@ -23,7 +23,7 @@ export default class SliderComponent extends Component {
 
 	get state() {
 		if (!this.state_) {
-			this.state_ = {};
+			this.state_ = { current: 0 };
 		}
 		return this.state_;
 	}
@@ -106,6 +106,7 @@ export default class SliderComponent extends Component {
 
 	navTo(current) {
 		this.current = current;
+		// console.log('SliderCompoentn.navTo', current);
 		this.pushChanges();
 		/*
 		if (this.current !== current) {

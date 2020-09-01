@@ -8,7 +8,7 @@ export default class FadingGalleryComponent extends Component {
 		const { node } = getContext(this);
 		const images = this.images = Array.prototype.slice.call(node.querySelectorAll('img'));
 		this.index = 0;
-		interval(4000).pipe(
+		interval(2500).pipe(
 			takeUntil(this.unsubscribe$),
 		).subscribe(() => {
 			this.onNext();

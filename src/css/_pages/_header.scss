@@ -106,11 +106,9 @@
 	justify-content: center;
 
 	@include media-up(md) {
-
 		&>.container {
 			max-width: 74%;
 		}
-
 	}
 }
 
@@ -165,7 +163,6 @@
 
 	/*
 	.nav--secondary-menu {
-
 		&>li {
 			&>a {
 				color: #1D1D1B;

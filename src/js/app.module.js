@@ -2,6 +2,7 @@ import { CoreModule, Module } from 'rxcomp';
 import { FormModule } from 'rxcomp-form';
 import AppComponent from './app.component';
 import CardSerieComponent from './card/card-serie';
+import CardServiceComponent from './card/card-service';
 import ClickOutsideDirective from './click-outside/click-outside.directive';
 import CoverVideoComponent from './cover/cover-video.component';
 import CoverComponent from './cover/cover.component';
@@ -25,11 +26,12 @@ import ProductsPageComponent from './products-page/products-page.component';
 import ScrollToDirective from './scroll-to/scroll-to.directive';
 import SecureDirective from './secure/secure.directive';
 import ShareComponent from './share/share.component';
+import SliderServiceComponent from './slider/slider-service.component';
 import SliderComponent from './slider/slider.component';
 import SlugPipe from './slug/slug.pipe';
 import VirtualStructure from './virtual/virtual.structure';
 
-export default class AppModule extends Module {}
+export default class AppModule extends Module { }
 
 AppModule.meta = {
 	imports: [
@@ -37,6 +39,7 @@ AppModule.meta = {
 		FormModule,
 	],
 	declarations: [
+		CardServiceComponent,
 		CardSerieComponent,
 		ClickOutsideDirective,
 		CoverComponent,
@@ -62,6 +65,7 @@ AppModule.meta = {
 		SecureDirective,
 		ShareComponent,
 		SliderComponent,
+		SliderServiceComponent,
 		SlugPipe,
 		VirtualStructure
 	],
