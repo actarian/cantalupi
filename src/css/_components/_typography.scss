@@ -38,7 +38,7 @@ body {
 	}
 
 	@include media-between(sm, lg) {
-		font-size: 5.5vw;
+		font-size: 5vw;
 	}
 
 	@include media-between(xs, sm) {

@@ -151,7 +151,7 @@ body {
       font-style: 79px; } }
   @media (min-width: 768px) and (max-width: 1919.98px) {
     .section--hero .title {
-      font-size: 5.5vw; } }
+      font-size: 5vw; } }
   @media (max-width: 1023.98px) {
     .section--hero .title {
       font-size: 54px; } }
