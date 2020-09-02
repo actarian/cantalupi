@@ -5819,9 +5819,13 @@ errors-component {
       fill: #1D1D1B; }
 
 .section--service {
+  position: relative;
   background: #000001;
   color: white;
   padding: 100px 0; }
+  .section--service .background {
+    position: absolute;
+    width: 100%; }
   .section--service__title {
     text-align: center;
     max-width: 600px;

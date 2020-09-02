@@ -106,9 +106,15 @@
 }
 
 .section--service {
+	position: relative;
 	background: #000001;
 	color: white;
 	padding: 100px 0;
+
+	.background {
+		position: absolute;
+		width: 100%;
+	}
 
 	&__title {
 		@extend %subtitle;
