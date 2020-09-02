@@ -7,7 +7,7 @@ $container-max-widths: (sm: calc(100% - 70px),
 * {
   box-sizing: border-box; }
 
-.card__category, .card__title {
+.card__category, .card__title, .section--service__title {
   text-decoration: none;
   outline: none;
   color: inherit; }
@@ -140,6 +140,23 @@ body {
   @media (max-width: 1023.98px) {
     .card__category, .card__title {
       font-size: 16px; } }
+
+.section--service__title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  line-height: 1.15; }
+  @media (min-width: 1440px) {
+    .section--service__title {
+      font-size: 54px; } }
+  @media (min-width: 768px) and (max-width: 1919.98px) {
+    .section--service__title {
+      font-size: 2.81vw; } }
+  @media (max-width: 1023.98px) {
+    .section--service__title {
+      font-size: 4.215vw; } }
+  @media (max-width: 767.98px) {
+    .section--service__title {
+      font-size: 5.058vw; } }
 
 .form .title, .card__abstract {
   font-family: "Nunito Sans", sans-serif;
@@ -5806,10 +5823,6 @@ errors-component {
   color: white;
   padding: 100px 0; }
   .section--service__title {
-    font-family: "Cormorant Garamond", serif;
-    font-style: italic;
-    font-size: 36px;
-    line-height: 1.15;
     text-align: center;
     max-width: 600px;
     margin: 0 auto 70px auto; }

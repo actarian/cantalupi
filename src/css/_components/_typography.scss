@@ -41,13 +41,24 @@ body {
 
 %subtitle {
 	@extend %reset-link;
-	font-family: $font-primary;
-	font-size: 40px;
-	line-height: 1.1;
-	font-weight: $font-bold;
+	font-family: $font-secondary;
+	font-style: italic;
+	line-height: 1.15;
 
-	@include media-down(sm) {
-		font-size: 29px;
+	@include media-up(lg) {
+		font-size: 54px;
+	}
+
+	@include media-between(sm, lg) {
+		font-size: 2.81vw;
+	}
+
+	@include media-between(xs, sm) {
+		font-size: 2.81vw * 1.5;
+	}
+
+	@include media-down(xs) {
+		font-size: 2.81vw * 1.8;
 	}
 }
 
