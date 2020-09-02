@@ -9,6 +9,7 @@ export default class CardServiceComponent extends Component {
 	}
 
 	onChange(index) {
+		/*
 		const { node } = getContext(this);
 		this.items = Array.prototype.slice.call(node.querySelectorAll('.slider__slide')).map((node, index) => {
 			const image = node.querySelector('img');
@@ -18,6 +19,7 @@ export default class CardServiceComponent extends Component {
 		});
 		this.title = this.items[index].title;
 		this.index = index;
+		*/
 	}
 
 }

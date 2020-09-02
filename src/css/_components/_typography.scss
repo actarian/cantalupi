@@ -26,15 +26,56 @@ body {
 	}
 }
 
+%title-hero {
+	@extend %reset-link;
+	font-family: $font-secondary;
+	font-style: italic;
+	line-height: 1.1;
+	text-transform: uppercase;
+
+	@include media-up(lg) {
+		font-style: 79px;
+	}
+
+	@include media-between(sm, lg) {
+		font-size: 5.5vw;
+	}
+
+	@include media-between(xs, sm) {
+		font-size: 54px;
+	}
+
+	@include media-down(xs) {
+		font-size: 40px;
+		line-height: 1.2;
+	}
+}
+
 %title {
 	@extend %reset-link;
 	font-family: $font-secondary;
-	font-size: 64px;
-	line-height: 0.88;
-	font-weight: $font-bold;
+	font-style: italic;
+	line-height: 0.9;
+	text-transform: uppercase;
 
-	@include media-down(sm) {
-		font-size: 34px;
+	$s: 0.9;
+
+	@include media-up(lg) {
+		font-style: 120px * $s;
+	}
+
+	@include media-between(sm, lg) {
+		font-size: 8vw * $s;
+	}
+
+	@include media-between(xs, sm) {
+		font-size: 80px * $s;
+		word-break: break-word;
+	}
+
+	@include media-down(xs) {
+		font-size: 60px * $s;
+		line-height: 1.2;
 		word-break: break-word;
 	}
 }
@@ -46,19 +87,19 @@ body {
 	line-height: 1.15;
 
 	@include media-up(lg) {
-		font-size: 54px;
+		font-size: 52px;
 	}
 
 	@include media-between(sm, lg) {
-		font-size: 2.81vw;
+		font-size: 2.7vw;
 	}
 
 	@include media-between(xs, sm) {
-		font-size: 2.81vw * 1.5;
+		font-size: 2.7vw * 1.5;
 	}
 
 	@include media-down(xs) {
-		font-size: 2.81vw * 1.8;
+		font-size: 2.7vw * 1.8;
 	}
 }
 

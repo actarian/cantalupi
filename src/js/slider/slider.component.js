@@ -17,7 +17,10 @@ export default class SliderComponent extends Component {
 		return this.state.current || 0;
 	}
 	set current(current = 0) {
-		this.state.current = current;
+		if (this.state.current !== current) {
+			this.state.current = current;
+			this.change.next(current);
+		}
 		// this.state.current = Math.min(current, items ? items.length - 1 : 0);
 	}
 

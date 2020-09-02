@@ -178,22 +178,17 @@ CardSerieComponent.meta = {
   };
 
   _proto.onChange = function onChange(index) {
-    var _getContext2 = rxcomp.getContext(this),
-        node = _getContext2.node;
-
-    this.items = Array.prototype.slice.call(node.querySelectorAll('.slider__slide')).map(function (node, index) {
-      var image = node.querySelector('img');
-      var title = image.getAttribute('title') || image.getAttribute('alt');
-      var url = image.getAttribute('lazy');
-      return {
-        node: node,
-        url: url,
-        title: title,
-        id: index + 10000001
-      };
+    /*
+    const { node } = getContext(this);
+    this.items = Array.prototype.slice.call(node.querySelectorAll('.slider__slide')).map((node, index) => {
+    	const image = node.querySelector('img');
+    	const title = image.getAttribute('title') || image.getAttribute('alt');
+    	const url = image.getAttribute('lazy');
+    	return { node, url, title, id: index + 10000001 };
     });
     this.title = this.items[index].title;
     this.index = index;
+    */
   };
 
   return CardServiceComponent;
@@ -7495,7 +7490,11 @@ var DragService = /*#__PURE__*/function () {
         current = 0;
       }
 
-      this.state.current = current; // this.state.current = Math.min(current, items ? items.length - 1 : 0);
+      if (this.state.current !== current) {
+        this.state.current = current;
+        this.change.next(current);
+      } // this.state.current = Math.min(current, items ? items.length - 1 : 0);
+
     }
   }, {
     key: "state",
@@ -7542,10 +7541,27 @@ SliderComponent.meta = {
         id: index + 10000001
       };
     });
+    this.title = node.querySelector('.title').innerText;
     console.log('SliderServiceComponent.onInit', this.items);
   };
 
   _createClass(SliderServiceComponent, [{
+    key: "current",
+    get: function get() {
+      return this.state.current || 0;
+    },
+    set: function set(current) {
+      if (current === void 0) {
+        current = 0;
+      }
+
+      if (this.state.current !== current) {
+        this.state.current = current;
+        this.title = this.items[current].title;
+        this.change.next(current);
+      }
+    }
+  }, {
     key: "currentLabel",
     get: function get() {
       return this.current + 1;

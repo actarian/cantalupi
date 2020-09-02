@@ -3,6 +3,17 @@ import SliderComponent from './slider.component';
 
 export default class SliderServiceComponent extends SliderComponent {
 
+	get current() {
+		return this.state.current || 0;
+	}
+	set current(current = 0) {
+		if (this.state.current !== current) {
+			this.state.current = current;
+			this.title = this.items[current].title;
+			this.change.next(current);
+		}
+	}
+
 	get currentLabel() {
 		return this.current + 1;
 	}
@@ -20,6 +31,7 @@ export default class SliderServiceComponent extends SliderComponent {
 			const url = image.getAttribute('lazy');
 			return { node, url, title, id: index + 10000001 };
 		});
+		this.title = node.querySelector('.title').innerText;
 		console.log('SliderServiceComponent.onInit', this.items);
 	}
 }
