@@ -1,5 +1,5 @@
 import { combineLatest, concat, Observable } from 'rxjs';
-import { debounceTime, map, skip, startWith, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, map, skip, startWith, take } from 'rxjs/operators';
 import { MediaMatcher } from './media-matcher';
 
 export class BreakpointState {
@@ -13,56 +13,95 @@ class InternalBreakpointState {
 }
 
 class Query {
-	// observable;
-	// mql;
+	// query$;
+	// mediaQueryList;
 }
 
 export class BreakpointService {
 
-	isMatched(value) {
-		const queries = this.splitQueries(coerceArray(value));
-		return queries.some(mediaQuery => this._registerQuery(mediaQuery).mql.matches);
+	static queries_ = {};
+
+	static observe$(value) {
+		const queries = Object.assign({}, value); // this.splitQueries(coerceArray(value));
+		let queries$_ = [];
+		Object.keys(queries).forEach(key => {
+			const query = queries[key];
+			const group = query.split('and').map(query => query.trim());
+			group.forEach(query => queries$_.push(this.registerQuery$_(query).query$));
+			queries[key] = { query, group };
+		});
+		// let queries$_ = Object.keys(queries).map(key => this.registerQuery$_(queries[key]).query$);
+		console.log(queries$_)
+		queries$_ = combineLatest(...queries$_);
+		let queries$ = concat(
+			queries$_.pipe(take(1)),
+			queries$_.pipe(skip(1), debounceTime(0))
+		);
+		return queries$.pipe(
+			map((breakpoints) => {
+				const response = {};
+				breakpoints.forEach(b => {
+					Object.keys(queries).forEach(key => {
+						const query = queries[key];
+						const match = query.group.reduce((p, c) => {
+							return p && (b.query !== c || b.matches);
+						}, true);
+						response[key] = match;
+					});
+				});
+				/*
+				const response = {
+					matches: false,
+					breakpoints: {},
+				};
+				breakpoints.forEach((state) => {
+					response.matches = response.matches || state.matches;
+					response.breakpoints[state.query] = state.matches;
+				});
+				console.log(breakpoints, response, queries);
+				*/
+				return response;
+			}),
+		);
 	}
 
-	observe(value) {
+	/*
+	static isMatched$(value) {
 		const queries = this.splitQueries(coerceArray(value));
-		const observables = queries.map(query => this._registerQuery(query).observable);
-		let stateObservable = combineLatest(observables);
-		stateObservable = concat(
-			stateObservable.pipe(take(1)),
-			stateObservable.pipe(skip(1), debounceTime(0)));
-		return stateObservable.pipe(map((breakpointStates) => {
-			const response = {
-				matches: false,
-				breakpoints: {},
-			};
-			breakpointStates.forEach((state) => {
-				response.matches = response.matches || state.matches;
-				response.breakpoints[state.query] = state.matches;
-			});
-			return response;
-		}));
+		return queries.some(mediaQuery => this.registerQuery$_(mediaQuery).mediaQueryList.matches);
+	}
+	*/
+
+	static has(query) {
+		return this.queries_[query] !== undefined;
 	}
 
-	static _registerQuery(query) {
-		if (this._queries.has(query)) {
-			return this._queries.get(query);
+	static get(query) {
+		return this.queries_[query];
+	}
+
+	static set(query, value) {
+		return this.queries_[query] = value;
+	}
+
+	static registerQuery$_(key) {
+		if (this.has(key)) {
+			return this.get(key);
 		}
-		const mql = MediaMatcher.matchMedia(query);
-		const queryObservable = new Observable((observer) => {
-			const handler = (e) => this._zone.run(() => observer.next(e));
-			mql.addListener(handler);
-
+		const mediaQueryList = MediaMatcher.matchMedia(key);
+		console.log('mediaQueryList', mediaQueryList);
+		const query$ = new Observable((observer) => {
+			const handler = (e) => observer.next(e);
+			mediaQueryList.addListener(handler);
 			return () => {
-				mql.removeListener(handler);
+				mediaQueryList.removeListener(handler);
 			};
 		}).pipe(
-			startWith(mql),
-			map((nextMql) => ({ query, matches: nextMql.matches })),
-			takeUntil(this._destroySubject)
+			startWith(mediaQueryList),
+			map((nextMediaQueryList) => ({ query: key, matches: nextMediaQueryList.matches })),
 		);
-		const output = { observable: queryObservable, mql };
-		this._queries.set(query, output);
+		const output = { query$: query$, mediaQueryList };
+		this.set(key, output);
 		return output;
 	}
 

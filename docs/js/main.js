@@ -4,7 +4,7 @@
  * License: MIT
  */
 
-(function(g,f){typeof exports==='object'&&typeof module!=='undefined'?f(require('rxcomp'),require('rxcomp-form'),require('rxjs'),require('rxjs/operators')):typeof define==='function'&&define.amd?define(['rxcomp','rxcomp-form','rxjs','rxjs/operators'],f):(g=typeof globalThis!=='undefined'?globalThis:g||self,f(g.rxcomp,g.rxcomp.form,g.rxjs,g.rxjs.operators));}(this,(function(rxcomp, rxcompForm, rxjs, operators){'use strict';function _defineProperties(target, props) {
+(function(g,f){typeof exports==='object'&&typeof module!=='undefined'?f(require('rxcomp'),require('rxcomp-form'),require('rxjs/operators'),require('rxjs')):typeof define==='function'&&define.amd?define(['rxcomp','rxcomp-form','rxjs/operators','rxjs'],f):(g=typeof globalThis!=='undefined'?globalThis:g||self,f(g.rxcomp,g.rxcomp.form,g.rxjs.operators,g.rxjs));}(this,(function(rxcomp, rxcompForm, operators, rxjs){'use strict';function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
@@ -20,11 +20,198 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
   subClass.prototype.constructor = subClass;
   subClass.__proto__ = superClass;
-}var SessionStorageService = /*#__PURE__*/function () {
+}var EDGE = /(edge)/i.test(navigator.userAgent);
+var TRIDENT = /(msie|trident)/i.test(navigator.userAgent);
+var BLINK = !!(window.chrome || hasV8BreakIterator) && typeof CSS !== 'undefined' && !EDGE && !TRIDENT;
+var WEBKIT = /AppleWebKit/i.test(navigator.userAgent) && !BLINK && !EDGE && !TRIDENT;
+var IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !('MSStream' in window);
+var FIREFOX = /(firefox|minefield)/i.test(navigator.userAgent);
+var ANDROID = /android/i.test(navigator.userAgent) && !TRIDENT;
+var SAFARI = /safari/i.test(navigator.userAgent) && WEBKIT;
+var mediaQueriesForWebkitCompatibility = new Set();
+var mediaQueryStyleNode;
+var MediaMatcher = /*#__PURE__*/function () {
+  function MediaMatcher() {}
+
+  MediaMatcher.matchMedia = function matchMedia(query) {
+    if (WEBKIT) {
+      this.createEmptyStyleRule(query);
+    }
+
+    return this._matchMedia(query);
+  };
+
+  MediaMatcher.createEmptyStyleRule = function createEmptyStyleRule(query) {
+    if (mediaQueriesForWebkitCompatibility.has(query)) {
+      return;
+    }
+
+    try {
+      if (!mediaQueryStyleNode) {
+        mediaQueryStyleNode = document.createElement('style');
+        mediaQueryStyleNode.setAttribute('type', 'text/css');
+
+        if (document.head) {
+          document.head.appendChild(mediaQueryStyleNode);
+        }
+      }
+
+      if (mediaQueryStyleNode.sheet) {
+        mediaQueryStyleNode.sheet.insertRule("@media " + query + " {.fx-query-test{ }}", 0);
+        mediaQueriesForWebkitCompatibility.add(query);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  return MediaMatcher;
+}();
+
+function noopMatchMedia(query) {
+  return {
+    matches: query === 'all' || query === '',
+    media: query,
+    addListener: function addListener() {},
+    removeListener: function removeListener() {}
+  };
+}
+
+MediaMatcher._matchMedia = window.matchMedia ? window.matchMedia.bind(window) : noopMatchMedia;var BreakpointService = /*#__PURE__*/function () {
+  function BreakpointService() {}
+
+  BreakpointService.observe$ = function observe$(value) {
+    var _this = this;
+
+    var queries = Object.assign({}, value); // this.splitQueries(coerceArray(value));
+
+    var queries$_ = [];
+    Object.keys(queries).forEach(function (key) {
+      var query = queries[key];
+      var group = query.split('and').map(function (query) {
+        return query.trim();
+      });
+      group.forEach(function (query) {
+        return queries$_.push(_this.registerQuery$_(query).query$);
+      });
+      queries[key] = {
+        query: query,
+        group: group
+      };
+    }); // let queries$_ = Object.keys(queries).map(key => this.registerQuery$_(queries[key]).query$);
+
+    console.log(queries$_);
+    queries$_ = rxjs.combineLatest.apply(void 0, queries$_);
+    var queries$ = rxjs.concat(queries$_.pipe(operators.take(1)), queries$_.pipe(operators.skip(1), operators.debounceTime(0)));
+    return queries$.pipe(operators.map(function (breakpoints) {
+      var response = {};
+      breakpoints.forEach(function (b) {
+        Object.keys(queries).forEach(function (key) {
+          var query = queries[key];
+          var match = query.group.reduce(function (p, c) {
+            return p && (b.query !== c || b.matches);
+          }, true);
+          response[key] = match;
+        });
+      });
+      /*
+      const response = {
+      	matches: false,
+      	breakpoints: {},
+      };
+      breakpoints.forEach((state) => {
+      	response.matches = response.matches || state.matches;
+      	response.breakpoints[state.query] = state.matches;
+      });
+      console.log(breakpoints, response, queries);
+      */
+
+      return response;
+    }));
+  }
+  /*
+  static isMatched$(value) {
+  	const queries = this.splitQueries(coerceArray(value));
+  	return queries.some(mediaQuery => this.registerQuery$_(mediaQuery).mediaQueryList.matches);
+  }
+  */
+  ;
+
+  BreakpointService.has = function has(query) {
+    return this.queries_[query] !== undefined;
+  };
+
+  BreakpointService.get = function get(query) {
+    return this.queries_[query];
+  };
+
+  BreakpointService.set = function set(query, value) {
+    return this.queries_[query] = value;
+  };
+
+  BreakpointService.registerQuery$_ = function registerQuery$_(key) {
+    if (this.has(key)) {
+      return this.get(key);
+    }
+
+    var mediaQueryList = MediaMatcher.matchMedia(key);
+    console.log('mediaQueryList', mediaQueryList);
+    var query$ = new rxjs.Observable(function (observer) {
+      var handler = function handler(e) {
+        return observer.next(e);
+      };
+
+      mediaQueryList.addListener(handler);
+      return function () {
+        mediaQueryList.removeListener(handler);
+      };
+    }).pipe(operators.startWith(mediaQueryList), operators.map(function (nextMediaQueryList) {
+      return {
+        query: key,
+        matches: nextMediaQueryList.matches
+      };
+    }));
+    var output = {
+      query$: query$,
+      mediaQueryList: mediaQueryList
+    };
+    this.set(key, output);
+    return output;
+  };
+
+  BreakpointService.splitQueries = function splitQueries(queries) {
+    return queries.map(function (query) {
+      return query.split(',');
+    }).reduce(function (a1, a2) {
+      return a1.concat(a2);
+    }).map(function (query) {
+      return query.trim();
+    });
+  };
+
+  return BreakpointService;
+}();
+
+_defineProperty(BreakpointService, "queries_", {});var SessionStorageService = /*#__PURE__*/function () {
   function SessionStorageService() {}
 
   SessionStorageService.delete = function _delete(name) {
@@ -111,6 +298,8 @@ function _inheritsLoose(subClass, superClass) {
   var _proto = AppComponent.prototype;
 
   _proto.onInit = function onInit() {
+    var _this = this;
+
     var _getContext = rxcomp.getContext(this),
         node = _getContext.node;
 
@@ -118,6 +307,14 @@ function _inheritsLoose(subClass, superClass) {
     var showCover = SessionStorageService.get('showCover');
     this.showCover = !showCover;
     SessionStorageService.set('showCover', true);
+    BreakpointService.observe$({
+      isMobile: '(max-width: 767px)'
+    }).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (results) {
+      console.log('AppComponent.BreakpointService.results', results);
+      _this.isMobile = results.isMobile;
+
+      _this.pushChanges();
+    });
   };
 
   _proto.onSkipCover = function onSkipCover(event) {
@@ -2577,7 +2774,7 @@ function _createClass$1(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
-function _defineProperty(obj, key, value) {
+function _defineProperty$1(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -2612,7 +2809,7 @@ function _objectSpread2(target) {
 
     if (i % 2) {
       ownKeys(Object(source), true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
+        _defineProperty$1(target, key, source[key]);
       });
     } else if (Object.getOwnPropertyDescriptors) {
       Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
