@@ -5387,7 +5387,7 @@ var _default$3 = /*#__PURE__*/function () {
       setTimeout(function () {
         var ls = new _default$3({
           el: element,
-          smooth: true,
+          smooth: false,
           getSpeed: true,
           getDirection: false,
           useKeyboard: true,

@@ -10,7 +10,7 @@ export default class LocomotiveService {
 			setTimeout(() => {
 				const ls = new LocomotiveScroll({
 					el: element,
-					smooth: true,
+					smooth: false,
 					getSpeed: true,
 					getDirection: false,
 					useKeyboard: true,
