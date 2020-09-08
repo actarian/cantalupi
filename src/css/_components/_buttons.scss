@@ -204,7 +204,20 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 15px 0;
+	margin: 15px 0;
+
+	position: relative;
+
+	&:after {
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 1px;
+		bottom: 0;
+		background: currentColor;
+		// transform-origin: 100% 50%;
+		transition: transform ease-in-out 350ms;
+	}
 
 	svg {
 		width: 24px;
@@ -217,17 +230,27 @@
 		display: block;
 	}
 
+	/*
 	&,
 	span {
 		text-decoration: underline;
 	}
+	*/
 
 	&,
 	&:active,
 	&:focus,
 	&:hover,
 	&:visited {
-		color: white;
+		color: inherit;
+	}
+
+	&:hover {
+		color: #A28850;
+
+		&:after {
+			transform: scaleX(0);
+		}
 	}
 }
 

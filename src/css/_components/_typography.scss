@@ -34,7 +34,7 @@ body {
 	text-transform: uppercase;
 
 	@include media-up(lg) {
-		font-style: 79px;
+		font-size: 79px;
 	}
 
 	@include media-between(sm, lg) {
@@ -61,7 +61,7 @@ body {
 	$s: 0.9;
 
 	@include media-up(lg) {
-		font-style: 120px * $s;
+		font-size: 120px * $s;
 	}
 
 	@include media-between(sm, lg) {

@@ -148,7 +148,7 @@ body {
   text-transform: uppercase; }
   @media (min-width: 1440px) {
     .section--hero .title {
-      font-style: 79px; } }
+      font-size: 79px; } }
   @media (min-width: 768px) and (max-width: 1919.98px) {
     .section--hero .title {
       font-size: 5vw; } }
@@ -167,7 +167,7 @@ body {
   text-transform: uppercase; }
   @media (min-width: 1440px) {
     .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title {
-      font-style: 108px; } }
+      font-size: 108px; } }
   @media (min-width: 768px) and (max-width: 1919.98px) {
     .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title {
       font-size: 7.2vw; } }
@@ -429,7 +429,22 @@ strong {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 15px 0; }
+  margin: 15px 0;
+  position: relative;
+  /*
+	&,
+	span {
+		text-decoration: underline;
+	}
+	*/ }
+  .btn--link:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: 0;
+    background: currentColor;
+    transition: transform ease-in-out 350ms; }
   .btn--link svg {
     width: 24px;
     height: 24px;
@@ -437,10 +452,12 @@ strong {
     margin-right: 10px; }
   .btn--link span {
     display: block; }
-  .btn--link, .btn--link span {
-    text-decoration: underline; }
   .btn--link, .btn--link:active, .btn--link:focus, .btn--link:hover, .btn--link:visited {
-    color: white; }
+    color: inherit; }
+  .btn--link:hover {
+    color: #A28850; }
+    .btn--link:hover:after {
+      transform: scaleX(0); }
 
 .btn--gallery {
   display: flex;
@@ -3904,7 +3921,7 @@ errors-component {
       color: white; }
   @media (min-width: 1440px) {
     .section--cover .title {
-      font-style: 87px; } }
+      font-size: 87px; } }
   @media (min-width: 768px) and (max-width: 1919.98px) {
     .section--cover .title {
       font-size: 5.5vw; } }
@@ -4319,6 +4336,8 @@ errors-component {
   .footer .brand svg {
     width: 130px;
     height: 35px; }
+  .footer .btn--link, .footer .btn--link:active, .footer .btn--link:focus, .footer .btn--link:hover, .footer .btn--link:visited {
+    color: #ffffff; }
 
 .nav--menu-tertiary {
   margin-bottom: 30px; }
@@ -5739,7 +5758,7 @@ errors-component {
     pointer-events: none; }
 
 .section--submenu {
-  padding: 80px 0; }
+  padding: 80px 0 0 0; }
   .section--submenu .group--cta {
     justify-content: center;
     margin: 50px 0 0 0; }

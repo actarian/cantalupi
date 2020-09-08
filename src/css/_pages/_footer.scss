@@ -9,6 +9,17 @@
 			height: 35px;
 		}
 	}
+
+	.btn--link {
+
+		&,
+		&:active,
+		&:focus,
+		&:hover,
+		&:visited {
+			color: #ffffff;
+		}
+	}
 }
 
 .nav--menu-tertiary {
