@@ -1,3 +1,4 @@
+import { getLocationComponents } from 'rxcomp';
 import { fromEvent, of } from 'rxjs';
 import { filter, finalize, first, map } from 'rxjs/operators';
 // import { getResourceRoot } from '../environment';
@@ -8,15 +9,14 @@ export default class ImageService {
 
 	static worker() {
 		if (!this.worker_) {
-			this.worker_ = new Worker(`/cantalupi/js/workers/image.service.worker.js`);
+			this.worker_ = new Worker(document.querySelector('base').getAttribute("href") + `js/workers/image.service.worker.js`);
 			// this.worker_ = new Worker(`${getResourceRoot()}js/workers/image.service.worker.js`);
 		}
 		return this.worker_;
 	}
 
 	static load$(src) {
-		// if (!('Worker' in window) || this.isBlob(src) || this.isCors(src)) {
-		if (!('Worker' in window) || this.isBlob(src)) {
+		if (!('Worker' in window) || this.isBlob(src) || this.isCors(src)) {
 			return of(src);
 		}
 		const id = ++UID;
@@ -38,8 +38,14 @@ export default class ImageService {
 		);
 	}
 
+	static getHost(src) {
+		const components = getLocationComponents(src);
+		return components.host !== '' ? components.host : location.host;
+	}
+
 	static isCors(src) {
-		return src.indexOf('//') !== -1 && src.indexOf(window.location.host) === -1;
+		const host = this.getHost(src);
+		return host !== location.host;
 	}
 
 	static isBlob(src) {

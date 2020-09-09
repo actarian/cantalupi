@@ -175,7 +175,7 @@ export default class DateTimeService {
 		switch (name) {
 			case LocaleType.Days:
 				return LocaleService.getLocale(LocaleType.Days, width, Object.values(LocaleDay)[date.getDay()]);
-				// return getLocaleDayNames(width)[Object.values(LocaleDay)[date.getDay()]];
+			// return getLocaleDayNames(width)[Object.values(LocaleDay)[date.getDay()]];
 			case LocaleType.Months:
 				return LocaleService.getLocale(LocaleType.Months, width, Object.values(LocaleMonth)[date.getMonth()]);
 			case LocaleType.DayPeriods:
@@ -280,8 +280,8 @@ export default class DateTimeService {
 					} else {
 						return (zone >= 0 ? '+' : '') + padNumber(hours, 2, minusSign) + ':' + padNumber(Math.abs(zone % 60), 2, minusSign);
 					}
-					default:
-						throw new Error(`Unknown zone width "${width}"`);
+				default:
+					throw new Error(`Unknown zone width "${width}"`);
 			}
 		};
 	}
@@ -304,19 +304,19 @@ export default class DateTimeService {
 			case 'y':
 				formatter = DateTimeService.getDateFormatter(DatePart.FullYear, 1, 0, false, true);
 				break;
-				// 2 digit representation of the year, padded (00-99). (e.g. AD 2001 => 01, AD 2010 => 10)
+			// 2 digit representation of the year, padded (00-99). (e.g. AD 2001 => 01, AD 2010 => 10)
 			case 'yy':
 				formatter = DateTimeService.getDateFormatter(DatePart.FullYear, 2, 0, true, true);
 				break;
-				// 3 digit representation of the year, padded (000-999). (e.g. AD 2001 => 01, AD 2010 => 10)
+			// 3 digit representation of the year, padded (000-999). (e.g. AD 2001 => 01, AD 2010 => 10)
 			case 'yyy':
 				formatter = DateTimeService.getDateFormatter(DatePart.FullYear, 3, 0, false, true);
 				break;
-				// 4 digit representation of the year (e.g. AD 1 => 0001, AD 2010 => 2010)
+			// 4 digit representation of the year (e.g. AD 1 => 0001, AD 2010 => 2010)
 			case 'yyyy':
 				formatter = DateTimeService.getDateFormatter(DatePart.FullYear, 4, 0, false, true);
 				break;
-				// Month of the year (1-12), numeric
+			// Month of the year (1-12), numeric
 			case 'M':
 			case 'L':
 				formatter = DateTimeService.getDateFormatter(DatePart.Month, 1, 1);
@@ -325,43 +325,43 @@ export default class DateTimeService {
 			case 'LL':
 				formatter = DateTimeService.getDateFormatter(DatePart.Month, 2, 1);
 				break;
-				// Day of the month (1-31)
+			// Day of the month (1-31)
 			case 'd':
 				formatter = DateTimeService.getDateFormatter(DatePart.Date, 1);
 				break;
 			case 'dd':
 				formatter = DateTimeService.getDateFormatter(DatePart.Date, 2);
 				break;
-				// Hour in AM/PM, (1-12)
+			// Hour in AM/PM, (1-12)
 			case 'h':
 				formatter = DateTimeService.getDateFormatter(DatePart.Hours, 1, -12);
 				break;
 			case 'hh':
 				formatter = DateTimeService.getDateFormatter(DatePart.Hours, 2, -12);
 				break;
-				// Hour of the day (0-23)
+			// Hour of the day (0-23)
 			case 'H':
 				formatter = DateTimeService.getDateFormatter(DatePart.Hours, 1);
 				break;
-				// Hour in day, padded (00-23)
+			// Hour in day, padded (00-23)
 			case 'HH':
 				formatter = DateTimeService.getDateFormatter(DatePart.Hours, 2);
 				break;
-				// Minute of the hour (0-59)
+			// Minute of the hour (0-59)
 			case 'm':
 				formatter = DateTimeService.getDateFormatter(DatePart.Minutes, 1);
 				break;
 			case 'mm':
 				formatter = DateTimeService.getDateFormatter(DatePart.Minutes, 2);
 				break;
-				// Second of the minute (0-59)
+			// Second of the minute (0-59)
 			case 's':
 				formatter = DateTimeService.getDateFormatter(DatePart.Seconds, 1);
 				break;
 			case 'ss':
 				formatter = DateTimeService.getDateFormatter(DatePart.Seconds, 2);
 				break;
-				// Fractional second
+			// Fractional second
 			case 'S':
 				formatter = DateTimeService.getDateFormatter(DatePart.Milliseconds, 1);
 				break;
@@ -371,7 +371,7 @@ export default class DateTimeService {
 			case 'SSS':
 				formatter = DateTimeService.getDateFormatter(DatePart.Milliseconds, 3);
 				break;
-				// Month of the year (January, ...), string, format
+			// Month of the year (January, ...), string, format
 			case 'MMM':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.Months, LocaleLength.Abbreviated);
 				break;
@@ -381,7 +381,7 @@ export default class DateTimeService {
 			case 'MMMMM':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.Months, LocaleLength.Narrow);
 				break;
-				// Month of the year (January, ...), string, standalone
+			// Month of the year (January, ...), string, standalone
 			case 'LLL':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.Months, LocaleLength.Abbreviated, FormStyle.Standalone);
 				break;
@@ -391,7 +391,7 @@ export default class DateTimeService {
 			case 'LLLLL':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.Months, LocaleLength.Narrow, FormStyle.Standalone);
 				break;
-				// Day of the Week
+			// Day of the Week
 			case 'E':
 			case 'EE':
 			case 'EEE':
@@ -406,7 +406,7 @@ export default class DateTimeService {
 			case 'EEEEEE':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.Days, LocaleLength.Short);
 				break;
-				// Generic period of the day (am-pm)
+			// Generic period of the day (am-pm)
 			case 'a':
 			case 'aa':
 			case 'aaa':
@@ -418,7 +418,7 @@ export default class DateTimeService {
 			case 'aaaaa':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.DayPeriods, LocaleLength.Narrow);
 				break;
-				// Extended period of the day (midnight, at night, ...), standalone
+			// Extended period of the day (midnight, at night, ...), standalone
 			case 'b':
 			case 'bb':
 			case 'bbb':
@@ -430,7 +430,7 @@ export default class DateTimeService {
 			case 'bbbbb':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.DayPeriods, LocaleLength.Narrow, FormStyle.Standalone, true);
 				break;
-				// Extended period of the day (midnight, night, ...), standalone
+			// Extended period of the day (midnight, night, ...), standalone
 			case 'B':
 			case 'BB':
 			case 'BBB':
@@ -442,7 +442,7 @@ export default class DateTimeService {
 			case 'BBBBB':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.DayPeriods, LocaleLength.Narrow, FormStyle.Format, true);
 				break;
-				// Era name (AD/BC)
+			// Era name (AD/BC)
 			case 'GGGGG':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.Eras, LocaleLength.Narrow);
 				break;
@@ -454,45 +454,45 @@ export default class DateTimeService {
 			case 'GGGG':
 				formatter = DateTimeService.getDateLocaleFormatter(LocaleType.Eras, LocaleLength.Wide);
 				break;
-				// Week of the year (1, ... 52)
+			// Week of the year (1, ... 52)
 			case 'w':
 				formatter = DateTimeService.getWeekFormatter(1);
 				break;
 			case 'ww':
 				formatter = DateTimeService.getWeekFormatter(2);
 				break;
-				// Week of the month (1, ...)
+			// Week of the month (1, ...)
 			case 'W':
 				formatter = DateTimeService.getWeekFormatter(1, true);
 				break;
-				// Timezone ISO8601 short format (-0430)
+			// Timezone ISO8601 short format (-0430)
 			case 'Z':
 			case 'ZZ':
 			case 'ZZZ':
 				formatter = DateTimeService.getTimezoneFormatter(TimezoneLength.Short);
 				break;
-				// Timezone ISO8601 extended format (-04:30)
+			// Timezone ISO8601 extended format (-04:30)
 			case 'ZZZZZ':
 				formatter = DateTimeService.getTimezoneFormatter(TimezoneLength.Extended);
 				break;
-				// Timezone GMT short format (GMT+4)
+			// Timezone GMT short format (GMT+4)
 			case 'O':
 			case 'OO':
 			case 'OOO':
 				formatter = DateTimeService.getTimezoneFormatter(TimezoneLength.ShortGMT);
 				break;
-				// Should be location, but fallback to format O instead because we don't have the data yet
+			// Should be location, but fallback to format O instead because we don't have the data yet
 			case 'z':
 			case 'zz':
 			case 'zzz':
 				formatter = DateTimeService.getTimezoneFormatter(TimezoneLength.ShortGMT);
 				break;
-				// Timezone GMT long format (GMT+0430)
+			// Timezone GMT long format (GMT+0430)
 			case 'OOOO':
 			case 'ZZZZ':
 				formatter = DateTimeService.getTimezoneFormatter(TimezoneLength.Long);
 				break;
-				// Should be location, but fallback to format O instead because we don't have the data yet
+			// Should be location, but fallback to format O instead because we don't have the data yet
 			case 'zzzz':
 				formatter = DateTimeService.getTimezoneFormatter(TimezoneLength.Long);
 				break;
@@ -528,7 +528,7 @@ export default class DateTimeService {
 		if (value instanceof Date) {
 			return value;
 		}
-		return Date.parse(value);
+		return new Date(Date.parse(value));
 	}
 
 	// const CACHED_FORMATS = {};

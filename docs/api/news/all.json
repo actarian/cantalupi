@@ -1,0 +1,444 @@
+[
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/01-news-01-lampade-di-lusso.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-11-12T08:11:17.827Z",
+    "title": "Lampade di lusso: luci e atmosfere ricercate",
+    "abstract": "Lampade e lampadari di lusso rappresentano la “ciliegina sulla torta” di una casa elegante e pensata in ogni minimo particolare. Illuminare i vari ambienti di una casa di lusso significa trovare il giusto compromesso fra la corretta illuminazione dello spazio e la bellezza del corpo illuminante."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/02-projects-01-my-elandees_abeking.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Abeking & Rasmussen",
+    "date": "2019-11-07T08:11:17.827Z",
+    "title": "My Elandees by Abeking & Rasmussen",
+    "abstract": "The 75m Elandess yacht was built in 2018 by Abeking & Rasmussen. She features an exterior design by Harrison Eidsgaard and an interior by Harrison Eidsgaard. She can sleep up to 12 guests."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/03-news-02-illuminazione-led-soffitto.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-11-05T08:11:17.827Z",
+    "title": "Illuminazione LED a soffitto: i migliori prodotti e consigli utili",
+    "abstract": "Illuminazione LED a soffitto è uno dei sistemi più utilizzati negli ultimi anni per illuminare e valorizzare i vari ambienti della casa. Vediamo insieme quali sono i vantaggi di questo tipo di illuminazione."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/04-projects-02-my-dar-sep_franscisco_martinez.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Oceanco",
+    "date": "2019-10-30T08:11:17.827Z",
+    "title": "DAR by Oceanco",
+    "abstract": "The 90m DAR yacht (ex: Shark) was built in 2018 by Oceanco. She features an exterior design by Luiz de Basto and an interior by Nuvolari Lenard. She can sleep up to 12 guests."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/05-news-03-luci-cortesia-barche.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-10-25T08:11:17.827Z",
+    "title": "Luci di cortesia per barche: guida alla scelta",
+    "abstract": "Le luci di cortesia sono un elemento fondamentale e irrinunciabile per barche e yacht. Questa tipologia di illuminazione per imbarcazioni ha sia una funzione pratica che estetica. Vediamo nel dettaglio di cosa sitratta."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/06-projects-03-ester-iii_george-town.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Lürssen",
+    "date": "2019-10-21T08:11:17.827Z",
+    "title": "Ester III by Lürssen",
+    "abstract": "A 66-meter luxury yacht delivered in 2014, Elysian features strong lines and an extraordinary deck layout and near-vertical bow. Her external profile is unique, distinct and masculine, with a big swimming pool aft, a helicopter-landing pad positioned above the wheelhouse and two separate al-fresco outside dining locations. Espen Øino International worked closely with the owner to create an individual look. Elysian's interior, by Reymond Langton Design, includes features such as a stunning piece of hand-carved leather artwork that runs the length of the main stairwell and a glass lift that grants access to all levels."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/07-news-04-led-design-barca-lusso-e-yacht.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-10-17T08:11:17.827Z",
+    "title": "Come scegliere LED di design per yacht",
+    "abstract": "Se la corretta illuminazione è fondamentale per valorizzare gli ambienti della casa, lo è altrettanto quando si tratta di illuminare correttamente gli ambienti interni di uno yacht."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/08-projects-04-flying-fox_lürssen.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Lürssen",
+    "date": "2019-09-23T08:11:17.827Z",
+    "title": "Flying Fox by Lürssen",
+    "abstract": "The 136m Flying Fox yacht was built in 2019 by Lürssen. She features an exterior design by Espen Oeino and an interior by Mark Berryman. She can sleep up to 22 guests taken care of by a crew of 54."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/09-news-05-illuminazione-di-design.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-09-16T08:11:17.827Z",
+    "title": "La migliore illuminazione design per interni, esterni, case di pregio e yacht: cosa devi sapere",
+    "abstract": "L’illuminazione di design in ogni sua parte prevede lo studio attento e dettagliato di tutto il lighting dell’abitazione, sia interno che esterno, per valorizzare al meglio gli spazi, i materiali e gli stili."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/10-projects-05-jaaber_dynamiq.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Dynamiq",
+    "date": "2019-09-14T08:11:17.827Z",
+    "title": "Jaaber by Dynamiq",
+    "abstract": "The 35m Jaaber yacht (ex: 1 of 7) was built in 2018 by Dynamiq. She features an exterior design by Studio F.A. Porsche and an interior by Studio F.A. Porsche. She cruises at 19 knots and reaches a top speed of 21.0 kn. She can sleep up to 6 guests taken care of by a crew of 6."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/11-news-06-yacht-costo.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-09-11T08:11:17.827Z",
+    "title": "Quanto costa uno yacht?",
+    "abstract": "Quanto costa uno yacht? Sogni di acquistare uno yacht di lusso e ti stai chiedendo l'entità dell'investimento da destinare? Leggi l'articolo per conoscerne i dettagli."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/12-projects-06-majesty_gatto-design.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Gulf Craft",
+    "date": "2019-08-14T08:11:17.827Z",
+    "title": "Majesty 155 by Gulf Craft",
+    "abstract": "The 41m Majesty 155 yacht was built in 2017 by Gulf Craft. She features an exterior design by Gulf Craft and an interior by Gulf Craft . She cruises at 17 knots and reaches a top speed of 23.0 kn. She can sleep up to 10 guests taken care of by a crew of 10."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/13-news-07-yacht-lusso.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-07-31T08:11:17.827Z",
+    "title": "Yacht di lusso: interni e prezzi a confronto",
+    "abstract": "Lo yacht di lusso è qualcosa che va oltre alla semplice “imbarcazione”. E’ un sogno galleggiante, uno spazio incantevole da vivere con la brezza del mare come sottofondo."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/14-projects-07-mazu-42_mazu.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Mazu",
+    "date": "2019-06-20T08:11:17.827Z",
+    "title": "Mazu 42 by Mazu",
+    "abstract": "The 25m Mazu Yachts 42 yacht was built in 2020 by Mazu Yachts. She features an exterior design by Mazu Yachts. She cruises at 35 knots and reaches a top speed of 40.0 kn."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/15-news-08-luci-a-sospensione-design.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-06-14T08:11:17.827Z",
+    "title": "Luci sospensione design: guida alla scelta",
+    "abstract": "Le luci a sospensione di design sono un’idea perfetta per illuminare nella giusta maniera alcune zone della casa. Scopri i dettagli."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/16-projects-08-sunrise_yildiz-shipyard.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Yildiz",
+    "date": "2019-06-13T08:11:17.827Z",
+    "title": "My Sunrise by Yildiz",
+    "abstract": "The 43m Sunrise yacht was built in 2019 by Yildiz Shipyard. She features an exterior design by Ginton and an interior by Hot Lab. She cruises at 14 knots and reaches a top speed of 15.5 kn. She can sleep up to 12 guests taken care of by a crew of 9."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/17-news-09-arredamento-nautico.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-06-10T08:11:17.827Z",
+    "title": "Arredamento nautico",
+    "abstract": "L’arredamento in stile nautico sta prendendo sempre più piede negli ultimi anni, sia per l’arredamento della propria abitazione sia per ristoranti e altri generi di location."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/18-projects-09-amadea_lürssen.jpg",
+    "category": {
+      "id": 102,
+      "name": "Project"
+    },
+    "url": "/cantalupi/cantalupi-world-project.html",
+    "author": "Lürssen",
+    "date": "2019-05-31T08:11:17.827Z",
+    "title": "Amadea by Lürssen",
+    "abstract": "The 107m Amadea yacht was built in 2017 by Lürssen. She features an exterior design by Espen Oeino and an interior by Zuretti Interior Design. She cruises at 13 knots and reaches a top speed of 20.0 kn. She can sleep up to 16 guests taken care of by a crew of 36."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/19-news-10-alabaster.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-05-28T08:11:17.827Z",
+    "title": "Lampadari originali: le tipologie e le tendenze piu' innovative",
+    "abstract": "I lampadari originali sono in grado di dare quel tocco estroso ed unico ad ogni ambiente della casa. Ne esistono di diverse tipologie, in base ai materiali, alle forme e alle esigenze estetiche."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/20-news-11-punti-luce-casa.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-05-21T08:11:17.827Z",
+    "title": "Punti luce casa",
+    "abstract": "La corretta distribuzione dei punti luce casa è fondamentale per avere all’interno di ogni stanza la giusta quantità di luce dove serve."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/21-news-12-Negozio-illuminazione-1024x683.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-05-06T08:11:17.827Z",
+    "title": "Negozio illuminazione: come allestirlo",
+    "abstract": "Illuminare la propria attività commerciale o negozio: come fare? Dall'allestimento di uno showroom alla vendita diretta di lampade: lasciati ispirare."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/22-news-13-distanza-faretti-led.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-04-17T08:11:17.827Z",
+    "title": "Come calcolare la distanza dei faretti a LED",
+    "abstract": "Una volta stabilita la quantità di faretti a LED necessari per la corretta illuminazione della stanza, la prima cosa da fare è disegnare uno schema d’illuminazione."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/23-news-14-elandess.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-02-19T08:11:17.827Z",
+    "title": "Boat International premia lo yacht Elandess",
+    "abstract": "Nel magazine BOAT INTERNATIONAL dello scorso dicembre è stato pubblicato un articolo sullo yacht ELANDESS, dove lo chandelier Cantalupi Light Engineering è presente nell’interior."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/24-news-15-illuminazione-scale-interne.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-01-31T08:11:17.827Z",
+    "title": "Illuminazione scale interne: una questione di dettagli",
+    "abstract": "L'illuminazione delle scale interne deve essere sempre gestita nel migliore dei modi. Le scale all’interno delle nostre abitazioni stanno infatti assumendo sempre più importanza, grazie anche alle proposte di architetti e designers creativi, capaci di studiare soluzioni funzionali e dall’estetica accattivante per qualunque spazio."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/25-news-16-illuminazione-a-led.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2019-01-11T08:11:17.827Z",
+    "title": "Illuminazione a LED",
+    "abstract": "L’illuminazione a LED è la tecnologia oggi più utilizzata sia per l’illuminazione di interni che per esterni."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/26-news-17-lampade-stile-marinaro.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-12-20T08:11:17.827Z",
+    "title": "Alla scoperta delle lampade in stile marinaro",
+    "abstract": "Puntare alla qualità: quella qualità esclusiva di brand blasonati nel campo dell'illuminazione come Cantalupi Light Engineering, capaci di progettare lampade in stile marinaro particolarmente ricercate."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/27-news-18-Illuminazione-per-interni.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-12-19T08:11:17.827Z",
+    "title": "Illuminazione per interni: guida alla scelta",
+    "abstract": "Scegliere i giusti elementi a proposito di illuminazione per interni non è un compito facile: la giusta illuminazione nei vari ambienti domestici ci aiuta a creare la giusta atmosfera. Scopri consigli utili!"
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/28-news-19-soluzioni-su-misura-illuminazioni-lusso.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-11-12T08:11:17.827Z",
+    "title": "Soluzioni su misura per illuminazioni di lusso",
+    "abstract": "Quando fra gli elementi disponibili in commercio non si riesce a trovare il giusto elemento per illuminare gli ambienti della nostra abitazione e non solo, si può ricorrere alle soluzioni su misura, specialmente quando si tratta di illuminare spazi di lusso come sale interne di ville o interni di yacht."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/24-news-15-illuminazione-scale-interne.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-11-10T08:11:17.827Z",
+    "title": "Cantieri navali yacht: dove nascono le imbarcazioni di lusso",
+    "abstract": "Entriamo oggi nel mondo cantieri navali e yacht. E’ proprio nei cantieri navali che nascono delle bellissime imbarcazioni a motore di lusso."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/25-news-16-illuminazione-a-led.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-10-19T08:11:17.827Z",
+    "title": "Illuminazione a binario di design: tutto quello che devi sapere",
+    "abstract": "Cerchi un'illuminazione a binario design? Scopri i vantaggi del loro uso, i diversi tipi, le declinazioni negli ambienti domestici e molto altro."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/26-news-17-lampade-stile-marinaro.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-10-08T08:11:17.827Z",
+    "title": "Sette nuove linee di prodotto presentate al Monaco Yacht Show 2018",
+    "abstract": "Grande successo della Cantalupi Light Engineering al Monaco Yacht Show 2018: presentate sette nuove linee di prodotto."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/27-news-18-Illuminazione-per-interni.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-09-27T08:11:17.827Z",
+    "title": "Come scegliere i faretti ad incasso",
+    "abstract": "Come scegliere faretti ad incasso? Durata, temperatura, la giusta quantità di lumen per ogni locale dell'abitazione e molto altro: scopri tutto."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/28-news-19-soluzioni-su-misura-illuminazioni-lusso.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-09-26T08:11:17.827Z",
+    "title": "Controsoffitti per camere da letto: caratteristiche e utilizzo",
+    "abstract": "Come scegliere controsoffitti per camere da letto? Caratteristiche tecniche, usi, suggerimenti: leggi questo dettagliato articolo per non sbagliare."
+  },
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/cantalupi-world/29-news-20-cantieri-navali-yacht.jpg",
+    "category": {
+      "id": 101,
+      "name": "News"
+    },
+    "url": "/cantalupi/cantalupi-world-news.html",
+    "author": "Cantalupi",
+    "date": "2018-09-25T08:11:17.827Z",
+    "title": "Lampade da incasso: guida all'acquisto",
+    "abstract": "Le lampade da incasso garantiscono una perfetta illuminazione in tutto l'ambiente, con un quid di design e bellezza. Leggi tutto quello che devi sapere."
+  }
+]

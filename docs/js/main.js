@@ -119,7 +119,6 @@ MediaMatcher._matchMedia = window.matchMedia ? window.matchMedia.bind(window) : 
       };
     }); // let queries$_ = Object.keys(queries).map(key => this.registerQuery$_(queries[key]).query$);
 
-    console.log(queries$_);
     queries$_ = rxjs.combineLatest.apply(void 0, queries$_);
     var queries$ = rxjs.concat(queries$_.pipe(operators.take(1)), queries$_.pipe(operators.skip(1), operators.debounceTime(0)));
     return queries$.pipe(operators.map(function (breakpoints) {
@@ -174,7 +173,6 @@ MediaMatcher._matchMedia = window.matchMedia ? window.matchMedia.bind(window) : 
     }
 
     var mediaQueryList = MediaMatcher.matchMedia(key);
-    console.log('mediaQueryList', mediaQueryList);
     var query$ = new rxjs.Observable(function (observer) {
       var handler = function handler(e) {
         return observer.next(e);
@@ -2003,7 +2001,7 @@ var DateTimeService = /*#__PURE__*/function () {
       return value;
     }
 
-    return Date.parse(value);
+    return new Date(Date.parse(value));
   } // const CACHED_FORMATS = {};
   ;
 
@@ -5627,15 +5625,14 @@ var ImageService = /*#__PURE__*/function () {
 
   ImageService.worker = function worker() {
     if (!this.worker_) {
-      this.worker_ = new Worker("/cantalupi/js/workers/image.service.worker.js"); // this.worker_ = new Worker(`${getResourceRoot()}js/workers/image.service.worker.js`);
+      this.worker_ = new Worker(document.querySelector('base').getAttribute("href") + "js/workers/image.service.worker.js"); // this.worker_ = new Worker(`${getResourceRoot()}js/workers/image.service.worker.js`);
     }
 
     return this.worker_;
   };
 
   ImageService.load$ = function load$(src) {
-    // if (!('Worker' in window) || this.isBlob(src) || this.isCors(src)) {
-    if (!('Worker' in window) || this.isBlob(src)) {
+    if (!('Worker' in window) || this.isBlob(src) || this.isCors(src)) {
       return rxjs.of(src);
     }
 
@@ -5661,8 +5658,14 @@ var ImageService = /*#__PURE__*/function () {
     }));
   };
 
+  ImageService.getHost = function getHost(src) {
+    var components = rxcomp.getLocationComponents(src);
+    return components.host !== '' ? components.host : location.host;
+  };
+
   ImageService.isCors = function isCors(src) {
-    return src.indexOf('//') !== -1 && src.indexOf(window.location.host) === -1;
+    var host = this.getHost(src);
+    return host !== location.host;
   };
 
   ImageService.isBlob = function isBlob(src) {
@@ -5985,181 +5988,7 @@ LocomotiveDirective.meta = {
 }(rxcomp.Component);
 ModalComponent.meta = {
   selector: '[modal]'
-};var OverlayLerp = /*#__PURE__*/function () {
-  function OverlayLerp() {
-    this.x = this.ex = window.innerWidth / 2;
-    this.y = this.ey = window.innerHeight / 2;
-    this.dy = 0;
-  }
-
-  var _proto = OverlayLerp.prototype;
-
-  _proto.tick = function tick(event) {
-    if (event.clientX) {
-      var inertia = this.inertia ? Number(this.inertia) : 0.01;
-      var dy = 0; // this.dy;
-
-      this.ex = event.clientX;
-      this.ey = event.clientY;
-      this.x += (this.ex - this.x) * inertia;
-      this.y += (this.ey + dy - this.y) * inertia;
-    }
-  };
-
-  return OverlayLerp;
-}();
-
-var OverlayEffectDirective = /*#__PURE__*/function (_Directive) {
-  _inheritsLoose(OverlayEffectDirective, _Directive);
-
-  function OverlayEffectDirective() {
-    return _Directive.apply(this, arguments) || this;
-  }
-
-  var _proto2 = OverlayEffectDirective.prototype;
-
-  _proto2.onInit = function onInit() {
-    var _this = this;
-
-    this.raf$ = rxjs.interval(0, rxjs.animationFrame);
-    this.move$ = rxjs.fromEvent(document, 'mousemove');
-    this.lerp = new OverlayLerp();
-
-    var _getContext = rxcomp.getContext(this),
-        node = _getContext.node;
-
-    this.animation$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (lerp) {
-      node.style.transform = "translate3d(" + lerp.x + "px," + lerp.y + "px,0px)";
-    });
-    LocomotiveService.scroll$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
-      _this.lerp.dy = event.scroll.y;
-    });
-  };
-
-  _proto2.animation$ = function animation$() {
-    var _this2 = this;
-
-    return this.raf$.pipe(operators.withLatestFrom(this.move$), operators.map(function (latest) {
-      var lerp = _this2.lerp;
-      lerp.tick(latest[1]);
-      return lerp;
-    }), operators.startWith(this.lerp));
-  };
-
-  return OverlayEffectDirective;
-}(rxcomp.Directive);
-OverlayEffectDirective.meta = {
-  selector: "[overlay-effect]",
-  inputs: ['inertia']
-};
-OverlayEffectDirective.rafWindow = rxjs.of(rxjs.animationFrame);var FRAGMENT_SHARED =
-/* glsl */
-"\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_mx;\nuniform float u_my;\nuniform float u_speed;\nuniform float u_opacity;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvec2 coord(in vec2 p) {\n\tp = p / u_resolution.xy;\n    if (u_resolution.x > u_resolution.y) {\n        p.x *= u_resolution.x / u_resolution.y;\n        p.x += (u_resolution.y - u_resolution.x) / u_resolution.y / 2.0;\n    } else {\n        p.y *= u_resolution.y / u_resolution.x;\n\t    p.y += (u_resolution.x - u_resolution.y) / u_resolution.x / 2.0;\n    }\n    p -= 0.5;\n    p *= vec2(-1.0, 1.0);\n\treturn p;\n}\n#define uv gl_FragCoord.xy / u_resolution.xy\n#define st coord(gl_FragCoord.xy)\n#define mx coord(vec2(u_mx, u_my))\n#define ee noise(gl_FragCoord.xy / u_resolution.xy)\n#define rx 1.0 / min(u_resolution.x, u_resolution.y)\n\nfloat sCircle(in vec2 p, in float w) {\n    return length(p) * 2.0 - w;\n}\n\nfloat sGradient(in vec2 p) {\n    return length(p);\n}\n";
-var FRAGMENT_SHADER_1 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(1.0);\n\t// float noise = random(p) * 0.1;\n\t// color = vec3(clamp(0.0, 1.0, color.r - noise));\n\t// float circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);\n\t// circle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);\n\tfloat circle = sCircle(p, 0.2 + cos(u_time) * 0.1);\n\tcircle += sCircle(p, 0.05 + cos(u_time) * 0.025);\n\tcircle = clamp(0.0, 1.0, circle);\n\t// float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);\n\tfloat alpha = smoothstep(0.0, 0.8, 1.0 - circle) * 0.6 * u_opacity;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
-var FRAGMENT_SHADER_2 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(0.0);\n\tfloat noise = random(p) * 0.1;\n\tcolor = vec3(clamp(0.0, 1.0, color.r + noise));\n\t// float circle = sCircle(p, 4.0 - 2.5 * u_speed + cos(u_time) * 0.05);\n\t// float circle = sGradient(p * (0.25 + 1.75 * u_speed));\n\tfloat circle = sGradient(p * 0.25);\n\tfloat alpha = clamp(0.0, 1.0, circle * 0.5) * u_opacity; // smoothstep(0.0, 0.99, circle) * 0.7;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
-var OverlayLerp$1 = /*#__PURE__*/function () {
-  function OverlayLerp() {
-    this.w = window.innerWidth;
-    this.h = window.innerHeight;
-    this.x = this.ex = this.w / 2;
-    this.y = this.ey = this.h / 2;
-    this.speed = this.espeed = 0;
-    this.opacity = 1;
-    this.dy = 0;
-    this.isOver = true;
-  }
-
-  var _proto = OverlayLerp.prototype;
-
-  _proto.tick = function tick(event) {
-    if (event.clientX) {
-      var inertia = this.inertia ? Number(this.inertia) : 0.01;
-      var dy = 0; // this.dy;
-
-      this.ex = event.clientX;
-      this.ey = event.clientY;
-      this.x += (this.ex - this.x) * inertia;
-      this.y += (this.ey + dy - this.y) * inertia;
-      this.speed += (this.espeed - this.speed) * 0.01;
-      this.opacity += ((this.isOver ? 1 : 0) - this.opacity) * 0.01;
-    }
-  };
-
-  _proto.setSpeed = function setSpeed(speed) {
-    this.espeed = Math.abs(speed / 50);
-  };
-
-  return OverlayLerp;
-}();
-
-var OverlayWebglDirective = /*#__PURE__*/function (_Directive) {
-  _inheritsLoose(OverlayWebglDirective, _Directive);
-
-  function OverlayWebglDirective() {
-    return _Directive.apply(this, arguments) || this;
-  }
-
-  var _proto2 = OverlayWebglDirective.prototype;
-
-  _proto2.onInit = function onInit() {
-    var _this = this;
-
-    var lerp = this.lerp = new OverlayLerp$1();
-    this.raf$ = rxjs.interval(0, rxjs.animationFrame);
-    this.move$ = rxjs.fromEvent(document, 'mousemove');
-
-    var _getContext = rxcomp.getContext(this),
-        node = _getContext.node;
-
-    var canvas1 = document.createElement('canvas');
-    node.appendChild(canvas1);
-    var glsl1 = new window.glsl.Canvas(canvas1, {
-      fragmentString: FRAGMENT_SHADER_1,
-      premultipliedAlpha: false
-    });
-    var canvas2 = document.createElement('canvas');
-    node.appendChild(canvas2);
-    var glsl2 = new window.glsl.Canvas(canvas2, {
-      fragmentString: FRAGMENT_SHADER_2,
-      premultipliedAlpha: false
-    });
-    this.animation$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (lerp) {
-      glsl1.setUniforms({
-        'u_mx': lerp.x,
-        'u_my': lerp.y,
-        'u_speed': lerp.speed,
-        'u_opacity': lerp.opacity
-      });
-      glsl2.setUniforms({
-        'u_mx': lerp.x,
-        'u_my': lerp.y,
-        'u_speed': lerp.speed,
-        'u_opacity': lerp.opacity
-      });
-    });
-    LocomotiveService.scroll$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
-      _this.lerp.setSpeed(event.speed);
-
-      _this.lerp.dy = event.scroll.y;
-    });
-  };
-
-  _proto2.animation$ = function animation$() {
-    var _this2 = this;
-
-    return this.raf$.pipe(operators.withLatestFrom(this.move$), operators.map(function (event) {
-      var lerp = _this2.lerp;
-      lerp.tick(event[1]);
-      return lerp;
-    }), operators.startWith(this.lerp));
-  };
-
-  return OverlayWebglDirective;
-}(rxcomp.Directive);
-OverlayWebglDirective.meta = {
-  selector: "[overlay-webgl]"
-};
-OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);var HttpResponse = /*#__PURE__*/function () {
+};var HttpResponse = /*#__PURE__*/function () {
   _createClass(HttpResponse, [{
     key: "static",
     get: function get() {
@@ -6700,7 +6529,356 @@ var FilterItem = /*#__PURE__*/function () {
 }(rxcomp.Component);
 PageComponent.meta = {
   selector: '[page]'
-};var ProductsPageComponent = /*#__PURE__*/function (_PageComponent) {
+};var NewsPageComponent = /*#__PURE__*/function (_PageComponent) {
+  _inheritsLoose(NewsPageComponent, _PageComponent);
+
+  function NewsPageComponent() {
+    return _PageComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = NewsPageComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _this = this;
+
+    this.items = [];
+    this.filters = {};
+    this.filter = {};
+    this.load$().pipe(operators.first()).subscribe(function (data) {
+      _this.items = data[0];
+      _this.filters = data[1];
+
+      _this.onLoad();
+
+      _this.pushChanges();
+    });
+  };
+
+  _proto.load$ = function load$() {
+    return rxjs.combineLatest(ApiService.get$('/news/all').pipe(operators.map(function (response) {
+      return response.data;
+    })), ApiService.get$('/news/filters').pipe(operators.map(function (response) {
+      return response.data;
+    })));
+  };
+
+  _proto.onLoad = function onLoad() {
+    var _this2 = this;
+
+    var items = this.items;
+    var filters = this.filters;
+    Object.keys(filters).forEach(function (key) {
+      filters[key].mode = FilterMode.SELECT;
+    });
+    var initialParams = {};
+    var filterService = new FilterService(filters, initialParams, function (key, filter) {
+      switch (key) {
+        default:
+          filter.filter = function (item, value) {
+            switch (key) {
+              case 'category':
+                if (value === 'project') {
+                  return item[key].id === 102;
+                } else {
+                  return item[key].id !== 102;
+                }
+
+            }
+          };
+
+      }
+    });
+    this.filterService = filterService;
+    this.filters = filterService.filters;
+    this.filter = this.filters.category;
+    filterService.items$(items).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (items) {
+      _this2.items = items;
+
+      _this2.pushChanges(); // console.log('NewsPageComponent.items', items.length);
+
+    });
+  };
+
+  _proto.toggleFilter = function toggleFilter(filter) {
+    var _this3 = this;
+
+    Object.keys(this.filters).forEach(function (key) {
+      var f = _this3.filters[key];
+
+      if (f === filter) {
+        f.active = !f.active;
+      } else {
+        f.active = false;
+      }
+    });
+    this.pushChanges();
+  };
+
+  _proto.clearFilter = function clearFilter(event, filter) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    filter.clear();
+    this.pushChanges();
+  };
+
+  _proto.makeFake = function makeFake() {
+    ApiService.get$('/news/all').pipe(operators.first()).subscribe(function (response) {
+      var filters = {};
+
+      var addFilter = function addFilter(key, valueOrArray) {
+        var filter = filters[key] ? filters[key] : filters[key] = {
+          label: key,
+          placeholder: "Scegli " + key,
+          mode: 'or',
+          options: []
+        };
+        valueOrArray = Array.isArray(valueOrArray) ? valueOrArray : [valueOrArray];
+        valueOrArray.forEach(function (value) {
+          if (!filter.options.find(function (x) {
+            return x.value === value;
+          })) {
+            filter.options.push({
+              label: value,
+              value: value
+            });
+          }
+        });
+      };
+
+      var items = response.data;
+      items.forEach(function (x, i) {
+        var splitKeys = ['lumen', 'watt', 'material', 'mounting', 'area'];
+        splitKeys.forEach(function (key) {
+          if (x[key].indexOf('/') !== -1) {
+            x[key] = x[key].split('/').map(function (x) {
+              return x.trim();
+            });
+          } else {
+            x[key] = x[key].split(',').map(function (x) {
+              return x.trim();
+            });
+          }
+        });
+
+        for (var k in x) {
+          if (['catalogue', 'category', 'menu'].indexOf(k) === -1 && typeof x[k] === 'string' && x[k].indexOf('/') !== -1) {
+            console.log(k, x[k]);
+          }
+
+          if (['id', 'name', 'catalogue', 'category', 'menu'].indexOf(k) === -1) {
+            addFilter(k, x[k]);
+          }
+        }
+
+        x.id = 1000 + i + 1;
+        x.url = '/cantalupi/exclusive-yachts-interiors-top-series.html';
+        x.image = "/cantalupi/img/exclusive-yachts-exteriors/0" + (1 + x.id % 4) + ".jpg";
+        x.imageOver = "/cantalupi/img/exclusive-yachts-exteriors/01-over.jpg";
+        x.category = 'Exclusive Yachts Exteriors';
+        x.title = x.name;
+        x.description = x.plus;
+        x.power = x.watt + ' W';
+        x.lumen = x.lumen + ' lumen';
+      });
+      console.log('filters', filters, JSON.stringify(filters, null, 2));
+      var yachtsExteriors = items.filter(function (x) {
+        return x.yachts && x.category.indexOf('Exteriors') !== -1;
+      });
+      var yachtsInteriors = items.filter(function (x) {
+        return x.yachts && x.category.indexOf('Interiors') !== -1;
+      });
+      var villasExteriors = items.filter(function (x) {
+        return x.villas && x.category.indexOf('Exteriors') !== -1;
+      });
+      var villasInteriors = items.filter(function (x) {
+        return x.villas && x.category.indexOf('Interiors') !== -1;
+      });
+      console.log('yachtsExteriors', yachtsExteriors, JSON.stringify(yachtsExteriors, null, 2));
+      console.log('yachtsInteriors', yachtsInteriors, JSON.stringify(yachtsInteriors, null, 2));
+      console.log('villasExteriors', villasExteriors, JSON.stringify(villasExteriors, null, 2));
+      console.log('villasInteriors', villasInteriors, JSON.stringify(villasInteriors, null, 2));
+    });
+  };
+
+  return NewsPageComponent;
+}(PageComponent);
+NewsPageComponent.meta = {
+  selector: '[news-page]'
+};var OverlayLerp = /*#__PURE__*/function () {
+  function OverlayLerp() {
+    this.x = this.ex = window.innerWidth / 2;
+    this.y = this.ey = window.innerHeight / 2;
+    this.dy = 0;
+  }
+
+  var _proto = OverlayLerp.prototype;
+
+  _proto.tick = function tick(event) {
+    if (event.clientX) {
+      var inertia = this.inertia ? Number(this.inertia) : 0.01;
+      var dy = 0; // this.dy;
+
+      this.ex = event.clientX;
+      this.ey = event.clientY;
+      this.x += (this.ex - this.x) * inertia;
+      this.y += (this.ey + dy - this.y) * inertia;
+    }
+  };
+
+  return OverlayLerp;
+}();
+
+var OverlayEffectDirective = /*#__PURE__*/function (_Directive) {
+  _inheritsLoose(OverlayEffectDirective, _Directive);
+
+  function OverlayEffectDirective() {
+    return _Directive.apply(this, arguments) || this;
+  }
+
+  var _proto2 = OverlayEffectDirective.prototype;
+
+  _proto2.onInit = function onInit() {
+    var _this = this;
+
+    this.raf$ = rxjs.interval(0, rxjs.animationFrame);
+    this.move$ = rxjs.fromEvent(document, 'mousemove');
+    this.lerp = new OverlayLerp();
+
+    var _getContext = rxcomp.getContext(this),
+        node = _getContext.node;
+
+    this.animation$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (lerp) {
+      node.style.transform = "translate3d(" + lerp.x + "px," + lerp.y + "px,0px)";
+    });
+    LocomotiveService.scroll$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
+      _this.lerp.dy = event.scroll.y;
+    });
+  };
+
+  _proto2.animation$ = function animation$() {
+    var _this2 = this;
+
+    return this.raf$.pipe(operators.withLatestFrom(this.move$), operators.map(function (latest) {
+      var lerp = _this2.lerp;
+      lerp.tick(latest[1]);
+      return lerp;
+    }), operators.startWith(this.lerp));
+  };
+
+  return OverlayEffectDirective;
+}(rxcomp.Directive);
+OverlayEffectDirective.meta = {
+  selector: "[overlay-effect]",
+  inputs: ['inertia']
+};
+OverlayEffectDirective.rafWindow = rxjs.of(rxjs.animationFrame);var FRAGMENT_SHARED =
+/* glsl */
+"\n#ifdef GL_ES\nprecision highp float;\n#endif\n\nuniform vec2 u_resolution;\nuniform vec2 u_mouse;\nuniform float u_time;\nuniform float u_mx;\nuniform float u_my;\nuniform float u_speed;\nuniform float u_opacity;\n\nfloat random(vec2 st) {\n\treturn fract(sin(dot(st.xy + cos(u_time), vec2(12.9898 , 78.233))) * (43758.5453123));\n}\n\nvec2 coord(in vec2 p) {\n\tp = p / u_resolution.xy;\n    if (u_resolution.x > u_resolution.y) {\n        p.x *= u_resolution.x / u_resolution.y;\n        p.x += (u_resolution.y - u_resolution.x) / u_resolution.y / 2.0;\n    } else {\n        p.y *= u_resolution.y / u_resolution.x;\n\t    p.y += (u_resolution.x - u_resolution.y) / u_resolution.x / 2.0;\n    }\n    p -= 0.5;\n    p *= vec2(-1.0, 1.0);\n\treturn p;\n}\n#define uv gl_FragCoord.xy / u_resolution.xy\n#define st coord(gl_FragCoord.xy)\n#define mx coord(vec2(u_mx, u_my))\n#define ee noise(gl_FragCoord.xy / u_resolution.xy)\n#define rx 1.0 / min(u_resolution.x, u_resolution.y)\n\nfloat sCircle(in vec2 p, in float w) {\n    return length(p) * 2.0 - w;\n}\n\nfloat sGradient(in vec2 p) {\n    return length(p);\n}\n";
+var FRAGMENT_SHADER_1 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(1.0);\n\t// float noise = random(p) * 0.1;\n\t// color = vec3(clamp(0.0, 1.0, color.r - noise));\n\t// float circle = sCircle(p, 0.2 - 0.2 * u_speed + cos(u_time) * 0.1);\n\t// circle += sCircle(p, 0.05 - 0.05 * u_speed + cos(u_time) * 0.025);\n\tfloat circle = sCircle(p, 0.2 + cos(u_time) * 0.1);\n\tcircle += sCircle(p, 0.05 + cos(u_time) * 0.025);\n\tcircle = clamp(0.0, 1.0, circle);\n\t// float alpha = smoothstep(0.0, 0.99, 1.0 - circle) * (0.4 + cos(u_time) * 0.35);\n\tfloat alpha = smoothstep(0.0, 0.8, 1.0 - circle) * 0.6 * u_opacity;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
+var FRAGMENT_SHADER_2 = FRAGMENT_SHARED + "\nvoid main() {\n\tvec2 p = st - vec2(mx.x, mx.y * -1.0);\n\tvec3 color = vec3(0.0);\n\tfloat noise = random(p) * 0.1;\n\tcolor = vec3(clamp(0.0, 1.0, color.r + noise));\n\t// float circle = sCircle(p, 4.0 - 2.5 * u_speed + cos(u_time) * 0.05);\n\t// float circle = sGradient(p * (0.25 + 1.75 * u_speed));\n\tfloat circle = sGradient(p * 0.25);\n\tfloat alpha = clamp(0.0, 1.0, circle * 0.5) * u_opacity; // smoothstep(0.0, 0.99, circle) * 0.7;\n\tgl_FragColor = vec4(color, alpha);\n}\n";
+var OverlayLerp$1 = /*#__PURE__*/function () {
+  function OverlayLerp() {
+    this.w = window.innerWidth;
+    this.h = window.innerHeight;
+    this.x = this.ex = this.w / 2;
+    this.y = this.ey = this.h / 2;
+    this.speed = this.espeed = 0;
+    this.opacity = 1;
+    this.dy = 0;
+    this.isOver = true;
+  }
+
+  var _proto = OverlayLerp.prototype;
+
+  _proto.tick = function tick(event) {
+    if (event.clientX) {
+      var inertia = this.inertia ? Number(this.inertia) : 0.01;
+      var dy = 0; // this.dy;
+
+      this.ex = event.clientX;
+      this.ey = event.clientY;
+      this.x += (this.ex - this.x) * inertia;
+      this.y += (this.ey + dy - this.y) * inertia;
+      this.speed += (this.espeed - this.speed) * 0.01;
+      this.opacity += ((this.isOver ? 1 : 0) - this.opacity) * 0.01;
+    }
+  };
+
+  _proto.setSpeed = function setSpeed(speed) {
+    this.espeed = Math.abs(speed / 50);
+  };
+
+  return OverlayLerp;
+}();
+
+var OverlayWebglDirective = /*#__PURE__*/function (_Directive) {
+  _inheritsLoose(OverlayWebglDirective, _Directive);
+
+  function OverlayWebglDirective() {
+    return _Directive.apply(this, arguments) || this;
+  }
+
+  var _proto2 = OverlayWebglDirective.prototype;
+
+  _proto2.onInit = function onInit() {
+    var _this = this;
+
+    var lerp = this.lerp = new OverlayLerp$1();
+    this.raf$ = rxjs.interval(0, rxjs.animationFrame);
+    this.move$ = rxjs.fromEvent(document, 'mousemove');
+
+    var _getContext = rxcomp.getContext(this),
+        node = _getContext.node;
+
+    var canvas1 = document.createElement('canvas');
+    node.appendChild(canvas1);
+    var glsl1 = new window.glsl.Canvas(canvas1, {
+      fragmentString: FRAGMENT_SHADER_1,
+      premultipliedAlpha: false
+    });
+    var canvas2 = document.createElement('canvas');
+    node.appendChild(canvas2);
+    var glsl2 = new window.glsl.Canvas(canvas2, {
+      fragmentString: FRAGMENT_SHADER_2,
+      premultipliedAlpha: false
+    });
+    this.animation$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (lerp) {
+      glsl1.setUniforms({
+        'u_mx': lerp.x,
+        'u_my': lerp.y,
+        'u_speed': lerp.speed,
+        'u_opacity': lerp.opacity
+      });
+      glsl2.setUniforms({
+        'u_mx': lerp.x,
+        'u_my': lerp.y,
+        'u_speed': lerp.speed,
+        'u_opacity': lerp.opacity
+      });
+    });
+    LocomotiveService.scroll$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
+      _this.lerp.setSpeed(event.speed);
+
+      _this.lerp.dy = event.scroll.y;
+    });
+  };
+
+  _proto2.animation$ = function animation$() {
+    var _this2 = this;
+
+    return this.raf$.pipe(operators.withLatestFrom(this.move$), operators.map(function (event) {
+      var lerp = _this2.lerp;
+      lerp.tick(event[1]);
+      return lerp;
+    }), operators.startWith(this.lerp));
+  };
+
+  return OverlayWebglDirective;
+}(rxcomp.Directive);
+OverlayWebglDirective.meta = {
+  selector: "[overlay-webgl]"
+};
+OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);var ProductsPageComponent = /*#__PURE__*/function (_PageComponent) {
   _inheritsLoose(ProductsPageComponent, _PageComponent);
 
   function ProductsPageComponent() {
@@ -8237,6 +8415,6 @@ VirtualStructure.meta = {
 }(rxcomp.Module);
 AppModule.meta = {
   imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-  declarations: [CardServiceComponent, CardSerieComponent, ClickOutsideDirective, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderServiceComponent, SlugPipe, VirtualStructure],
+  declarations: [CardServiceComponent, CardSerieComponent, ClickOutsideDirective, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, NewsPageComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderServiceComponent, SlugPipe, VirtualStructure],
   bootstrap: AppComponent
 };rxcomp.Browser.bootstrap(AppModule);})));

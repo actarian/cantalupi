@@ -24,8 +24,8 @@
 		"https": "1.0.0",
 		"locomotive-scroll": "3.5.4",
 		"rxjs": "6.6.2",
-		"rxcomp": "1.0.0-beta.14",
-		"rxcomp-form": "1.0.0-beta.9",
+		"rxcomp": "1.0.0-beta.18",
+		"rxcomp-form": "1.0.0-beta.18",
 		"splitting": "1.0.6",
 		"swiper": "6.1.2",
 		"tiny-relative-date": "1.3.0"

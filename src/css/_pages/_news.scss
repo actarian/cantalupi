@@ -1,0 +1,240 @@
+.page--news {
+	.container {
+		z-index: 1;
+	}
+}
+
+.section--hero-news {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	color: white;
+	min-height: 100vh;
+
+	.background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+
+		&>img {
+			object-fit: cover;
+			@extend %lazy;
+		}
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background: radial-gradient(ellipse at center, rgba(0, 0, 0, .05) 50%, rgba(0, 0, 0, .3) 90%);
+		}
+	}
+
+	.container {
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding-bottom: 80px;
+	}
+
+	.category {
+		@extend %btn;
+		display: flex;
+		align-items: center;
+		margin-left: 10px;
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 18px;
+		text-transform: uppercase;
+
+		em {
+			font-size: 0;
+			line-height: 1;
+			display: block;
+			width: 14px;
+			height: 1px;
+			margin: 0 4px 0 7px;
+			background: #fff;
+		}
+	}
+
+	.title {
+		@extend %title;
+	}
+
+}
+
+.card--news {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	margin-bottom: 40px;
+	box-shadow: 0 30px 30px -10px rgba(0, 0, 0, 0.05);
+	cursor: pointer;
+	transition: all ease-in-out 400ms;
+
+	&>.picture {
+		display: block;
+		@include aspect-clip(415, 300);
+		margin-bottom: 15px;
+
+		.over {
+			opacity: 0;
+			transition: opacity ease-in-out 350ms;
+		}
+	}
+
+	&>.content {
+		padding: 0 15px;
+	}
+
+	.category {
+		display: block;
+		font-size: 14px;
+		color: #A3A3A3;
+	}
+
+	.title {
+		display: block;
+		min-height: 70px;
+		font-size: 24px;
+		line-height: 1.2;
+		color: #03191D;
+	}
+
+	.abstract {
+		display: block;
+		font-size: 14px;
+		color: #21293C;
+
+		text-overflow: ellipsis;
+		max-height: 60px;
+		overflow: hidden;
+	}
+
+	.listing--info {
+		display: inline-flex;
+		justify-content: space-around;
+		align-items: flex-end;
+		margin-top: 15px;
+
+		&>.listing__item {
+			flex: 1 1 25%;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			align-items: center;
+			white-space: nowrap;
+			font-size: 11px;
+			color: #21293C;
+			margin: 0 10px;
+		}
+
+		svg {
+			margin-bottom: 5px;
+		}
+
+		.diameter {
+			width: 14px;
+			height: 14px;
+		}
+
+		.height {
+			width: 6px;
+			height: 20px;
+		}
+
+		.lumen {
+			width: 20px;
+			height: 20px;
+		}
+
+		.power {
+			width: 11px;
+			height: 18px;
+		}
+	}
+
+	.group--cta {
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+		padding-bottom: 20px;
+
+		.btn--link {
+
+			&,
+			&:active,
+			&:focus,
+			&:hover,
+			&:visited {
+				color: $foreground;
+			}
+		}
+	}
+
+	&:hover {
+		box-shadow: 0 30px 30px -10px rgba(0, 0, 0, 0.15);
+
+		&>.picture {
+			.over {
+				opacity: 1;
+			}
+		}
+	}
+}
+
+.listing--news {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	margin: 80px 0 80px 0;
+
+	@include media-up(lg) {
+		$gutter: 12px;
+		margin-left: - $gutter / 2;
+		margin-right: - $gutter / 2;
+		align-items: stretch;
+
+		&>.listing__item {
+			@include as-col(4, 12, $gutter);
+		}
+	}
+
+	@include media-between(sm, md) {
+		$gutter: 12px;
+		margin-left: - $gutter / 2;
+		margin-right: - $gutter / 2;
+		align-items: stretch;
+
+		&>.listing__item {
+			@include as-col(4, 12, $gutter);
+		}
+	}
+
+	@include media-between(xs, sm) {
+		$gutter: 12px;
+		margin-left: - $gutter / 2;
+		margin-right: - $gutter / 2;
+		align-items: stretch;
+
+		&>.listing__item {
+			@include as-col(6, 12, $gutter);
+		}
+	}
+
+	@include media-down(xs) {
+		&>.listing__item {
+			@include as-col(12, 12, 0px);
+		}
+	}
+}

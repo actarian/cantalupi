@@ -1,0 +1,16 @@
+{
+  "category": {
+    "label": "Category",
+    "mode": "or",
+    "options": [
+      {
+        "value": "project",
+        "label": "Project"
+      },
+      {
+        "value": "news",
+        "label": "News & Events"
+      }
+    ]
+  }
+}

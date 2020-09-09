@@ -1,0 +1,74 @@
+<!-- @@master = ./templates/layout.html { "baseHref": "/cantalupi/" } -->
+
+<!-- @@block = main-->
+
+<div class="page--news" news-page>
+
+	<section class="section--hero-news">
+		<div class="background">
+			<img lazy="/cantalupi/img/cantalupi-world/hero.jpg" width="1920" height="1080" />
+		</div>
+		<div class="container">
+			<div class="title">Cantalupi World</div>
+		</div>
+	</section>
+
+	<section class="section--intro">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2">
+					<ul class="nav--anchor">
+						<li class="nav--anchor__item"><a href="/cantalupi/cantalupi-world.html">Projects, News & Events from Cantalupi World</a></li>
+					</ul>
+				</div>
+				<div class="col-md-4">
+					<div class="abstract">La natura crea le forme, gli architetti le interpretano, noi le illuminiamo.</div>
+					<div class="author">Bruno Cantalupi<br>Fondatore</div>
+				</div>
+				<div class="col-md-4 offset-md-1">
+					<div class="description">
+						<p>Il prodotto finale è solo uno degli step di una lunga catena che prevede la sua integrazione nell’ambiente, il supporto all’installazione e i servizi post vendita. Le nostre soluzioni sono orientate al progetto e richiedono la definizione di tempistiche e il rispetto di obiettivi in termini di tempo, budget e consegne. </p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="section--serp">
+		<div class="container">
+			<!-- filters -->
+			<div class="listing--filters">
+				<div class="listing__item" *for="let item of filter.options">
+					<div class="option" [class]="{ active: filter.has(item), disabled: item.disabled }" (click)="filter.set(item)">
+						<span class="name" [innerHTML]="item.label"></span>
+						<!--
+						<span class="count" [innerHTML]="item.count || ''"></span>
+						-->
+					</div>
+				</div>
+			</div>
+			<!-- results -->
+			<div class="listing--news">
+				<div class="listing__item" *for="let item of items">
+					<div class="card--news" appear>
+						<div class="picture">
+							<img [lazy]="item.image" width="436" height="315" />
+						</div>
+						<div class="content">
+							<div class="category"><span [innerHTML]="item.category.name"></span> By <span [innerHTML]="item.author"></span> __ <span [innerHTML]="item.date | date : 'MMM dd yyyy'"></span></div>
+							<div class="title" [innerHTML]="item.title"></div>
+							<div class="abstract" [innerHTML]="item.abstract" *if="item.abstract"></div>
+							<div class="group--cta">
+								<a [href]="item.url" class="btn--link" data-title="Leggi" *if="item.category.id != 102">Leggi</a>
+								<a [href]="item.url" class="btn--link" data-title="Scopri il progetto" *if="item.category.id == 102">Scopri il progetto</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>
+
+<!-- @@close-->

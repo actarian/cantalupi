@@ -31,7 +31,6 @@ export class BreakpointService {
 			queries[key] = { query, group };
 		});
 		// let queries$_ = Object.keys(queries).map(key => this.registerQuery$_(queries[key]).query$);
-		console.log(queries$_)
 		queries$_ = combineLatest(...queries$_);
 		let queries$ = concat(
 			queries$_.pipe(take(1)),
@@ -89,7 +88,6 @@ export class BreakpointService {
 			return this.get(key);
 		}
 		const mediaQueryList = MediaMatcher.matchMedia(key);
-		console.log('mediaQueryList', mediaQueryList);
 		const query$ = new Observable((observer) => {
 			const handler = (e) => observer.next(e);
 			mediaQueryList.addListener(handler);

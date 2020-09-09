@@ -20,6 +20,7 @@ import LazyDirective from './lazy/lazy.directive';
 import LocomotiveDirective from './locomotive/locomotive.directive';
 import ModalOutletComponent from './modal/modal-outlet.component';
 import ModalComponent from './modal/modal.component';
+import NewsPageComponent from './news-page/news-page.component';
 import OverlayEffectDirective from './overlay-effect/overlay-effect.directive';
 import OverlayWebglDirective from './overlay-effect/overlay-webgl.directive';
 import ProductsPageComponent from './products-page/products-page.component';
@@ -58,6 +59,7 @@ AppModule.meta = {
 		LocomotiveDirective,
 		ModalComponent,
 		ModalOutletComponent,
+		NewsPageComponent,
 		OverlayEffectDirective,
 		OverlayWebglDirective,
 		ProductsPageComponent,
