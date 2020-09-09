@@ -6568,7 +6568,7 @@ PageComponent.meta = {
     var items = this.items;
     var filters = this.filters;
     Object.keys(filters).forEach(function (key) {
-      filters[key].mode = FilterMode.SELECT;
+      filters[key].mode = FilterMode.OR;
     });
     var initialParams = {};
     var filterService = new FilterService(filters, initialParams, function (key, filter) {
@@ -7502,7 +7502,7 @@ SecureDirective.meta = {
   };
 
   _proto.getUrl = function getUrl() {
-    var url = this.url;
+    var url = this.share;
 
     if (url) {
       if (url.indexOf(window.location.origin) === -1) {
@@ -7527,6 +7527,11 @@ SecureDirective.meta = {
       return "https://www.facebook.com/sharer/sharer.php?u=" + this.getUrl();
     }
   }, {
+    key: "pinterestUrl",
+    get: function get() {
+      return "https://www.pinterest.com/pin/create/button/?url=" + this.getUrl() + "&media=&description=" + this.getTitle();
+    }
+  }, {
     key: "linkedInUrl",
     get: function get() {
       return "https://www.linkedin.com/shareArticle?mini=true&url=" + this.getUrl() + "&title=" + this.getTitle();
@@ -7534,7 +7539,7 @@ SecureDirective.meta = {
   }, {
     key: "twitterUrl",
     get: function get() {
-      return "https://twitter.com/home?status=" + this.getUrl();
+      return "https://twitter.com/intent/tweet?text=" + this.getTitle() + "%20" + this.getUrl();
     }
   }, {
     key: "whatsappUrl",
@@ -7553,7 +7558,9 @@ SecureDirective.meta = {
 ShareComponent.meta = {
   selector: '[share]',
   inputs: ['share', 'title'],
-  template: "\n\t<ul class=\"nav--share\">\n\t\t<li>\n\t\t\t<a [href]=\"facebookUrl\" target=\"_blank\"><svg class=\"facebook\"><use xlink:href=\"#facebook\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"linkedInUrl\" target=\"_blank\"><svg class=\"linkedin\"><use xlink:href=\"#linkedin\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"twitterUrl\" target=\"_blank\"><svg class=\"twitter\"><use xlink:href=\"#twitter\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"whatsappUrl\" target=\"_blank\"><svg class=\"whatsapp\"><use xlink:href=\"#whatsapp\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"mailToUrl\"><svg class=\"email\"><use xlink:href=\"#email\"></use></svg></a>\n\t\t</li>\n\t</ul>\n\t"
+  template:
+  /* html */
+  "\n\t<ul class=\"nav--share\">\n\t\t<li>\n\t\t\t<a [href]=\"facebookUrl\" target=\"_blank\"><svg class=\"facebook\"><use xlink:href=\"#facebook\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"twitterUrl\" target=\"_blank\"><svg class=\"twitter\"><use xlink:href=\"#twitter\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"pinterestUrl\" target=\"_blank\"><svg class=\"pinterest\"><use xlink:href=\"#pinterest\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"linkedInUrl\" target=\"_blank\"><svg class=\"linkedin\"><use xlink:href=\"#linkedin\"></use></svg></a>\n\t\t</li>\n\t\t<!--\n\t\t<li>\n\t\t\t<a [href]=\"whatsappUrl\" target=\"_blank\"><svg class=\"whatsapp\"><use xlink:href=\"#whatsapp\"></use></svg></a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a [href]=\"mailToUrl\"><svg class=\"email\"><use xlink:href=\"#email\"></use></svg></a>\n\t\t</li>\n\t\t-->\n\t</ul>\n\t"
 };var DragPoint = function DragPoint() {
   this.x = 0;
   this.y = 0;
@@ -7741,78 +7748,51 @@ var DragService = /*#__PURE__*/function () {
   _proto.slider$ = function slider$() {
     var _this2 = this;
 
-    var transformX = 0,
-        transformY = 0,
-        transformZ = 0,
-        distanceX = 0,
-        distanceY = 0,
-        initialTransformX;
+    var translation, dragDownEvent, dragMoveEvent;
     return DragService.events$(this.wrapper).pipe(operators.tap(function (event) {
       if (event instanceof DragDownEvent) {
-        var translation = _this2.getTranslation(_this2.wrapper, _this2.container);
-
-        initialTransformX = translation.x;
+        translation = _this2.getTranslation(_this2.wrapper, _this2.container);
+        dragDownEvent = event;
       } else if (event instanceof DragMoveEvent) {
-        _this2.container.classList.add('dragging');
-
-        distanceX = event.distance.x;
-        distanceY = event.distance.y;
-        transformX = initialTransformX + event.distance.x;
-        _this2.wrapper.style.transform = "translate3d(" + transformX + "px, " + transformY + "px, " + transformZ + "px)";
+        dragMoveEvent = _this2.onDragMoveEvent(dragDownEvent, event, translation);
+        console.log('DragMoveEvent');
       } else if (event instanceof DragUpEvent) {
-        _this2.container.classList.remove('dragging');
+        if (dragMoveEvent) {
+          _this2.container.classList.remove('dragging');
 
-        _this2.wrapper.style.transform = null;
-        var width = _this2.container.offsetWidth;
+          _this2.wrapper.style.transform = null;
 
-        if (distanceX * -1 > width * 0.25 && _this2.hasNext()) {
-          _this2.navTo(_this2.current + 1);
-        } else if (distanceX * -1 < width * -0.25 && _this2.hasPrev()) {
-          _this2.navTo(_this2.current - 1);
-        } else {
-          _this2.wrapper.style.transform = "translate3d(" + -100 * _this2.current + "%, 0, 0)"; // this.navTo(this.current);
-        } // this.navTo(current);
+          _this2.onDragUpEvent(dragDownEvent, dragMoveEvent);
+        }
 
+        console.log('DragUpEvent');
       }
     }));
   };
 
-  _proto.tweenTo = function tweenTo(current, callback) {
-    var _this3 = this;
+  _proto.onDragMoveEvent = function onDragMoveEvent(dragDownEvent, dragMoveEvent, translation) {
+    this.container.classList.add('dragging');
+    var transformX = translation.x + dragMoveEvent.distance.x;
+    this.wrapper.style.transform = "translate3d(" + transformX + "px, " + 0 + "px, " + 0 + "px)";
+    return dragMoveEvent;
+  };
 
-    // console.log('tweenTo', current);
-    var container = this.container;
-    var wrapper = this.wrapper;
+  _proto.onDragUpEvent = function onDragUpEvent(dragDownEvent, dragMoveEvent) {
     var width = this.container.offsetWidth;
-    gsap.to(wrapper, 0.50, {
-      x: -100 * current + '%',
-      delay: 0,
-      ease: Power3.easeInOut,
-      overwrite: 'all',
-      onUpdate: function onUpdate() {
-        _this3.tween.next();
-      },
-      onComplete: function onComplete() {
-        if (typeof callback === 'function') {
-          callback();
-        }
-      }
-    });
+
+    if (dragMoveEvent.distance.x * -1 > width * 0.25 && this.hasNext()) {
+      this.navTo(this.current + 1);
+    } else if (dragMoveEvent.distance.x * -1 < width * -0.25 && this.hasPrev()) {
+      this.navTo(this.current - 1);
+    } else {
+      this.wrapper.style.transform = "translate3d(" + -100 * this.current + "%, 0, 0)"; // this.navTo(this.current);
+    } // this.navTo(current);
+
   };
 
   _proto.navTo = function navTo(current) {
-    this.current = current; // console.log('SliderCompoentn.navTo', current);
-
+    this.current = current;
     this.pushChanges();
-    /*
-    if (this.current !== current) {
-    	this.tweenTo(current, () => {
-    		this.current = current;
-    		this.pushChanges();
-    		this.change.next(this.current);
-    	});
-    }
-    */
   };
 
   _proto.hasPrev = function hasPrev() {
@@ -7867,6 +7847,7 @@ var DragService = /*#__PURE__*/function () {
 
       if (this.state.current !== current) {
         this.state.current = current;
+        console.log('current');
         this.change.next(current);
       } // this.state.current = Math.min(current, items ? items.length - 1 : 0);
 
@@ -7882,6 +7863,20 @@ var DragService = /*#__PURE__*/function () {
 
       return this.state_;
     }
+  }, {
+    key: "wrapperStyle",
+    get: function get() {
+      return {
+        'transform': 'translate3d(' + -100 * this.state.current + '%, 0, 0)'
+      };
+    }
+  }, {
+    key: "innerStyle",
+    get: function get() {
+      return {
+        'width': 100 * this.items.length + '%'
+      };
+    }
   }]);
 
   return SliderComponent;
@@ -7889,6 +7884,98 @@ var DragService = /*#__PURE__*/function () {
 SliderComponent.meta = {
   selector: '[slider]',
   inputs: ['items', 'current'],
+  outputs: ['change', 'tween']
+};var SliderProductsRelatedComponent = /*#__PURE__*/function (_SliderComponent) {
+  _inheritsLoose(SliderProductsRelatedComponent, _SliderComponent);
+
+  function SliderProductsRelatedComponent() {
+    return _SliderComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = SliderProductsRelatedComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    _SliderComponent.prototype.onInit.call(this);
+
+    var _getContext = rxcomp.getContext(this),
+        node = _getContext.node;
+
+    this.items = Array.prototype.slice.call(node.querySelectorAll('.slider__slide')).map(function (node, index) {
+      var image = node.querySelector('img');
+      var url = image.getAttribute('lazy');
+      var title = node.querySelector('.title');
+      return {
+        node: node,
+        url: url,
+        title: title,
+        id: index + 10000001
+      };
+    });
+  };
+
+  _proto.onDragUpEvent = function onDragUpEvent(dragDownEvent, dragMoveEvent) {
+    var _this = this;
+
+    var containerRect = this.container.getBoundingClientRect();
+    var wrapperRect = this.wrapper.getBoundingClientRect();
+    var tx = wrapperRect.left - containerRect.left;
+
+    var getCenterX = function getCenterX(index) {
+      var node = _this.items[index].node;
+      var cx = node.offsetLeft; // + node.offsetWidth / 2;
+
+      return cx;
+    };
+
+    var current = this.items.reduce(function (p, item, i) {
+      if (p === -1) {
+        return i;
+      } else {
+        var ix = getCenterX(i);
+        var px = getCenterX(p);
+        ix = Math.abs(tx + ix);
+        px = Math.abs(tx + px);
+        return ix < px ? i : p;
+      }
+    }, -1);
+
+    if (this.state.current !== current) {
+      this.navTo(current);
+    } else {
+      var node = this.items[current].node;
+      this.wrapper.style = "transform: translate3d(" + -node.offsetLeft + "px, 0px, 0px);";
+    }
+  };
+
+  _createClass(SliderProductsRelatedComponent, [{
+    key: "wrapperStyle",
+    get: function get() {
+      var node = this.items[this.state.current].node;
+      return {
+        'transform': "translate3d(" + -node.offsetLeft + "px, 0px, 0px)"
+      };
+    }
+  }, {
+    key: "innerStyle",
+    get: function get() {
+      if (this.items.length) {
+        var lastNode = this.items[this.items.length - 1].node; // console.log(lastNode.offsetLeft + lastNode.offsetWidth);
+
+        return {
+          'width': lastNode.offsetLeft + lastNode.offsetWidth + 'px'
+        };
+      } else {
+        return {
+          'width': 'auto'
+        };
+      }
+    }
+  }]);
+
+  return SliderProductsRelatedComponent;
+}(SliderComponent);
+SliderProductsRelatedComponent.meta = {
+  selector: '[slider-products-related]',
   outputs: ['change', 'tween']
 };var SliderServiceComponent = /*#__PURE__*/function (_SliderComponent) {
   _inheritsLoose(SliderServiceComponent, _SliderComponent);
@@ -8415,6 +8502,6 @@ VirtualStructure.meta = {
 }(rxcomp.Module);
 AppModule.meta = {
   imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-  declarations: [CardServiceComponent, CardSerieComponent, ClickOutsideDirective, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, NewsPageComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderServiceComponent, SlugPipe, VirtualStructure],
+  declarations: [CardServiceComponent, CardSerieComponent, ClickOutsideDirective, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, NewsPageComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderProductsRelatedComponent, SliderServiceComponent, SlugPipe, VirtualStructure],
   bootstrap: AppComponent
 };rxcomp.Browser.bootstrap(AppModule);})));

@@ -19,6 +19,7 @@ export default class SliderComponent extends Component {
 	set current(current = 0) {
 		if (this.state.current !== current) {
 			this.state.current = current;
+			console.log('current');
 			this.change.next(current);
 		}
 		// this.state.current = Math.min(current, items ? items.length - 1 : 0);
@@ -29,6 +30,14 @@ export default class SliderComponent extends Component {
 			this.state_ = { current: 0 };
 		}
 		return this.state_;
+	}
+
+	get wrapperStyle() {
+		return { 'transform': 'translate3d(' + -100 * this.state.current + '%, 0, 0)' };
+	}
+
+	get innerStyle() {
+		return { 'width': 100 * this.items.length + '%' };
 	}
 
 	onInit() {
@@ -51,75 +60,50 @@ export default class SliderComponent extends Component {
 	}
 
 	slider$() {
-		let transformX = 0,
-			transformY = 0,
-			transformZ = 0,
-			distanceX = 0,
-			distanceY = 0,
-			initialTransformX;
+		let translation, dragDownEvent, dragMoveEvent;
 		return DragService.events$(this.wrapper).pipe(
 			tap((event) => {
 				if (event instanceof DragDownEvent) {
-					const translation = this.getTranslation(this.wrapper, this.container);
-					initialTransformX = translation.x;
+					translation = this.getTranslation(this.wrapper, this.container);
+					dragDownEvent = event;
 				} else if (event instanceof DragMoveEvent) {
-					this.container.classList.add('dragging');
-					distanceX = event.distance.x;
-					distanceY = event.distance.y;
-					transformX = initialTransformX + event.distance.x;
-					this.wrapper.style.transform = `translate3d(${transformX}px, ${transformY}px, ${transformZ}px)`;
+					dragMoveEvent = this.onDragMoveEvent(dragDownEvent, event, translation);
+					console.log('DragMoveEvent');
 				} else if (event instanceof DragUpEvent) {
-					this.container.classList.remove('dragging');
-					this.wrapper.style.transform = null;
-					const width = this.container.offsetWidth;
-					if (distanceX * -1 > width * 0.25 && this.hasNext()) {
-						this.navTo(this.current + 1);
-					} else if (distanceX * -1 < width * -0.25 && this.hasPrev()) {
-						this.navTo(this.current - 1);
-					} else {
-						this.wrapper.style.transform = `translate3d(${-100 * this.current}%, 0, 0)`;
-						// this.navTo(this.current);
+					if (dragMoveEvent) {
+						this.container.classList.remove('dragging');
+						this.wrapper.style.transform = null;
+						this.onDragUpEvent(dragDownEvent, dragMoveEvent);
 					}
-					// this.navTo(current);
+					console.log('DragUpEvent');
 				}
 			})
 		);
 	}
 
-	tweenTo(current, callback) {
-		// console.log('tweenTo', current);
-		const container = this.container;
-		const wrapper = this.wrapper;
+	onDragMoveEvent(dragDownEvent, dragMoveEvent, translation) {
+		this.container.classList.add('dragging');
+		const transformX = translation.x + dragMoveEvent.distance.x;
+		this.wrapper.style.transform = `translate3d(${transformX}px, ${0}px, ${0}px)`;
+		return dragMoveEvent;
+	}
+
+	onDragUpEvent(dragDownEvent, dragMoveEvent) {
 		const width = this.container.offsetWidth;
-		gsap.to(wrapper, 0.50, {
-			x: -100 * current + '%',
-			delay: 0,
-			ease: Power3.easeInOut,
-			overwrite: 'all',
-			onUpdate: () => {
-				this.tween.next();
-			},
-			onComplete: () => {
-				if (typeof callback === 'function') {
-					callback();
-				}
-			}
-		});
+		if (dragMoveEvent.distance.x * -1 > width * 0.25 && this.hasNext()) {
+			this.navTo(this.current + 1);
+		} else if (dragMoveEvent.distance.x * -1 < width * -0.25 && this.hasPrev()) {
+			this.navTo(this.current - 1);
+		} else {
+			this.wrapper.style.transform = `translate3d(${-100 * this.current}%, 0, 0)`;
+			// this.navTo(this.current);
+		}
+		// this.navTo(current);
 	}
 
 	navTo(current) {
 		this.current = current;
-		// console.log('SliderCompoentn.navTo', current);
 		this.pushChanges();
-		/*
-		if (this.current !== current) {
-			this.tweenTo(current, () => {
-				this.current = current;
-				this.pushChanges();
-				this.change.next(this.current);
-			});
-		}
-		*/
 	}
 
 	hasPrev() {

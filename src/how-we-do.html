@@ -231,8 +231,8 @@
 					<div class="card--service" card-service>
 						<div class="slider">
 							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
-								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
-									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+								<div class="slider__wrapper" [style]="wrapperStyle">
+									<div class="slider__inner" [style]="innerStyle">
 										<div class="slider__slide">
 											<div class="picture picture--slider">
 												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/01-03-materials.jpg" title="Materials" ondragstart="return false;" />
@@ -278,8 +278,8 @@
 					<div class="card--service" card-service>
 						<div class="slider">
 							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
-								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
-									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+								<div class="slider__wrapper" [style]="wrapperStyle">
+									<div class="slider__inner" [style]="innerStyle">
 										<div class="slider__slide">
 											<div class="picture picture--slider">
 												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/02-01-3d-prototipation.jpg" title="3D Prototipation" ondragstart="return false;" />
@@ -325,8 +325,8 @@
 					<div class="card--service" card-service>
 						<div class="slider">
 							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
-								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
-									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+								<div class="slider__wrapper" [style]="wrapperStyle">
+									<div class="slider__inner" [style]="innerStyle">
 										<div class="slider__slide">
 											<div class="picture picture--slider">
 												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/03-01-measures-photogoniometer.jpg" title="Measures Photogoniometer" ondragstart="return false;" />
@@ -367,8 +367,8 @@
 					<div class="card--service" card-service>
 						<div class="slider">
 							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
-								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
-									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+								<div class="slider__wrapper" [style]="wrapperStyle">
+									<div class="slider__inner" [style]="innerStyle">
 										<div class="slider__slide">
 											<div class="picture picture--slider">
 												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/04-01-led-integration.jpg" title="Led Integration" ondragstart="return false;" />
@@ -404,8 +404,8 @@
 					<div class="card--service" card-service>
 						<div class="slider">
 							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
-								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
-									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+								<div class="slider__wrapper" [style]="wrapperStyle">
+									<div class="slider__inner" [style]="innerStyle">
 										<div class="slider__slide">
 											<div class="picture picture--slider">
 												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/05-02-control-box.jpg" title="Control Box" ondragstart="return false;" />
@@ -442,7 +442,7 @@
 						<div class="slider">
 							<div class="slider__container" slider-service (tween)="onTween($event)" (change)="onChange($event)">
 								<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)' }">
-									<div class="slider__inner" [style]="{ 'width': 100 * items.length + '%' }">
+									<div class="slider__inner" [style]="innerStyle">
 										<div class="slider__slide">
 											<div class="picture picture--slider">
 												<img lazy="/cantalupi/img/how-we-do/services-for-lighting-designers/06-03-light-cycle-dinner-interactive-lightmix.jpg" title="Light Cycle Dinner Interactive Lightmix" ondragstart="return false;" />

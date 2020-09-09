@@ -20,7 +20,9 @@
 		@extend %nav-item;
 		flex-grow: 0;
 
-		&>a {
+		&>a,
+		&>span,
+		&>div {
 			@extend %btn;
 			font-family: $font-secondary;
 			font-style: italic;
@@ -54,20 +56,29 @@
 		}
 
 		@include media-up(lg) {
-			&>a {
+
+			&>a,
+			&>span,
+			&>div {
 				font-size: 36px;
 			}
 		}
 
 		@include media-between(md, lg) {
-			&>a {
+
+			&>a,
+			&>span,
+			&>div {
 				font-size: 1.85vw;
 			}
 
 		}
 
 		@include media-down(sm) {
-			&>a {
+
+			&>a,
+			&>span,
+			&>div {
 				font-size: 18px;
 			}
 		}
@@ -81,26 +92,6 @@
 			display: flex;
 			justify-content: center;
 			margin-bottom: 6px;
-		}
-	}
-}
-
-.nav--share {
-	@extend %nav;
-	justify-content: space-around;
-
-	&>li {
-		@extend %nav-item;
-		flex-grow: 0;
-
-		&>a {
-			@extend %btn;
-
-			svg {
-				max-width: 16px;
-				max-height: 16px;
-				fill: $foreground;
-			}
 		}
 	}
 }

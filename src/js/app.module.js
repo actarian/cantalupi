@@ -27,6 +27,7 @@ import ProductsPageComponent from './products-page/products-page.component';
 import ScrollToDirective from './scroll-to/scroll-to.directive';
 import SecureDirective from './secure/secure.directive';
 import ShareComponent from './share/share.component';
+import SliderProductsRelatedComponent from './slider/slider-products-related.component';
 import SliderServiceComponent from './slider/slider-service.component';
 import SliderComponent from './slider/slider.component';
 import SlugPipe from './slug/slug.pipe';
@@ -67,6 +68,7 @@ AppModule.meta = {
 		SecureDirective,
 		ShareComponent,
 		SliderComponent,
+		SliderProductsRelatedComponent,
 		SliderServiceComponent,
 		SlugPipe,
 		VirtualStructure

@@ -1,5 +1,5 @@
 <div class="slider__container" slider [items]="sliderItems" [current]="sliderIndex" (tween)="onTween($event)" (change)="onChange($event)" *if="sliderItems">
-	<div class="slider__wrapper" [style]="{ 'transform': 'translate3d(' + -100 * state.current + '%, 0, 0)'}">
+	<div class="slider__wrapper" [style]="wrapperStyle">
 		<div class="slider__inner">
 			<div class="slider__slide" *for="let item of items; let index = index;">
 				<div class="picture">

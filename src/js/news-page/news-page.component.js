@@ -32,7 +32,7 @@ export default class NewsPageComponent extends PageComponent {
 		const items = this.items;
 		const filters = this.filters;
 		Object.keys(filters).forEach(key => {
-			filters[key].mode = FilterMode.SELECT;
+			filters[key].mode = FilterMode.OR;
 		});
 		const initialParams = {};
 		const filterService = new FilterService(filters, initialParams, (key, filter) => {

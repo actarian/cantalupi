@@ -6,7 +6,7 @@
 
 	<section class="section--hero-news">
 		<div class="background">
-			<img lazy="/cantalupi/img/cantalupi-world/hero.jpg" width="1920" height="1080" />
+			<img lazy="/cantalupi/img/cantalupi-world/hero.jpg" />
 		</div>
 		<div class="container">
 			<div class="title">Cantalupi World</div>
@@ -34,19 +34,19 @@
 		</div>
 	</section>
 
-	<section class="section--serp">
+	<section class="section--news">
 		<div class="container">
 			<!-- filters -->
-			<div class="listing--filters">
-				<div class="listing__item" *for="let item of filter.options">
-					<div class="option" [class]="{ active: filter.has(item), disabled: item.disabled }" (click)="filter.set(item)">
+			<ul class="nav--submenu">
+				<li *for="let item of filter.options">
+					<div class="title" [class]="{ active: filter.has(item), disabled: item.disabled }" (click)="filter.toggle(item)">
 						<span class="name" [innerHTML]="item.label"></span>
 						<!--
 						<span class="count" [innerHTML]="item.count || ''"></span>
 						-->
 					</div>
-				</div>
-			</div>
+				</li>
+			</ul>
 			<!-- results -->
 			<div class="listing--news">
 				<div class="listing__item" *for="let item of items">

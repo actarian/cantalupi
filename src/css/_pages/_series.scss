@@ -155,6 +155,12 @@
 		padding-bottom: 120px;
 	}
 
+	.picture {
+		&>img {
+			object-fit: contain;
+		}
+	}
+
 	.title {
 		font-family: $font-secondary;
 		font-size: 54px;
