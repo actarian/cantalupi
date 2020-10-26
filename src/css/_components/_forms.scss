@@ -1,5 +1,5 @@
-$family: $font-secondary;
-$size: 16px;
+$family: $font-primary;
+$size: 14px;
 $weight: $font-light;
 $spacing: 0;
 $line: 1; // always
@@ -7,7 +7,7 @@ $pristine: $foreground;
 $dirty: $foreground;
 $touched: $foreground;
 $valid: $foreground;
-$invalid: $foreground-primary;
+$invalid: #A28850;
 
 %btn--disabled {
 	opacity: 0.5;
@@ -18,26 +18,26 @@ $invalid: $foreground-primary;
 %label {
 	display: block;
 	flex: 0 0 100%;
-	font-family: $font-secondary;
-	font-size: 13px;
-	opacity: 0.3;
+	font-family: $font-primary;
+	font-size: 10px;
 	font-weight: $font-semibold;
 	line-height: $line;
 	margin-bottom: -1px;
-	color: $pristine;
-	text-transform: uppercase;
+	color: #818C8E;
+	// text-transform: uppercase;
 }
 
 %placeholder {
 	// text-transform: uppercase;
-	color: rgba($pristine, 0.4);
+	color: rgba(#818C8E, 0.4);
+	line-height: 1.2;
 }
 
 %group--form {
 	display: flex;
 	flex-wrap: wrap;
 	padding: 3px 1px;
-	border-bottom: 1px solid $foreground;
+	border-bottom: 1px solid rgba(#1D1D1B, 0.5);
 	margin-bottom: 15px;
 
 	label {
@@ -145,9 +145,6 @@ $invalid: $foreground-primary;
 	.group--cta {
 		display: flex;
 		justify-content: center;
-		margin-top: 30px;
-		padding: 20px 0;
-		border-bottom: 1px solid rgba(#16255b, 0.2);
 	}
 
 	.group--info {
@@ -168,11 +165,10 @@ $invalid: $foreground-primary;
 	[control-custom-select] .dropdown {
 		top: 100%;
 		width: 100%;
-		margin-top: 10px;
+		margin-top: 0;
 		left: 0;
-		border-radius: 12px;
+		border-radius: 0;
 	}
-
 }
 
 .group--error {
@@ -192,8 +188,6 @@ fieldset,
 	border: none;
 }
 
-/* text */
-
 .group--form {
 	@extend %group--form;
 }
@@ -202,16 +196,15 @@ fieldset,
 	@extend %control--text;
 }
 
-/* textarea */
-
 .group--form--textarea {
 	@extend %group--form;
-	padding: 15px 10px;
-	border: 2px solid $foreground;
+	padding: 10px 0;
+	border: none;
+	border-bottom: 1px solid rgba(#1D1D1B, 0.5);
 
 	.control--text {
 		resize: vertical;
-		font-size: 24px;
+		font-size: 14px;
 	}
 
 	label {
@@ -219,17 +212,10 @@ fieldset,
 	}
 }
 
-/* select */
-
 .group--form--select {
 	@extend %group--form;
 	position: relative;
-	/*
-	background: $background;
-	border: none;
-	border-radius: 12px;
-	padding: 8px 15px;
-	*/
+    padding: 5px 0;
 	cursor: pointer;
 
 	input {
@@ -255,11 +241,6 @@ fieldset,
 
 .control--select {
 	@extend %control--text;
-	/*
-	font-size: 21px;
-	text-transform: uppercase;
-	line-height: 1;
-	*/
 
 	.multiple>& {
 		white-space: nowrap;
@@ -268,8 +249,6 @@ fieldset,
 		max-width: calc(100% - 23px);
 	}
 }
-
-/* checkbox */
 
 .group--form--checkbox {
 	@extend %group--form;
@@ -303,32 +282,9 @@ fieldset,
 	}
 
 	a {
-		font-weight: $font-semibold;
-		text-decoration: underline;
+		@extend %link;
 	}
-
-	/*
-	label {
-		display: flex;
-		align-items: center;
-		cursor: pointer;
-
-		input {
-			appearance: none;
-			padding: 0;
-			margin: 0 10px 0 0;
-			border: 2px solid $pristine;
-			outline: 0;
-
-			&:checked {
-				background: $pristine;
-			}
-		}
-	}
-	*/
 }
-
-/* radio */
 
 .group--form--radio {
 	min-height: 72px;
@@ -344,8 +300,6 @@ fieldset,
 		margin: 0 5px 0 4px;
 	}
 }
-
-/* file */
 
 .group--form--file {
 	@extend %group--form;
@@ -375,8 +329,6 @@ fieldset,
 	cursor: pointer;
 }
 
-/* errors */
-
 errors-component {
 	display: block;
 
@@ -390,8 +342,6 @@ errors-component {
 		color: $foreground-negative;
 	}
 }
-
-/* results */
 
 .group--form--results {
 	justify-content: center;
@@ -420,6 +370,7 @@ errors-component {
 		&>div {
 			@include as-col(4, 12, $gutter);
 
+			&.full,
 			&[control-textarea] {
 				@include as-col(12, 12, $gutter);
 			}
@@ -434,6 +385,7 @@ errors-component {
 		&>div {
 			@include as-col(6, 12, $gutter);
 
+			&.full,
 			&[control-textarea] {
 				@include as-col(12, 12, $gutter);
 			}
@@ -542,9 +494,9 @@ errors-component {
 		@extend %label;
 		display: block;
 		position: absolute;
-		font-size: 11px;
-		right: 0px;
-		top: 10px;
+		font-size: 10px;
+		right: 0;
+		top: 0;
 	}
 
 	&.group--form--select,

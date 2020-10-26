@@ -1,5 +1,5 @@
 export const NODE = (typeof module !== 'undefined' && module.exports);
-export const PARAMS = NODE ? { get: () => {} } : new URLSearchParams(window.location.search);
+export const PARAMS = NODE ? { get: () => { } } : new URLSearchParams(window.location.search);
 export const DEBUG = false || (PARAMS.get('debug') != null);
 export const BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
 export const STATIC = NODE ? false : (window && (window.location.port === '40525' || window.location.host === 'actarian.github.io' || window.location.host === 'cantalupi.herokuapp.com'));
@@ -12,7 +12,7 @@ export const ENV = {
 	PRODUCTION,
 	RESOURCE: '/docs/',
 	STATIC_RESOURCE: './',
-	API: '/api',
+	API: '/wp-json/cantalupi/v1',
 	STATIC_API: (DEVELOPMENT && !STATIC) ? '/Client/docs/api' : './api',
 };
 

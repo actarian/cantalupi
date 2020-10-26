@@ -209,84 +209,135 @@ MediaMatcher._matchMedia = window.matchMedia ? window.matchMedia.bind(window) : 
   return BreakpointService;
 }();
 
-_defineProperty(BreakpointService, "queries_", {});var SessionStorageService = /*#__PURE__*/function () {
-  function SessionStorageService() {}
+_defineProperty(BreakpointService, "queries_", {});var StorageService = /*#__PURE__*/function () {
+  function StorageService() {}
+
+  StorageService.encode = function encode(decoded) {
+    var encoded = rxcomp.Serializer.encode(decoded, [rxcomp.encodeJson, encodeURIComponent, rxcomp.encodeBase64]) || null;
+    return encoded;
+  };
+
+  StorageService.decode = function decode(encoded) {
+    var decoded = rxcomp.Serializer.decode(encoded, [rxcomp.decodeBase64, decodeURIComponent, rxcomp.decodeJson]);
+    return decoded;
+  };
+
+  StorageService.isSupported = function isSupported(type) {
+    var flag = false;
+    var storage;
+
+    try {
+      storage = rxcomp.WINDOW[type];
+      var x = '__storage_test__';
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      flag = true;
+    } catch (error) {
+      flag = error instanceof DOMException && ( // everything except Firefox
+      error.code === 22 || // Firefox
+      error.code === 1014 || // test name field too, because code might not be present
+      // everything except Firefox
+      error.name === 'QuotaExceededError' || // Firefox
+      error.name === 'NS_ERROR_DOM_QUOTA_REACHED') && // acknowledge QuotaExceededError only if there's something already stored
+      Boolean(storage && storage.length !== 0);
+    }
+
+    return flag;
+  };
+
+  return StorageService;
+}();
+
+_defineProperty(StorageService, "supported", false);var SessionStorageService = /*#__PURE__*/function (_StorageService) {
+  _inheritsLoose(SessionStorageService, _StorageService);
+
+  function SessionStorageService() {
+    return _StorageService.apply(this, arguments) || this;
+  }
+
+  SessionStorageService.clear = function clear() {
+    if (this.isSupported()) {
+      sessionStorage.clear();
+      this.items$.next(this.toArray());
+    }
+  };
 
   SessionStorageService.delete = function _delete(name) {
-    if (this.isSessionStorageSupported()) {
-      window.sessionStorage.removeItem(name);
+    if (this.isSupported()) {
+      sessionStorage.removeItem(name);
+      this.items$.next(this.toArray());
     }
   };
 
   SessionStorageService.exist = function exist(name) {
-    if (this.isSessionStorageSupported()) {
-      return window.sessionStorage[name] !== undefined;
+    if (this.isSupported()) {
+      return sessionStorage.getItem(name) !== undefined;
+    } else {
+      return false;
     }
   };
 
   SessionStorageService.get = function get(name) {
+    return this.decode(this.getRaw(name));
+  };
+
+  SessionStorageService.set = function set(name, value) {
+    this.setRaw(name, this.encode(value));
+  };
+
+  SessionStorageService.getRaw = function getRaw(name) {
     var value = null;
 
-    if (this.isSessionStorageSupported() && window.sessionStorage[name] !== undefined) {
-      try {
-        value = JSON.parse(window.sessionStorage[name]);
-      } catch (e) {
-        console.log('SessionStorageService.get.error parsing', name, e);
-      }
+    if (this.isSupported()) {
+      value = sessionStorage.getItem(name);
     }
 
     return value;
   };
 
-  SessionStorageService.set = function set(name, value) {
-    if (this.isSessionStorageSupported()) {
-      try {
-        var cache = [];
-        var json = JSON.stringify(value, function (key, value) {
-          if (typeof value === 'object' && value !== null) {
-            if (cache.indexOf(value) !== -1) {
-              // Circular reference found, discard key
-              return;
-            }
-
-            cache.push(value);
-          }
-
-          return value;
-        });
-        window.sessionStorage.setItem(name, json);
-      } catch (e) {
-        console.log('SessionStorageService.set.error serializing', name, value, e);
-      }
+  SessionStorageService.setRaw = function setRaw(name, value) {
+    if (value && this.isSupported()) {
+      sessionStorage.setItem(name, value);
+      this.items$.next(this.toArray());
     }
   };
 
-  SessionStorageService.isSessionStorageSupported = function isSessionStorageSupported() {
+  SessionStorageService.toArray = function toArray() {
+    var _this = this;
+
+    return this.toRawArray().map(function (x) {
+      x.value = _this.decode(x.value);
+      return x;
+    });
+  };
+
+  SessionStorageService.toRawArray = function toRawArray() {
+    var _this2 = this;
+
+    if (this.isSupported()) {
+      return Object.keys(sessionStorage).map(function (key) {
+        return {
+          name: key,
+          value: _this2.getRaw(key)
+        };
+      });
+    } else {
+      return [];
+    }
+  };
+
+  SessionStorageService.isSupported = function isSupported() {
     if (this.supported) {
       return true;
     }
 
-    var supported = false;
-
-    try {
-      supported = 'sessionStorage' in window && window.sessionStorage !== null;
-
-      if (supported) {
-        window.sessionStorage.setItem('test', '1');
-        window.sessionStorage.removeItem('test');
-      } else {
-        supported = false;
-      }
-    } catch (e) {
-      supported = false;
-    }
-
-    this.supported = supported;
-    return supported;
+    return StorageService.isSupported('sessionStorage');
   };
 
   return SessionStorageService;
-}();var AppComponent = /*#__PURE__*/function (_Component) {
+}(StorageService);
+
+_defineProperty(SessionStorageService, "items$", new rxjs.ReplaySubject(1));var AppComponent = /*#__PURE__*/function (_Component) {
   _inheritsLoose(AppComponent, _Component);
 
   function AppComponent() {
@@ -442,6 +493,209 @@ CardServiceComponent.meta = {
 }(rxcomp.Directive);
 ClickOutsideDirective.meta = {
   selector: "[(clickOutside)]"
+};var HttpResponse = /*#__PURE__*/function () {
+  _createClass(HttpResponse, [{
+    key: "static",
+    get: function get() {
+      return this.url.indexOf('.json') === this.url.length - 5;
+    }
+  }]);
+
+  function HttpResponse(response) {
+    this.data = null;
+
+    if (response) {
+      this.url = response.url;
+      this.status = response.status;
+      this.statusText = response.statusText;
+      this.ok = response.ok;
+      this.redirected = response.redirected;
+    }
+  }
+
+  return HttpResponse;
+}();
+
+var HttpService = /*#__PURE__*/function () {
+  function HttpService() {}
+
+  HttpService.http$ = function http$(method, url, data, format) {
+    var _this = this;
+
+    if (format === void 0) {
+      format = 'json';
+    }
+
+    method = url.indexOf('.json') !== -1 ? 'GET' : method;
+    var methods = ['POST', 'PUT', 'PATCH'];
+    var response_ = null;
+    return rxjs.from(fetch(url, {
+      method: method,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: methods.indexOf(method) !== -1 ? JSON.stringify(data) : undefined
+    }).then(function (response) {
+      response_ = new HttpResponse(response);
+      return response[format]().then(function (json) {
+        response_.data = json;
+
+        if (response.ok) {
+          return Promise.resolve(response_);
+        } else {
+          return Promise.reject(response_);
+        }
+      });
+      /*
+      if (response.ok) {
+      	return response[format]();
+      } else {
+      	return response.json().then(json => {
+      		return Promise.reject(json);
+      	});
+      }
+      */
+    })).pipe(operators.catchError(function (error) {
+      return rxjs.throwError(_this.getError(error, response_));
+    }));
+  };
+
+  HttpService.get$ = function get$(url, data, format) {
+    var query = this.query(data);
+    return this.http$('GET', "" + url + query, undefined, format);
+  };
+
+  HttpService.delete$ = function delete$(url) {
+    return this.http$('DELETE', url);
+  };
+
+  HttpService.post$ = function post$(url, data) {
+    return this.http$('POST', url, data);
+  };
+
+  HttpService.put$ = function put$(url, data) {
+    return this.http$('PUT', url, data);
+  };
+
+  HttpService.patch$ = function patch$(url, data) {
+    return this.http$('PATCH', url, data);
+  };
+
+  HttpService.query = function query(data) {
+    return ''; // todo
+  };
+
+  HttpService.getError = function getError(object, response) {
+    var error = typeof object === 'object' ? object : {};
+
+    if (!error.statusCode) {
+      error.statusCode = response ? response.status : 0;
+    }
+
+    if (!error.statusMessage) {
+      error.statusMessage = response ? response.statusText : object;
+    }
+
+    console.log('HttpService.getError', error, object);
+    return error;
+  };
+
+  return HttpService;
+}();var ContactsComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(ContactsComponent, _Component);
+
+  function ContactsComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = ContactsComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _this = this;
+
+    var data = window.data || {
+      roles: []
+    };
+    var form = new rxcompForm.FormGroup({
+      firstName: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      lastName: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      email: new rxcompForm.FormControl(null, [rxcompForm.Validators.RequiredValidator(), rxcompForm.Validators.EmailValidator()]),
+      company: new rxcompForm.FormControl(null),
+      role: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      country: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      message: new rxcompForm.FormControl(null),
+      privacy: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredTrueValidator()),
+      checkRequest: window.antiforgery,
+      checkField: ''
+    });
+    var controls = form.controls;
+    controls.role.options = data.roles;
+    this.controls = controls;
+    form.changes$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (changes) {
+      // console.log('WorkWithUsComponent.form.changes$', changes, form.valid);
+      _this.pushChanges();
+    });
+    this.data = data;
+    this.form = form;
+    this.error = null;
+    this.success = false;
+  };
+
+  _proto.test = function test() {
+    var role = this.controls.role.options.length ? this.controls.role.options[0].id : null;
+    this.form.patch({
+      firstName: 'Jhon',
+      lastName: 'Appleseed',
+      email: 'jhonappleseed@gmail.com',
+      company: 'Websolute',
+      country: 'Italy',
+      role: role,
+      message: 'Hi!',
+      privacy: true,
+      checkRequest: window.antiforgery,
+      checkField: ''
+    });
+  };
+
+  _proto.reset = function reset() {
+    this.form.reset();
+  };
+
+  _proto.onSubmit = function onSubmit() {
+    var _this2 = this;
+
+    // console.log('ContactsComponent.onSubmit', 'form.valid', valid);
+    if (this.form.valid) {
+      // console.log('ContactsComponent.onSubmit', this.form.value);
+      this.form.submitted = true;
+      HttpService.post$('/api/contacts', this.form.value).subscribe(function (response) {
+        _this2.success = true;
+
+        _this2.form.reset(); // this.pushChanges();
+
+        /*
+        dataLayer.push({
+        	'event': 'formSubmission',
+        	'form type': 'Contatti'
+        });
+        */
+
+      }, function (error) {
+        console.log('ContactsComponent.error', error);
+        _this2.error = error;
+
+        _this2.pushChanges();
+      });
+    } else {
+      this.form.touched = true;
+    }
+  };
+
+  return ContactsComponent;
+}(rxcomp.Component);
+ContactsComponent.meta = {
+  selector: '[contacts]'
 };var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function createCommonjsModule(fn, basedir, module) {
@@ -2474,6 +2728,269 @@ FadingGalleryComponent.meta = {
 ControlComponent.meta = {
   selector: '[control]',
   inputs: ['control']
+};var ControlCheckboxComponent = /*#__PURE__*/function (_ControlComponent) {
+  _inheritsLoose(ControlCheckboxComponent, _ControlComponent);
+
+  function ControlCheckboxComponent() {
+    return _ControlComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = ControlCheckboxComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    this.label = 'label';
+  };
+
+  return ControlCheckboxComponent;
+}(ControlComponent);
+ControlCheckboxComponent.meta = {
+  selector: '[control-checkbox]',
+  inputs: ['control', 'label'],
+  template:
+  /* html */
+  "\n\t\t<div class=\"group--form--checkbox\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label>\n\t\t\t\t<input type=\"checkbox\" class=\"control--checkbox\" [formControl]=\"control\" [value]=\"true\" />\n\t\t\t\t<span [innerHTML]=\"label | html\"></span>\n\t\t\t</label>\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
+};var KeyboardService = /*#__PURE__*/function () {
+  function KeyboardService() {}
+
+  KeyboardService.keydown$ = function keydown$() {
+    return rxjs.fromEvent(window, 'keydown').pipe(operators.shareReplay(1));
+  };
+
+  KeyboardService.keyup$ = function keyup$() {
+    return rxjs.fromEvent(window, 'keyup').pipe(operators.shareReplay(1));
+  };
+
+  KeyboardService.typing$ = function typing$() {
+    var typing = '',
+        to;
+    return this.key$().pipe(operators.map(function (key) {
+      if (to) {
+        clearTimeout(to);
+      }
+
+      typing += key;
+      to = setTimeout(function () {
+        typing = '';
+      }, 1500);
+      return typing;
+    }), operators.shareReplay(1));
+  };
+
+  KeyboardService.key$ = function key$() {
+    var regexp = /\w/;
+    return this.keydown$().pipe(operators.filter(function (event) {
+      return event.key && event.key.match(regexp);
+    }), operators.map(function (event) {
+      return event.key;
+    }), operators.shareReplay(1));
+  };
+
+  return KeyboardService;
+}();var ControlCustomSelectComponent = /*#__PURE__*/function (_ControlComponent) {
+  _inheritsLoose(ControlCustomSelectComponent, _ControlComponent);
+
+  function ControlCustomSelectComponent() {
+    return _ControlComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = ControlCustomSelectComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _this = this;
+
+    this.label = 'label';
+    this.labels = window.labels || {};
+    this.dropped = false;
+    this.dropdownId = DropdownDirective.nextId();
+    KeyboardService.typing$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (word) {
+      _this.scrollToWord(word);
+    });
+    /*
+    KeyboardService.key$().pipe(
+    	takeUntil(this.unsubscribe$)
+    ).subscribe(key => {
+    	this.scrollToKey(key);
+    });
+    */
+  };
+
+  _proto.scrollToWord = function scrollToWord(word) {
+    // console.log('ControlCustomSelectComponent.scrollToWord', word);
+    var items = this.control.options || [];
+    var index = -1;
+
+    for (var i = 0; i < items.length; i++) {
+      var x = items[i];
+
+      if (x.name.toLowerCase().indexOf(word.toLowerCase()) === 0) {
+        // console.log(word, x.name);
+        index = i;
+        break;
+      }
+    }
+
+    if (index !== -1) {
+      var _getContext = rxcomp.getContext(this),
+          node = _getContext.node;
+
+      var dropdown = node.querySelector('.dropdown');
+      var navDropdown = node.querySelector('.nav--dropdown');
+      var item = navDropdown.children[index];
+      dropdown.scrollTo(0, item.offsetTop);
+    }
+  }
+  /*
+  setOption(item) {
+  	this.control.value = item.id;
+  	// DropdownDirective.dropdown$.next(null);
+  }
+  */
+  ;
+
+  _proto.setOption = function setOption(item) {
+    console.log('setOption', item, this.isMultiple);
+
+    if (this.isMultiple) {
+      var value = this.control.value || [];
+      var index = value.indexOf(item.id);
+
+      if (index !== -1) {
+        // if (value.length > 1) {
+        value.splice(index, 1); // }
+      } else {
+        value.push(item.id);
+      }
+
+      this.control.value = value.length ? value.slice() : null;
+    } else {
+      this.control.value = item.id; // DropdownDirective.dropdown$.next(null);
+    }
+  };
+
+  _proto.hasOption = function hasOption(item) {
+    if (this.isMultiple) {
+      var values = this.control.value || [];
+      return values.indexOf(item.id) !== -1;
+    } else {
+      return this.control.value === item.id;
+    }
+  };
+
+  _proto.onDropped = function onDropped(id) {// console.log('ControlCustomSelectComponent.onDropped', id);
+  };
+
+  _proto.getLabel = function getLabel() {
+    var value = this.control.value;
+    var items = this.control.options || [];
+
+    if (this.isMultiple) {
+      value = value || [];
+
+      if (value.length) {
+        return value.map(function (v) {
+          var item = items.find(function (x) {
+            return x.id === v || x.name === v;
+          });
+          return item ? item.name : '';
+        }).join(', ');
+      } else {
+        return this.labels.select;
+      }
+    } else {
+      var item = items.find(function (x) {
+        return x.id === value || x.name === value;
+      });
+
+      if (item) {
+        return item.name;
+      } else {
+        return this.labels.select;
+      }
+    }
+  };
+
+  _proto.onDropped = function onDropped($event) {
+    // console.log($event);
+    this.dropped = $event === this.dropdownId;
+  }
+  /*
+  onClick(event) {
+  	const { node } = getContext(this);
+  	node.querySelector('.dropdown').classList.add('dropped');
+  }
+  */
+
+  /*
+  onClickOutside(event) {
+  	const { node } = getContext(this);
+  	node.querySelector('.dropdown').classList.remove('dropped');
+  }
+  */
+  ;
+
+  _createClass(ControlCustomSelectComponent, [{
+    key: "isMultiple",
+    get: function get() {
+      return this.multiple && this.multiple !== false && this.multiple !== 'false';
+    }
+  }]);
+
+  return ControlCustomSelectComponent;
+}(ControlComponent);
+ControlCustomSelectComponent.meta = {
+  selector: '[control-custom-select]',
+  inputs: ['control', 'label', 'multiple'],
+  template:
+  /* html */
+  "\n\t\t<div class=\"group--form--select\" [class]=\"{ required: control.validators.length, multiple: isMultiple }\" [dropdown]=\"dropdownId\" (dropped)=\"onDropped($event)\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<span class=\"control--select\" [innerHTML]=\"getLabel()\"></span>\n\t\t\t<svg class=\"icon icon--caret-down\"><use xlink:href=\"#caret-down\"></use></svg>\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t\t<div class=\"dropdown\" [dropdown-item]=\"dropdownId\">\n\t\t\t<div class=\"category\" [innerHTML]=\"label\"></div>\n\t\t\t<ul class=\"nav--dropdown\" [class]=\"{ multiple: isMultiple }\">\n\t\t\t<li *for=\"let item of control.options\" (click)=\"setOption(item)\"><span [class]=\"{ active: hasOption(item) }\" [innerHTML]=\"item.name\"></span></li>\n\t\t\t</ul>\n\t\t</div>\n\t"
+  /*  (click)="onClick($event)" (clickOutside)="onClickOutside($event)" */
+
+  /*  <!-- <div class="dropdown" [class]="{ dropped: dropped }"> --> */
+
+};var ControlTextComponent = /*#__PURE__*/function (_ControlComponent) {
+  _inheritsLoose(ControlTextComponent, _ControlComponent);
+
+  function ControlTextComponent() {
+    return _ControlComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = ControlTextComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    this.label = 'label';
+    this.required = false;
+  };
+
+  return ControlTextComponent;
+}(ControlComponent);
+ControlTextComponent.meta = {
+  selector: '[control-text]',
+  inputs: ['control', 'label'],
+  template:
+  /* html */
+  "\n\t\t<div class=\"group--form\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<input type=\"text\" class=\"control--text\" [formControl]=\"control\" [placeholder]=\"label\" />\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
+};var ControlTextareaComponent = /*#__PURE__*/function (_ControlComponent) {
+  _inheritsLoose(ControlTextareaComponent, _ControlComponent);
+
+  function ControlTextareaComponent() {
+    return _ControlComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = ControlTextareaComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    this.label = 'label';
+    this.required = false;
+  };
+
+  return ControlTextareaComponent;
+}(ControlComponent);
+ControlTextareaComponent.meta = {
+  selector: '[control-textarea]',
+  inputs: ['control', 'label'],
+  template:
+  /* html */
+  "\n\t\t<div class=\"group--form--textarea\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<textarea class=\"control--text\" [formControl]=\"control\" [innerHTML]=\"label\" rows=\"4\"></textarea>\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
 };var ErrorsComponent = /*#__PURE__*/function (_ControlComponent) {
   _inheritsLoose(ErrorsComponent, _ControlComponent);
 
@@ -2500,6 +3017,111 @@ ErrorsComponent.meta = {
   template:
   /* html */
   "\n\t<div class=\"inner\" [style]=\"{ display: control.invalid && control.touched ? 'block' : 'none' }\">\n\t\t<div class=\"error\" *for=\"let [key, value] of control.errors\">\n\t\t\t<span [innerHTML]=\"getLabel(key, value)\"></span>\n\t\t\t<!-- <span class=\"key\" [innerHTML]=\"key\"></span> <span class=\"value\" [innerHTML]=\"value | json\"></span> -->\n\t\t</div>\n\t</div>\n\t"
+};var NODE = typeof module !== 'undefined' && module.exports;
+var PARAMS = NODE ? {
+  get: function get() {}
+} : new URLSearchParams(window.location.search);
+var DEBUG =  PARAMS.get('debug') != null;
+var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
+var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io' || window.location.host === 'cantalupi.herokuapp.com');
+var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
+var PRODUCTION = !DEVELOPMENT;
+var ENV = {
+  NAME: 'cantalupi',
+  STATIC: STATIC,
+  DEVELOPMENT: DEVELOPMENT,
+  PRODUCTION: PRODUCTION,
+  RESOURCE: '/docs/',
+  STATIC_RESOURCE: './',
+  API: '/wp-json/cantalupi/v1',
+  STATIC_API: DEVELOPMENT && !STATIC ? '/Client/docs/api' : './api'
+};
+function getApiUrl(url, useStatic) {
+  var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
+  var json = useStatic || STATIC ? '.json' : '';
+  return "" + base + url + json;
+}
+function getSlug(url) {
+  if (!url) {
+    return url;
+  }
+
+  if (url.indexOf("/" + ENV.NAME) !== 0) {
+    return url;
+  }
+
+  if (STATIC) {
+    console.log(url);
+    return url;
+  }
+
+  url = url.replace("/" + ENV.NAME, '');
+  url = url.replace('.html', '');
+  return "/it/it" + url;
+}
+var Environment = /*#__PURE__*/function () {
+  _createClass(Environment, [{
+    key: "href",
+    get: function get() {
+      if (window.location.host.indexOf('herokuapp') !== -1) {
+        return 'https://raw.githubusercontent.com/actarian/cantalupi/master/docs/';
+      } else {
+        return BASE_HREF;
+      }
+    }
+  }, {
+    key: "host",
+    get: function get() {
+      var host = window.location.host.replace('127.0.0.1', '192.168.1.2');
+
+      if (host.substr(host.length - 1, 1) === '/') {
+        host = host.substr(0, host.length - 1);
+      }
+
+      return window.location.protocol + "//" + host + BASE_HREF;
+    }
+  }]);
+
+  function Environment(options) {
+    if (options) {
+      Object.assign(this, options);
+    }
+  }
+
+  return Environment;
+}();
+var environment = new Environment({
+  port: 5000
+});var TestComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(TestComponent, _Component);
+
+  function TestComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = TestComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    this.env = ENV;
+  };
+
+  _proto.onTest = function onTest(event) {
+    this.test.next(event);
+  };
+
+  _proto.onReset = function onReset(event) {
+    this.reset.next(event);
+  };
+
+  return TestComponent;
+}(rxcomp.Component);
+TestComponent.meta = {
+  selector: 'test-component',
+  inputs: ['form'],
+  outputs: ['test', 'reset'],
+  template:
+  /* html */
+  "\n\t<div class=\"group--form--results\" *if=\"env.DEVELOPMENT\">\n\t\t<code [innerHTML]=\"form.value | json\"></code>\n\t\t<button type=\"button\" class=\"btn--link\" (click)=\"onTest($event)\"><span>test</span></button>\n\t\t<button type=\"button\" class=\"btn--link\" (click)=\"onReset($event)\"><span>reset</span></button>\n\t</div>\n\t"
 };var ModalEvent = function ModalEvent(data) {
   this.data = data;
 };
@@ -2674,82 +3296,7 @@ ModalOutletComponent.meta = {
 }(rxcomp.Component);
 GalleryModalComponent.meta = {
   selector: '[gallery-modal]'
-};var NODE = typeof module !== 'undefined' && module.exports;
-var PARAMS = NODE ? {
-  get: function get() {}
-} : new URLSearchParams(window.location.search);
-var DEBUG =  PARAMS.get('debug') != null;
-var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
-var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io' || window.location.host === 'cantalupi.herokuapp.com');
-var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
-var PRODUCTION = !DEVELOPMENT;
-var ENV = {
-  NAME: 'cantalupi',
-  STATIC: STATIC,
-  DEVELOPMENT: DEVELOPMENT,
-  PRODUCTION: PRODUCTION,
-  RESOURCE: '/docs/',
-  STATIC_RESOURCE: './',
-  API: '/api',
-  STATIC_API: DEVELOPMENT && !STATIC ? '/Client/docs/api' : './api'
-};
-function getApiUrl(url, useStatic) {
-  var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
-  var json = useStatic || STATIC ? '.json' : '';
-  return "" + base + url + json;
-}
-function getSlug(url) {
-  if (!url) {
-    return url;
-  }
-
-  if (url.indexOf("/" + ENV.NAME) !== 0) {
-    return url;
-  }
-
-  if (STATIC) {
-    console.log(url);
-    return url;
-  }
-
-  url = url.replace("/" + ENV.NAME, '');
-  url = url.replace('.html', '');
-  return "/it/it" + url;
-}
-var Environment = /*#__PURE__*/function () {
-  _createClass(Environment, [{
-    key: "href",
-    get: function get() {
-      if (window.location.host.indexOf('herokuapp') !== -1) {
-        return 'https://raw.githubusercontent.com/actarian/cantalupi/master/docs/';
-      } else {
-        return BASE_HREF;
-      }
-    }
-  }, {
-    key: "host",
-    get: function get() {
-      var host = window.location.host.replace('127.0.0.1', '192.168.1.2');
-
-      if (host.substr(host.length - 1, 1) === '/') {
-        host = host.substr(0, host.length - 1);
-      }
-
-      return window.location.protocol + "//" + host + BASE_HREF;
-    }
-  }]);
-
-  function Environment(options) {
-    if (options) {
-      Object.assign(this, options);
-    }
-  }
-
-  return Environment;
-}();
-var environment = new Environment({
-  port: 5000
-});/* locomotive-scroll v3.5.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
+};/* locomotive-scroll v3.5.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -5988,164 +6535,7 @@ LocomotiveDirective.meta = {
 }(rxcomp.Component);
 ModalComponent.meta = {
   selector: '[modal]'
-};var HttpResponse = /*#__PURE__*/function () {
-  _createClass(HttpResponse, [{
-    key: "static",
-    get: function get() {
-      return this.url.indexOf('.json') === this.url.length - 5;
-    }
-  }]);
-
-  function HttpResponse(response) {
-    this.data = null;
-
-    if (response) {
-      this.url = response.url;
-      this.status = response.status;
-      this.statusText = response.statusText;
-      this.ok = response.ok;
-      this.redirected = response.redirected;
-    }
-  }
-
-  return HttpResponse;
-}();
-
-var HttpService = /*#__PURE__*/function () {
-  function HttpService() {}
-
-  HttpService.http$ = function http$(method, url, data, format) {
-    var _this = this;
-
-    if (format === void 0) {
-      format = 'json';
-    }
-
-    method = url.indexOf('.json') !== -1 ? 'GET' : method;
-    var methods = ['POST', 'PUT', 'PATCH'];
-    var response_ = null;
-    return rxjs.from(fetch(url, {
-      method: method,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: methods.indexOf(method) !== -1 ? JSON.stringify(data) : undefined
-    }).then(function (response) {
-      response_ = new HttpResponse(response);
-      return response[format]().then(function (json) {
-        response_.data = json;
-
-        if (response.ok) {
-          return Promise.resolve(response_);
-        } else {
-          return Promise.reject(response_);
-        }
-      });
-      /*
-      if (response.ok) {
-      	return response[format]();
-      } else {
-      	return response.json().then(json => {
-      		return Promise.reject(json);
-      	});
-      }
-      */
-    })).pipe(operators.catchError(function (error) {
-      return rxjs.throwError(_this.getError(error, response_));
-    }));
-  };
-
-  HttpService.get$ = function get$(url, data, format) {
-    var query = this.query(data);
-    return this.http$('GET', "" + url + query, undefined, format);
-  };
-
-  HttpService.delete$ = function delete$(url) {
-    return this.http$('DELETE', url);
-  };
-
-  HttpService.post$ = function post$(url, data) {
-    return this.http$('POST', url, data);
-  };
-
-  HttpService.put$ = function put$(url, data) {
-    return this.http$('PUT', url, data);
-  };
-
-  HttpService.patch$ = function patch$(url, data) {
-    return this.http$('PATCH', url, data);
-  };
-
-  HttpService.query = function query(data) {
-    return ''; // todo
-  };
-
-  HttpService.getError = function getError(object, response) {
-    var error = typeof object === 'object' ? object : {};
-
-    if (!error.statusCode) {
-      error.statusCode = response ? response.status : 0;
-    }
-
-    if (!error.statusMessage) {
-      error.statusMessage = response ? response.statusText : object;
-    }
-
-    console.log('HttpService.getError', error, object);
-    return error;
-  };
-
-  return HttpService;
-}();var ApiService = /*#__PURE__*/function (_HttpService) {
-  _inheritsLoose(ApiService, _HttpService);
-
-  function ApiService() {
-    return _HttpService.apply(this, arguments) || this;
-  }
-
-  ApiService.get$ = function get$(url, data, format) {
-    return _HttpService.get$.call(this, getApiUrl(url), data, format);
-  };
-
-  ApiService.delete$ = function delete$(url) {
-    return _HttpService.delete$.call(this, getApiUrl(url));
-  };
-
-  ApiService.post$ = function post$(url, data) {
-    return _HttpService.post$.call(this, getApiUrl(url), data);
-  };
-
-  ApiService.put$ = function put$(url, data) {
-    return _HttpService.put$.call(this, getApiUrl(url), data);
-  };
-
-  ApiService.patch$ = function patch$(url, data) {
-    return _HttpService.patch$.call(this, getApiUrl(url), data);
-  };
-
-  ApiService.staticGet$ = function staticGet$(url, data, format) {
-    return _HttpService.get$.call(this, getApiUrl(url, true), data, format);
-  };
-
-  ApiService.staticDelete$ = function staticDelete$(url) {
-    return _HttpService.delete$.call(this, getApiUrl(url, true));
-  };
-
-  ApiService.staticPost$ = function staticPost$(url, data) {
-    return _HttpService.post$.call(this, getApiUrl(url, true), data);
-  };
-
-  ApiService.staticPut$ = function staticPut$(url, data) {
-    return _HttpService.put$.call(this, getApiUrl(url, true), data);
-  };
-
-  ApiService.staticPatch$ = function staticPatch$(url, data) {
-    return _HttpService.patch$.call(this, getApiUrl(url, true), data);
-  };
-
-  return ApiService;
-}(HttpService);var FilterMode = {
+};var FilterMode = {
   SELECT: 'select',
   AND: 'and',
   OR: 'or'
@@ -6529,7 +6919,179 @@ var FilterItem = /*#__PURE__*/function () {
 }(rxcomp.Component);
 PageComponent.meta = {
   selector: '[page]'
-};var NewsPageComponent = /*#__PURE__*/function (_PageComponent) {
+};var CookieStorageService = /*#__PURE__*/function (_StorageService) {
+  _inheritsLoose(CookieStorageService, _StorageService);
+
+  function CookieStorageService() {
+    return _StorageService.apply(this, arguments) || this;
+  }
+
+  CookieStorageService.clear = function clear() {
+    var _this = this;
+
+    this.toRawArray().forEach(function (x) {
+      _this.setter(x.name, '', -1);
+    });
+  };
+
+  CookieStorageService.delete = function _delete(name) {
+    this.setter(name, '', -1);
+  };
+
+  CookieStorageService.exist = function exist(name) {
+    return document.cookie.indexOf(';' + name + '=') !== -1 || document.cookie.indexOf(name + '=') === 0;
+  };
+
+  CookieStorageService.get = function get(name) {
+    return this.decode(this.getRaw(name));
+  };
+
+  CookieStorageService.set = function set(name, value, days) {
+    this.setter(name, this.encode(value), days);
+  };
+
+  CookieStorageService.getRaw = function getRaw(name) {
+    var value = null;
+    var cookies = this.toRawArray();
+    var cookie = cookies.find(function (x) {
+      return x.name === name;
+    });
+
+    if (cookie) {
+      value = cookie.value;
+    }
+
+    return value;
+  };
+
+  CookieStorageService.setRaw = function setRaw(name, value, days) {
+    this.setter(name, value, days);
+  };
+
+  CookieStorageService.toArray = function toArray() {
+    var _this2 = this;
+
+    return this.toRawArray().map(function (x) {
+      x.value = _this2.decode(x.value);
+      return x;
+    });
+  };
+
+  CookieStorageService.toRawArray = function toRawArray() {
+    return document.cookie.split(';').map(function (x) {
+      var items = x.split('=');
+      return {
+        name: items[0].trim(),
+        value: items[1] ? items[1].trim() : null
+      };
+    }).filter(function (x) {
+      return x.name !== '';
+    });
+  };
+
+  CookieStorageService.setter = function setter(name, value, days) {
+    var expires;
+
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = '; expires=' + date.toUTCString();
+    } else {
+      expires = '';
+    }
+
+    document.cookie = name + '=' + value + expires + '; path=/';
+    this.items$.next(this.toArray());
+  };
+
+  CookieStorageService.isSupported = function isSupported() {
+    var isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+    return isBrowser;
+  };
+
+  return CookieStorageService;
+}(StorageService);
+
+_defineProperty(CookieStorageService, "items$", new rxjs.ReplaySubject(1));var ApiService = /*#__PURE__*/function (_HttpService) {
+  _inheritsLoose(ApiService, _HttpService);
+
+  function ApiService() {
+    return _HttpService.apply(this, arguments) || this;
+  }
+
+  // || 'it';
+  ApiService.get$ = function get$(url, data, format) {
+    return _HttpService.get$.call(this, getApiUrl(url), data, format);
+  };
+
+  ApiService.delete$ = function delete$(url) {
+    return _HttpService.delete$.call(this, getApiUrl(url));
+  };
+
+  ApiService.post$ = function post$(url, data) {
+    return _HttpService.post$.call(this, getApiUrl(url), data);
+  };
+
+  ApiService.put$ = function put$(url, data) {
+    return _HttpService.put$.call(this, getApiUrl(url), data);
+  };
+
+  ApiService.patch$ = function patch$(url, data) {
+    return _HttpService.patch$.call(this, getApiUrl(url), data);
+  };
+
+  ApiService.staticGet$ = function staticGet$(url, data, format) {
+    return _HttpService.get$.call(this, getApiUrl(url, true), data, format);
+  };
+
+  ApiService.staticDelete$ = function staticDelete$(url) {
+    return _HttpService.delete$.call(this, getApiUrl(url, true));
+  };
+
+  ApiService.staticPost$ = function staticPost$(url, data) {
+    return _HttpService.post$.call(this, getApiUrl(url, true), data);
+  };
+
+  ApiService.staticPut$ = function staticPut$(url, data) {
+    return _HttpService.put$.call(this, getApiUrl(url, true), data);
+  };
+
+  ApiService.staticPatch$ = function staticPatch$(url, data) {
+    return _HttpService.patch$.call(this, getApiUrl(url, true), data);
+  };
+
+  return ApiService;
+}(HttpService);
+
+_defineProperty(ApiService, "currentLanguage", CookieStorageService.getRaw('wp-wpml_current_language'));var NewsService = /*#__PURE__*/function () {
+  function NewsService() {}
+
+  NewsService.all$ = function all$() {
+    if (STATIC) {
+      return ApiService.get$('/news/all').pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    } else {
+      return ApiService.get$("/posts?lang=" + ApiService.currentLanguage).pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    }
+  };
+
+  NewsService.filters$ = function filters$() {
+    if (STATIC) {
+      return ApiService.get$('/news/filters').pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    } else {
+      return ApiService.get$("/categories?lang=" + ApiService.currentLanguage).pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    }
+  };
+
+  return NewsService;
+}();var NewsPageComponent = /*#__PURE__*/function (_PageComponent) {
   _inheritsLoose(NewsPageComponent, _PageComponent);
 
   function NewsPageComponent() {
@@ -6555,11 +7117,7 @@ PageComponent.meta = {
   };
 
   _proto.load$ = function load$() {
-    return rxjs.combineLatest(ApiService.get$('/news/all').pipe(operators.map(function (response) {
-      return response.data;
-    })), ApiService.get$('/news/filters').pipe(operators.map(function (response) {
-      return response.data;
-    })));
+    return rxjs.combineLatest([NewsService.all$(), NewsService.filters$()]);
   };
 
   _proto.onLoad = function onLoad() {
@@ -6621,8 +7179,8 @@ PageComponent.meta = {
     this.pushChanges();
   };
 
-  _proto.makeFake = function makeFake() {
-    ApiService.get$('/news/all').pipe(operators.first()).subscribe(function (response) {
+  _proto.makeFake__ = function makeFake__() {
+    NewsService.all$().pipe(operators.first()).subscribe(function (response) {
       var filters = {};
 
       var addFilter = function addFilter(key, valueOrArray) {
@@ -6878,7 +7436,52 @@ var OverlayWebglDirective = /*#__PURE__*/function (_Directive) {
 OverlayWebglDirective.meta = {
   selector: "[overlay-webgl]"
 };
-OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);var ProductsPageComponent = /*#__PURE__*/function (_PageComponent) {
+OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);/*
+tutte le news: http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/posts?lang=it
+news categorizzate (es. progetti): http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/posts/projects?lang=it
+(dunque http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/posts/<slug-categoria>?lang=it)
+categorie news: http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/categories?lang=it
+tutti i prodotti: http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/collections?lang=it
+prodotti della collezione: http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/collections/villa-lighting-collection-for-interiors?lang=it (dunque http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/collections/<slug-collezione>?lang=it)
+filtri tutti prodotti: http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/filters?lang=it
+filtri della collezione: http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/filters/villa-lighting-collection-for-interiors?lang=it (dunque http://dev-cantalupilighting.wslabs.it/wp-json/cantalupi/v1/filters/<slug-collezione>?lang=it)
+
+lo slug lo ricavi dalla url,
+la lingua dai cookie
+<https://teams.microsoft.com/l/message/19:5112c9ae31584221b88ee971941c1fbe@thread.tacv2/1601021903690?tenantId=bde1b277-aa36-41f6-a602-48f09fbc6709&amp;groupId=02b877a0-0b1d-470a-a415-0bc6075ad4a3&amp;parentMessageId=1600185616610&amp;teamName=Cantalupi&amp;channelName=Sito&amp;createdTime=1601021903690>
+*/
+
+var ProductsService = /*#__PURE__*/function () {
+  function ProductsService() {}
+
+  ProductsService.all$ = function all$() {
+    if (STATIC) {
+      return ApiService.get$('/products/yachts-exteriors').pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    } else {
+      var segments = location.pathname.split('/');
+      var slug = segments[segments.length - 2];
+      return ApiService.get$("/collections/" + slug + "?lang=" + ApiService.currentLanguage).pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    }
+  };
+
+  ProductsService.filters$ = function filters$() {
+    if (STATIC) {
+      return ApiService.get$('/products/filters').pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    } else {
+      return ApiService.get$("/filters?lang=" + ApiService.currentLanguage).pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    }
+  };
+
+  return ProductsService;
+}();var ProductsPageComponent = /*#__PURE__*/function (_PageComponent) {
   _inheritsLoose(ProductsPageComponent, _PageComponent);
 
   function ProductsPageComponent() {
@@ -6907,11 +7510,7 @@ OverlayWebglDirective.rafWindow = rxjs.of(rxjs.animationFrame);var ProductsPageC
   };
 
   _proto.load$ = function load$() {
-    return rxjs.combineLatest(ApiService.get$('/products/yachts-exteriors').pipe(operators.map(function (response) {
-      return response.data;
-    })), ApiService.get$('/products/filters').pipe(operators.map(function (response) {
-      return response.data;
-    })));
+    return rxjs.combineLatest([ProductsService.all$(), ProductsService.filters$()]);
   };
 
   _proto.onLoad = function onLoad() {
@@ -7177,84 +7776,96 @@ ScrollToDirective.meta = {
   }]);
 
   return DownloadService;
-}();var LocalStorageService = /*#__PURE__*/function () {
-  function LocalStorageService() {}
+}();var LocalStorageService = /*#__PURE__*/function (_StorageService) {
+  _inheritsLoose(LocalStorageService, _StorageService);
+
+  function LocalStorageService() {
+    return _StorageService.apply(this, arguments) || this;
+  }
+
+  LocalStorageService.clear = function clear() {
+    if (this.isSupported()) {
+      localStorage.clear();
+      this.items$.next(this.toArray());
+    }
+  };
 
   LocalStorageService.delete = function _delete(name) {
-    if (this.isLocalStorageSupported()) {
-      window.localStorage.removeItem(name);
+    if (this.isSupported()) {
+      localStorage.removeItem(name);
+      this.items$.next(this.toArray());
     }
   };
 
   LocalStorageService.exist = function exist(name) {
-    if (this.isLocalStorageSupported()) {
-      return window.localStorage[name] !== undefined;
+    if (this.isSupported()) {
+      return localStorage.getItem(name) !== undefined;
+    } else {
+      return false;
     }
   };
 
   LocalStorageService.get = function get(name) {
+    return this.decode(this.getRaw(name));
+  };
+
+  LocalStorageService.set = function set(name, value) {
+    this.setRaw(name, this.encode(value));
+  };
+
+  LocalStorageService.getRaw = function getRaw(name) {
     var value = null;
 
-    if (this.isLocalStorageSupported() && window.localStorage[name] !== undefined) {
-      try {
-        value = JSON.parse(window.localStorage[name]);
-      } catch (e) {
-        console.log('LocalStorageService.get.error parsing', name, e);
-      }
+    if (this.isSupported()) {
+      value = localStorage.getItem(name);
     }
 
     return value;
   };
 
-  LocalStorageService.set = function set(name, value) {
-    if (this.isLocalStorageSupported()) {
-      try {
-        var cache = [];
-        var json = JSON.stringify(value, function (key, value) {
-          if (typeof value === 'object' && value !== null) {
-            if (cache.indexOf(value) !== -1) {
-              // Circular reference found, discard key
-              return;
-            }
-
-            cache.push(value);
-          }
-
-          return value;
-        });
-        window.localStorage.setItem(name, json);
-      } catch (e) {
-        console.log('LocalStorageService.set.error serializing', name, value, e);
-      }
+  LocalStorageService.setRaw = function setRaw(name, value) {
+    if (value && this.isSupported()) {
+      localStorage.setItem(name, value);
+      this.items$.next(this.toArray());
     }
   };
 
-  LocalStorageService.isLocalStorageSupported = function isLocalStorageSupported() {
+  LocalStorageService.toArray = function toArray() {
+    var _this = this;
+
+    return this.toRawArray().map(function (x) {
+      x.value = _this.decode(x.value);
+      return x;
+    });
+  };
+
+  LocalStorageService.toRawArray = function toRawArray() {
+    var _this2 = this;
+
+    if (this.isSupported()) {
+      return Object.keys(localStorage).map(function (key) {
+        return {
+          name: key,
+          value: _this2.getRaw(key)
+        };
+      });
+    } else {
+      return [];
+    }
+  };
+
+  LocalStorageService.isSupported = function isSupported() {
     if (this.supported) {
       return true;
     }
 
-    var supported = false;
-
-    try {
-      supported = 'localStorage' in window && window.localStorage !== null;
-
-      if (supported) {
-        window.localStorage.setItem('test', '1');
-        window.localStorage.removeItem('test');
-      } else {
-        supported = false;
-      }
-    } catch (e) {
-      supported = false;
-    }
-
-    this.supported = supported;
-    return supported;
+    return StorageService.isSupported('localStorage');
   };
 
   return LocalStorageService;
-}();var User = /*#__PURE__*/function () {
+}(StorageService);
+
+_defineProperty(LocalStorageService, "items$", new rxjs.ReplaySubject(1));var User = /*#__PURE__*/function () {
   _createClass(User, [{
     key: "avatar",
     get: function get() {
@@ -8502,6 +9113,6 @@ VirtualStructure.meta = {
 }(rxcomp.Module);
 AppModule.meta = {
   imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-  declarations: [CardServiceComponent, CardSerieComponent, ClickOutsideDirective, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, NewsPageComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderProductsRelatedComponent, SliderServiceComponent, SlugPipe, VirtualStructure],
+  declarations: [CardServiceComponent, CardSerieComponent, ClickOutsideDirective, ContactsComponent, ControlCheckboxComponent, ControlCustomSelectComponent, ControlTextComponent, ControlTextareaComponent, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, NewsPageComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderProductsRelatedComponent, SliderServiceComponent, SlugPipe, TestComponent, VirtualStructure],
   bootstrap: AppComponent
 };rxcomp.Browser.bootstrap(AppModule);})));

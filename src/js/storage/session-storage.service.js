@@ -1,68 +1,68 @@
-export default class SessionStorageService {
+import { ReplaySubject } from 'rxjs';
+import StorageService from './storage.service';
 
+export default class SessionStorageService extends StorageService {
+	static items$ = new ReplaySubject(1);
+	static clear() {
+		if (this.isSupported()) {
+			sessionStorage.clear();
+			this.items$.next(this.toArray());
+		}
+	}
 	static delete(name) {
-		if (this.isSessionStorageSupported()) {
-			window.sessionStorage.removeItem(name);
+		if (this.isSupported()) {
+			sessionStorage.removeItem(name);
+			this.items$.next(this.toArray());
 		}
 	}
-
 	static exist(name) {
-		if (this.isSessionStorageSupported()) {
-			return window.sessionStorage[name] !== undefined;
+		if (this.isSupported()) {
+			return sessionStorage.getItem(name) !== undefined;
+		} else {
+			return false;
 		}
 	}
-
 	static get(name) {
+		return this.decode(this.getRaw(name));
+	}
+	static set(name, value) {
+		this.setRaw(name, this.encode(value));
+	}
+	static getRaw(name) {
 		let value = null;
-		if (this.isSessionStorageSupported() && window.sessionStorage[name] !== undefined) {
-			try {
-				value = JSON.parse(window.sessionStorage[name]);
-			} catch (e) {
-				console.log('SessionStorageService.get.error parsing', name, e);
-			}
+		if (this.isSupported()) {
+			value = sessionStorage.getItem(name);
 		}
 		return value;
 	}
-
-	static set(name, value) {
-		if (this.isSessionStorageSupported()) {
-			try {
-				const cache = [];
-				const json = JSON.stringify(value, function(key, value) {
-					if (typeof value === 'object' && value !== null) {
-						if (cache.indexOf(value) !== -1) {
-							// Circular reference found, discard key
-							return;
-						}
-						cache.push(value);
-					}
-					return value;
-				});
-				window.sessionStorage.setItem(name, json);
-			} catch (e) {
-				console.log('SessionStorageService.set.error serializing', name, value, e);
-			}
+	static setRaw(name, value) {
+		if (value && this.isSupported()) {
+			sessionStorage.setItem(name, value);
+			this.items$.next(this.toArray());
 		}
 	}
-
-	static isSessionStorageSupported() {
+	static toArray() {
+		return this.toRawArray().map(x => {
+			x.value = this.decode(x.value);
+			return x;
+		});
+	}
+	static toRawArray() {
+		if (this.isSupported()) {
+			return Object.keys(sessionStorage).map(key => {
+				return {
+					name: key,
+					value: this.getRaw(key),
+				};
+			});
+		} else {
+			return [];
+		}
+	}
+	static isSupported() {
 		if (this.supported) {
 			return true;
 		}
-		let supported = false;
-		try {
-			supported = 'sessionStorage' in window && window.sessionStorage !== null;
-			if (supported) {
-				window.sessionStorage.setItem('test', '1');
-				window.sessionStorage.removeItem('test');
-			} else {
-				supported = false;
-			}
-		} catch (e) {
-			supported = false;
-		}
-		this.supported = supported;
-		return supported;
+		return StorageService.isSupported('sessionStorage');
 	}
-
 }

@@ -665,3 +665,25 @@
 	height: 24px;
 	line-height: 0;
 }
+
+%link {
+	@extend %btn;
+	font-weight: 600;
+	text-decoration: none;
+
+	&,
+	&:link
+	&:active,
+	&:focus,
+	&:visited {
+		color: #A28850;
+	}
+
+	&:hover {
+		color: #A28850;
+	}
+}
+
+.link {
+	@extend %link;
+}

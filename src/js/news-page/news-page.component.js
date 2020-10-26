@@ -1,9 +1,9 @@
 import { combineLatest } from 'rxjs';
-import { first, map, takeUntil } from 'rxjs/operators';
-import ApiService from '../api/api.service';
+import { first, takeUntil } from 'rxjs/operators';
 import { FilterMode } from '../filter/filter-item';
 import FilterService from '../filter/filter.service';
 import PageComponent from '../page/page.component';
+import NewsService from './news.service';
 
 export default class NewsPageComponent extends PageComponent {
 
@@ -22,10 +22,10 @@ export default class NewsPageComponent extends PageComponent {
 	}
 
 	load$() {
-		return combineLatest(
-			ApiService.get$('/news/all').pipe(map(response => response.data)),
-			ApiService.get$('/news/filters').pipe(map(response => response.data)),
-		);
+		return combineLatest([
+			NewsService.all$(),
+			NewsService.filters$(),
+		]);
 	}
 
 	onLoad() {
@@ -84,8 +84,8 @@ export default class NewsPageComponent extends PageComponent {
 		this.pushChanges();
 	}
 
-	makeFake() {
-		ApiService.get$('/news/all').pipe(
+	makeFake__() {
+		NewsService.all$().pipe(
 			first()
 		).subscribe(response => {
 			const filters = {};

@@ -75,7 +75,7 @@
 						<div class="content">
 							<div class="category" [innerHTML]="item.category"></div>
 							<div class="title" [innerHTML]="item.title"></div>
-							<div class="abstract" [innerHTML]="item.abstract" *if="item.abstract"></div>
+							<div class="abstract" [innerHTML]="item.description" *if="item.description"></div>
 							<div class="listing--info">
 								<div class="listing__item" *if="item.diameter">
 									<svg class="diameter"><use xlink:href="#diameter"></use></svg> <span [innerHTML]="item.diameter"></span>
@@ -95,6 +95,7 @@
 								<a [href]="item.url" class="btn--contact" data-title="Scarica la scheda tecnica">Scarica la scheda tecnica</a>
 							</div>
 						</div>
+						<div class="new" *if="item.new">new</div>
 					</div>
 				</div>
 			</div>

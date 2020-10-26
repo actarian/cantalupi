@@ -1,1 +1,27 @@
 
+.listing--table {
+	display: flex;
+	flex-direction: column;
+    padding: 20px 0 40px 0;
+
+	&>.listing__item {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+
+		.label, .value {
+			flex: 1 1 auto;
+			max-width: 50%;
+		}
+		.label {
+			font-family: $font-secondary;
+			font-style: italic;
+			font-size: 16px;
+			color: #03191D;
+		}
+		.value {
+			font-size: 14px;
+			color: #A28850;
+		}
+	}
+}

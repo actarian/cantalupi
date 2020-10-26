@@ -95,6 +95,11 @@
 		}
 	}
 
+	b, strong {
+		font-weight: 900;
+		color: #A28850;
+	}
+
 	@include media-down(sm) {
 		padding: 60px 0 0 0;
 	}

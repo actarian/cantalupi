@@ -1,0 +1,42 @@
+.rcc-panel {
+	position: fixed;
+	bottom: 0;
+	z-index: 10000;
+	background: white;
+	padding: 10px;
+	margin: 0;
+	font-size: 0.7em;
+
+	.rcc-wrapper {
+		p {
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	.rcc-info-btn {
+		@extend %btn-link;
+		display: inline-flex;
+		margin: 0 5px;
+	}
+
+	.rcc-accept-btn {
+		@extend %btn-rect-stroked;
+		display: inline-flex;
+		padding: 5px 15px;
+		margin: 0 5px;
+
+		&:before {
+			background: rgba(255, 255, 255, 0.4);
+		}
+
+		&,
+		&:active,
+		&:focus,
+		&:visited,
+		&:hover {
+			border-color: $foreground;
+			color: $foreground;
+		}
+	}
+}

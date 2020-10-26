@@ -1,9 +1,10 @@
 import { combineLatest } from 'rxjs';
-import { first, map, takeUntil } from 'rxjs/operators';
+import { first, takeUntil } from 'rxjs/operators';
 import ApiService from '../api/api.service';
 import { FilterMode } from '../filter/filter-item';
 import FilterService from '../filter/filter.service';
 import PageComponent from '../page/page.component';
+import ProductsService from './products.service';
 
 export default class ProductsPageComponent extends PageComponent {
 
@@ -25,10 +26,10 @@ export default class ProductsPageComponent extends PageComponent {
 	}
 
 	load$() {
-		return combineLatest(
-			ApiService.get$('/products/yachts-exteriors').pipe(map(response => response.data)),
-			ApiService.get$('/products/filters').pipe(map(response => response.data)),
-		);
+		return combineLatest([
+			ProductsService.all$(),
+			ProductsService.filters$(),
+		]);
 	}
 
 	onLoad() {

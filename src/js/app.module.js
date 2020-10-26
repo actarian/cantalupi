@@ -4,13 +4,19 @@ import AppComponent from './app.component';
 import CardSerieComponent from './card/card-serie';
 import CardServiceComponent from './card/card-service';
 import ClickOutsideDirective from './click-outside/click-outside.directive';
+import ContactsComponent from './contacts/contacts.component';
 import CoverVideoComponent from './cover/cover-video.component';
 import CoverComponent from './cover/cover.component';
 import DatePipe from './date/date.pipe';
 import DropdownItemDirective from './dropdown/dropdown-item.directive';
 import DropdownDirective from './dropdown/dropdown.directive';
 import FadingGalleryComponent from './fading-gallery/fading-gallery.component';
+import ControlCheckboxComponent from './forms/control-checkbox.component';
+import ControlCustomSelectComponent from './forms/control-custom-select.component';
+import ControlTextComponent from './forms/control-text.component';
+import ControlTextareaComponent from './forms/control-textarea.component';
 import ErrorsComponent from './forms/errors.component';
+import TestComponent from './forms/test.component';
 import GalleryModalComponent from './gallery/gallery-modal.component';
 import GalleryComponent from './gallery/gallery.component';
 import HeaderComponent from './header/header.component';
@@ -44,6 +50,11 @@ AppModule.meta = {
 		CardServiceComponent,
 		CardSerieComponent,
 		ClickOutsideDirective,
+		ContactsComponent,
+		ControlCheckboxComponent,
+		ControlCustomSelectComponent,
+		ControlTextComponent,
+		ControlTextareaComponent,
 		CoverComponent,
 		CoverVideoComponent,
 		DatePipe,
@@ -71,6 +82,7 @@ AppModule.meta = {
 		SliderProductsRelatedComponent,
 		SliderServiceComponent,
 		SlugPipe,
+		TestComponent,
 		VirtualStructure
 	],
 	bootstrap: AppComponent,

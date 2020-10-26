@@ -29,11 +29,10 @@
 		padding: 0 15px;
 
 		font-family: $font-secondary;
-		font-size: 13px;
-		opacity: 0.3;
+		font-size: 11px;
+		opacity: 0.5;
 
 		font-weight: $font-semibold;
-		text-transform: uppercase;
 		line-height: 1;
 		color: $foreground;
 		z-index: 2;
@@ -155,7 +154,7 @@
 
 			&>a,
 			&>span {
-				font-size: 19px;
+				font-size: 16px;
 				padding: 8px 15px;
 
 				.icon:first-child {
@@ -172,7 +171,7 @@
 
 				&>a,
 				&>span {
-					font-size: 19px;
+					font-size: 16px;
 					padding: 8px 15px;
 
 					&:before {
