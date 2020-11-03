@@ -41,11 +41,7 @@ export default class NewsPageComponent extends PageComponent {
 					filter.filter = (item, value) => {
 						switch (key) {
 							case 'category':
-								if (value === 'project') {
-									return item[key].id === 102;
-								} else {
-									return item[key].id !== 102;
-								}
+								return item.category.id === value;
 								break;
 							default:
 							// return item.features.indexOf(value) !== -1;

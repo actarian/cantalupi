@@ -99,7 +99,34 @@ body {
 	}
 
 	@include media-down(xs) {
-		font-size: 2.7vw * 1.8;
+		font-size: 28px;
+	}
+}
+
+%abstract-primary {
+	font-family: $font-secondary;
+	font-style: italic;
+    line-height: 1.05;
+	margin-bottom: 20px;
+
+	p {
+		margin: 0 0 30px 0;
+	}
+
+	@include media-up(lg) {
+		font-size: 36px;
+	}
+
+	@include media-between(sm, lg) {
+		font-size: 2.8vw;
+	}
+
+	@include media-between(xs, sm) {
+		font-size: 3vw;
+	}
+
+	@include media-down(xs) {
+		font-size: 22px;
 	}
 }
 
@@ -114,11 +141,31 @@ body {
 	}
 }
 
+%description-primary {
+	font-family: $font-primary;
+	font-size: 21px;
+	line-height: 1.42;
+	font-weight: $font-regular;
+	margin-bottom: 40px;
+
+	p {
+		margin: 0 0 30px 0;
+	}
+
+	@include media-down(sm) {
+		font-size: 17px;
+	}
+}
+
 %description {
 	font-family: $font-primary;
 	font-size: 16px;
 	line-height: 1.5;
 	font-weight: $font-regular;
+
+	p {
+		margin: 0 0 30px 0;
+	}
 
 	@include media-down(sm) {
 		font-size: 15px;

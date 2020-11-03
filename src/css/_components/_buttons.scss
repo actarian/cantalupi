@@ -274,12 +274,12 @@
 
 	span {
 		background: radial-gradient(circle, rgba(white, 1) 0%, rgba(white, 0) 40%);
-		background-clip: text;
+		-webkit-text-fill-color: transparent;
 		background-size: 50vw 50vw;
 		background-repeat: no-repeat;
 		background-position: calc(-25vw + 1400px) calc(-25vw + 500px);
 		background-attachment: fixed;
-		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	&,

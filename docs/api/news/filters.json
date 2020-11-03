@@ -4,11 +4,11 @@
     "mode": "or",
     "options": [
       {
-        "value": "project",
+        "value": 1,
         "label": "Projects"
       },
       {
-        "value": "news",
+        "value": 2,
         "label": "News & Events"
       }
     ]

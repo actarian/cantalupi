@@ -1,4 +1,5 @@
 import { Component, getContext } from 'rxcomp';
+import { interval, of, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 import DragService, { DragDownEvent, DragMoveEvent, DragUpEvent } from '../drag/drag.service';
 
@@ -19,7 +20,7 @@ export default class SliderComponent extends Component {
 	set current(current = 0) {
 		if (this.state.current !== current) {
 			this.state.current = current;
-			console.log('current');
+			// console.log('current');
 			this.change.next(current);
 		}
 		// this.state.current = Math.min(current, items ? items.length - 1 : 0);
@@ -44,6 +45,12 @@ export default class SliderComponent extends Component {
 		const { node } = getContext(this);
 		this.container = node;
 		this.wrapper = node.querySelector('.slider__wrapper');
+		if (this.items.length === 0) {
+			const items = Array.prototype.slice.call(node.querySelectorAll('.slider__slide'));
+			this.items = items;
+		}
+		// console.log('SliderComponent.onInit', this.items);
+		this.userGesture$ = new Subject();
 		setTimeout(() => {
 			// this.change.next(this.current);
 			/*
@@ -57,6 +64,11 @@ export default class SliderComponent extends Component {
 				// console.log('dragService', event);
 			});
 		}, 1);
+		this.autoplay$().pipe(
+			takeUntil(this.unsubscribe$),
+		).subscribe(() => {
+			this.pushChanges();
+		});
 	}
 
 	slider$() {
@@ -68,17 +80,31 @@ export default class SliderComponent extends Component {
 					dragDownEvent = event;
 				} else if (event instanceof DragMoveEvent) {
 					dragMoveEvent = this.onDragMoveEvent(dragDownEvent, event, translation);
-					console.log('DragMoveEvent');
+					// console.log('DragMoveEvent');
 				} else if (event instanceof DragUpEvent) {
 					if (dragMoveEvent) {
 						this.container.classList.remove('dragging');
 						this.wrapper.style.transform = null;
 						this.onDragUpEvent(dragDownEvent, dragMoveEvent);
 					}
-					console.log('DragUpEvent');
+					// console.log('DragUpEvent');
 				}
 			})
 		);
+	}
+
+	autoplay$() {
+		if (this.autoplay) {
+			const autoplay = typeof this.autoplay === 'number' ? this.autoplay : 4000;
+			return interval(autoplay).pipe(
+				takeUntil(this.userGesture$),
+				tap(() => {
+					this.current = (this.current + 1) % this.items.length;
+				}),
+			);
+		} else {
+			return of(null);
+		}
 	}
 
 	onDragMoveEvent(dragDownEvent, dragMoveEvent, translation) {
@@ -103,6 +129,7 @@ export default class SliderComponent extends Component {
 
 	navTo(current) {
 		this.current = current;
+		this.userGesture$.next();
 		this.pushChanges();
 	}
 
@@ -129,11 +156,10 @@ export default class SliderComponent extends Component {
 		}
 		return { x, y, z };
 	}
-
 }
 
 SliderComponent.meta = {
 	selector: '[slider]',
-	inputs: ['items', 'current'],
+	inputs: ['items', 'current', 'autoplay'],
 	outputs: ['change', 'tween'],
 };

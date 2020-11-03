@@ -23,7 +23,7 @@
 		margin-bottom: 30px;
 	}
 
-	@include media-down(sm) {
+	@include media-down(xs) {
 		align-items: flex-start;
 
 		&__item {
@@ -123,33 +123,37 @@
 }
 
 .expand--right {
-	@include expand-right();
+	@include media-up(sm) {
+		@include expand-right();
 
-	&.picture {
-		display: flex;
+		&.picture {
+			display: flex;
 
-		&>img {
-			width: 100%;
-			object-fit: cover;
+			&>img {
+				width: 100%;
+				object-fit: cover;
+			}
 		}
 	}
 }
 
 .expand--left {
-	@include expand-left();
+	@include media-up(sm) {
+		@include expand-left();
 
-	&.picture {
-		display: flex;
+		&.picture {
+			display: flex;
 
-		&>img {
-			width: 100%;
-			object-fit: cover;
+			&>img {
+				width: 100%;
+				object-fit: cover;
+			}
 		}
 	}
 }
 
 .section--intro-02 {
-	padding: 120px 0 0 0;
+	padding: 60px 0;
 
 	&:last-child {
 		padding-bottom: 120px;
@@ -162,10 +166,7 @@
 	}
 
 	.title {
-		font-family: $font-secondary;
-		font-size: 54px;
-		font-style: italic;
-		line-height: 1.1;
+		@extend %subtitle;
 		margin-bottom: 30px;
 		color: #03191D;
 	}
@@ -176,25 +177,11 @@
 	}
 
 	.abstract {
-		font-family: $font-secondary;
-		font-style: italic;
-		font-size: 36px;
-		line-height: 1.15;
-		margin-bottom: 20px;
-
-		p {
-			margin: 0 0 30px 0;
-		}
+		@extend %abstract-primary;
 	}
 
 	.description {
-		font-size: 21px;
-		line-height: 1.42;
-		margin-bottom: 40px;
-
-		p {
-			margin: 0 0 30px 0;
-		}
+		@extend %description-primary;
 
 		ul,
 		ol {
@@ -258,7 +245,7 @@
 	}
 
 	@include media-down(sm) {
-		padding: 60px 0 0 0;
+		padding: 60px 0;
 
 		&:last-child {
 			padding-bottom: 60px;
@@ -271,13 +258,16 @@
 }
 
 .section--picture-full {
-	padding: 120px 0 0 0;
+	// padding: 120px 0 0 0;
 
-	@include media-down(sm) {
-		padding: 60px 0 0 0;
+	@include media-down(xs) {
+		// padding: 60px 0 0 0;
 
 		.picture {
 			@include aspect-clip(1, 1);
+			&>img {
+				width: 100%;
+			}
 		}
 	}
 }

@@ -261,7 +261,6 @@
 	&>.picture {
 		display: block;
 		@include aspect-clip(415, 300);
-		margin-bottom: 15px;
 
 		img:not(.over) {
 			// top: 10px;
@@ -278,7 +277,7 @@
 	}
 
 	&>.content {
-		padding: 0 15px;
+		padding: 15px 15px 0 15px;
 	}
 
 	&>.new {
@@ -366,6 +365,7 @@
 		opacity: 0;
 		pointer-events: none;
 		transition: opacity ease-in-out 400ms;
+		margin: 0;
 		padding-bottom: 20px;
 
 		.btn--link {

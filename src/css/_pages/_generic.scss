@@ -25,3 +25,37 @@
 		}
 	}
 }
+
+
+table {
+    width: 100%;
+    margin: 20px 0 40px 0;
+    border-collapse: collapse;
+	border-style: solid;
+	border: 0;
+
+	tr {
+		border: 0;
+
+		td {
+			max-width: 50%;
+			border: 0;
+			font-size: 14px;
+			color: #A28850;
+
+			&:first-child {
+				font-family: $font-secondary;
+				font-style: italic;
+				font-size: 16px;
+				color: #03191D;
+			}
+		}
+
+		&:first-child {
+			td {
+				font-size: 1.2em;
+				font-weight: 600;
+			}
+		}
+	}
+}

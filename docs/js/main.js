@@ -41,7 +41,7 @@ function _inheritsLoose(subClass, superClass) {
   subClass.__proto__ = superClass;
 }var EDGE = /(edge)/i.test(navigator.userAgent);
 var TRIDENT = /(msie|trident)/i.test(navigator.userAgent);
-var BLINK = !!(window.chrome || hasV8BreakIterator) && typeof CSS !== 'undefined' && !EDGE && !TRIDENT;
+var BLINK = !!window.chrome && typeof CSS !== 'undefined' && !EDGE && !TRIDENT;
 var WEBKIT = /AppleWebKit/i.test(navigator.userAgent) && !BLINK && !EDGE && !TRIDENT;
 var IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !('MSStream' in window);
 var FIREFOX = /(firefox|minefield)/i.test(navigator.userAgent);
@@ -7135,11 +7135,7 @@ _defineProperty(ApiService, "currentLanguage", CookieStorageService.getRaw('wp-w
           filter.filter = function (item, value) {
             switch (key) {
               case 'category':
-                if (value === 'project') {
-                  return item[key].id === 102;
-                } else {
-                  return item[key].id !== 102;
-                }
+                return item.category.id === value;
 
             }
           };
@@ -8343,6 +8339,14 @@ var DragService = /*#__PURE__*/function () {
 
     this.container = node;
     this.wrapper = node.querySelector('.slider__wrapper');
+
+    if (this.items.length === 0) {
+      var items = Array.prototype.slice.call(node.querySelectorAll('.slider__slide'));
+      this.items = items;
+    } // console.log('SliderComponent.onInit', this.items);
+
+
+    this.userGesture$ = new rxjs.Subject();
     setTimeout(function () {
       // this.change.next(this.current);
 
@@ -8354,6 +8358,9 @@ var DragService = /*#__PURE__*/function () {
       _this.slider$().pipe(operators.takeUntil(_this.unsubscribe$)).subscribe(function (event) {// console.log('dragService', event);
       });
     }, 1);
+    this.autoplay$().pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function () {
+      _this.pushChanges();
+    });
   };
 
   _proto.slider$ = function slider$() {
@@ -8365,8 +8372,7 @@ var DragService = /*#__PURE__*/function () {
         translation = _this2.getTranslation(_this2.wrapper, _this2.container);
         dragDownEvent = event;
       } else if (event instanceof DragMoveEvent) {
-        dragMoveEvent = _this2.onDragMoveEvent(dragDownEvent, event, translation);
-        console.log('DragMoveEvent');
+        dragMoveEvent = _this2.onDragMoveEvent(dragDownEvent, event, translation); // console.log('DragMoveEvent');
       } else if (event instanceof DragUpEvent) {
         if (dragMoveEvent) {
           _this2.container.classList.remove('dragging');
@@ -8374,11 +8380,23 @@ var DragService = /*#__PURE__*/function () {
           _this2.wrapper.style.transform = null;
 
           _this2.onDragUpEvent(dragDownEvent, dragMoveEvent);
-        }
+        } // console.log('DragUpEvent');
 
-        console.log('DragUpEvent');
       }
     }));
+  };
+
+  _proto.autoplay$ = function autoplay$() {
+    var _this3 = this;
+
+    if (this.autoplay) {
+      var autoplay = typeof this.autoplay === 'number' ? this.autoplay : 4000;
+      return rxjs.interval(autoplay).pipe(operators.takeUntil(this.userGesture$), operators.tap(function () {
+        _this3.current = (_this3.current + 1) % _this3.items.length;
+      }));
+    } else {
+      return rxjs.of(null);
+    }
   };
 
   _proto.onDragMoveEvent = function onDragMoveEvent(dragDownEvent, dragMoveEvent, translation) {
@@ -8403,6 +8421,7 @@ var DragService = /*#__PURE__*/function () {
 
   _proto.navTo = function navTo(current) {
     this.current = current;
+    this.userGesture$.next();
     this.pushChanges();
   };
 
@@ -8457,8 +8476,8 @@ var DragService = /*#__PURE__*/function () {
       }
 
       if (this.state.current !== current) {
-        this.state.current = current;
-        console.log('current');
+        this.state.current = current; // console.log('current');
+
         this.change.next(current);
       } // this.state.current = Math.min(current, items ? items.length - 1 : 0);
 
@@ -8494,7 +8513,7 @@ var DragService = /*#__PURE__*/function () {
 }(rxcomp.Component);
 SliderComponent.meta = {
   selector: '[slider]',
-  inputs: ['items', 'current'],
+  inputs: ['items', 'current', 'autoplay'],
   outputs: ['change', 'tween']
 };var SliderProductsRelatedComponent = /*#__PURE__*/function (_SliderComponent) {
   _inheritsLoose(SliderProductsRelatedComponent, _SliderComponent);

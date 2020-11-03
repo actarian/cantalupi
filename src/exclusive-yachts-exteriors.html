@@ -68,7 +68,7 @@
 			<div class="listing--products">
 				<div class="listing__item" *for="let item of items">
 					<div class="card--product" appear>
-						<div class="picture">
+						<div class="picture" *if="item.image">
 							<img [src]="item.image" />
 							<img class="over" [src]="item.imageOver" *if="item.imageOver" />
 						</div>
@@ -91,8 +91,8 @@
 								</div>
 							</div>
 							<div class="group--cta">
-								<a [href]="item.url" class="btn--link" data-title="Scopri la serie">Scopri la serie</a>
-								<a [href]="item.url" class="btn--contact" data-title="Scarica la scheda tecnica">Scarica la scheda tecnica</a>
+								<a [href]="item.url" *if="item.url" class="btn--link" data-title="Scopri la serie">Scopri la serie</a>
+								<a [href]="item.technicalUrl" *if="item.technicalUrl" download class="btn--contact" data-title="Scarica la scheda tecnica">Scarica la scheda tecnica</a>
 							</div>
 						</div>
 						<div class="new" *if="item.new">new</div>

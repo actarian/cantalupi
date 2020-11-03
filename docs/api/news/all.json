@@ -3,7 +3,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/01-news-01-lampade-di-lusso.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -16,7 +16,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/02-projects-01-my-elandees_abeking.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -29,7 +29,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/03-news-02-illuminazione-led-soffitto.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -42,7 +42,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/04-projects-02-my-dar-sep_franscisco_martinez.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -55,7 +55,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/05-news-03-luci-cortesia-barche.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -68,7 +68,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/06-projects-03-ester-iii_george-town.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -81,7 +81,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/07-news-04-led-design-barca-lusso-e-yacht.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -94,7 +94,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/08-projects-04-flying-fox_lürssen.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -107,7 +107,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/09-news-05-illuminazione-di-design.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -120,7 +120,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/10-projects-05-jaaber_dynamiq.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -133,7 +133,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/11-news-06-yacht-costo.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -146,7 +146,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/12-projects-06-majesty_gatto-design.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -159,7 +159,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/13-news-07-yacht-lusso.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -172,7 +172,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/14-projects-07-mazu-42_mazu.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -185,7 +185,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/15-news-08-luci-a-sospensione-design.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -198,7 +198,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/16-projects-08-sunrise_yildiz-shipyard.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -211,7 +211,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/17-news-09-arredamento-nautico.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -224,7 +224,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/18-projects-09-amadea_lürssen.jpg",
     "category": {
-      "id": 102,
+      "id": 1,
       "name": "Project"
     },
     "url": "/cantalupi/cantalupi-world-project.html",
@@ -237,7 +237,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/19-news-10-alabaster.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -250,7 +250,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/20-news-11-punti-luce-casa.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -261,9 +261,9 @@
   },
   {
     "id": 1001,
-    "image": "/cantalupi/img/cantalupi-world/21-news-12-Negozio-illuminazione-1024x683.jpg",
+    "image": "/cantalupi/img/cantalupi-world/21-news-12-Negozio-illuminazione-14x683.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -276,7 +276,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/22-news-13-distanza-faretti-led.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -289,7 +289,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/23-news-14-elandess.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -302,7 +302,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/24-news-15-illuminazione-scale-interne.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -315,7 +315,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/25-news-16-illuminazione-a-led.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -328,7 +328,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/26-news-17-lampade-stile-marinaro.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -341,7 +341,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/27-news-18-Illuminazione-per-interni.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -354,7 +354,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/28-news-19-soluzioni-su-misura-illuminazioni-lusso.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -367,7 +367,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/24-news-15-illuminazione-scale-interne.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -380,7 +380,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/25-news-16-illuminazione-a-led.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -393,7 +393,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/26-news-17-lampade-stile-marinaro.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -406,7 +406,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/27-news-18-Illuminazione-per-interni.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -419,7 +419,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/28-news-19-soluzioni-su-misura-illuminazioni-lusso.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",
@@ -432,7 +432,7 @@
     "id": 1001,
     "image": "/cantalupi/img/cantalupi-world/29-news-20-cantieri-navali-yacht.jpg",
     "category": {
-      "id": 101,
+      "id": 2,
       "name": "News"
     },
     "url": "/cantalupi/cantalupi-world-news.html",

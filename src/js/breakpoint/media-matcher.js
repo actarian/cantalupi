@@ -1,6 +1,6 @@
 const EDGE = /(edge)/i.test(navigator.userAgent);
 const TRIDENT = /(msie|trident)/i.test(navigator.userAgent);
-const BLINK = (!!((window).chrome || hasV8BreakIterator) && typeof CSS !== 'undefined' && !EDGE && !TRIDENT);
+const BLINK = (!!((window).chrome) && typeof CSS !== 'undefined' && !EDGE && !TRIDENT);
 const WEBKIT = /AppleWebKit/i.test(navigator.userAgent) && !BLINK && !EDGE && !TRIDENT;
 const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !('MSStream' in window);
 const FIREFOX = /(firefox|minefield)/i.test(navigator.userAgent);

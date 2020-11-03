@@ -1,0 +1,59 @@
+<section class="section--slider-series">
+	<!-- <div class="slider__container" slider [items]="sliderItems" [current]="sliderIndex" (tween)="onTween($event)" (change)="onChange($event)"> -->
+	<div class="slider__container" slider [autoplay]="4000">
+		<div class="slider__wrapper" [style]="wrapperStyle">
+			<div class="slider__inner" [style]="innerStyle">
+				<div class="slider__slide">
+					<div class="card--serie">
+						<div class="picture">
+							<img lazy="/cantalupi/img/index/series-01-top-5.jpg" ondragstart="return false;" />
+						</div>
+						<div class="content">
+							<div class="title">Serie TOP 5</div>
+							<div class="group--cta">
+								<a href="/cantalupi/exclusive-yachts-interiors-top-series.html" class="btn--secondary" data-title="Scopri la serie">Scopri la serie</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slider__slide">
+					<div class="card--serie">
+						<div class="picture">
+							<img lazy="/cantalupi/img/index/series-02-top-6.jpg" ondragstart="return false;" />
+						</div>
+						<div class="content">
+							<div class="title">Serie TOP 6</div>
+							<div class="group--cta">
+								<a href="/cantalupi/exclusive-yachts-interiors-top-series.html" class="btn--secondary" data-title="Scopri la serie">Scopri la serie</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slider__slide">
+					<div class="card--serie">
+						<div class="picture">
+							<img lazy="/cantalupi/img/index/series-03-top-8.jpg" ondragstart="return false;" />
+						</div>
+						<div class="content">
+							<div class="title">Serie TOP 8</div>
+							<div class="group--cta">
+								<a href="/cantalupi/exclusive-yachts-interiors-top-series.html" class="btn--secondary" data-title="Scopri la serie">Scopri la serie</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="slider__pagination">
+			<button type="button" class="btn--prev" [class]="{ disabled: !hasPrev() }" (click)="navTo(state.current - 1)">
+				<svg class="caret-left"><use xlink:href="#caret-left"></use></svg>
+			</button>
+			<button type="button" class="btn--next" [class]="{ disabled: !hasNext() }" (click)="navTo(state.current + 1)">
+				<svg class="caret-right"><use xlink:href="#caret-right"></use></svg>
+			</button>
+		</div>
+		<div class="slider__bullets">
+			<span class="slider__bullet" [class]="{ active: index === state.current }" *for="let item of items; let index = index;" (click)="navTo(index)"></span>
+		</div>
+	</div>
+</section>
