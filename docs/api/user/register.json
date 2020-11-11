@@ -1,0 +1,9 @@
+{
+	"firstName": "Jhon",
+	"lastName": "Appleseed",
+	"company": "Websolute",
+  "email": "jhonappleseed@gmail.com",
+	"role": "Altro",
+	"country": "Italy",
+  "privacy": true
+}

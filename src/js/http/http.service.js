@@ -25,13 +25,22 @@ export default class HttpService {
 		method = url.indexOf('.json') !== -1 ? 'GET' : method;
 		const methods = ['POST', 'PUT', 'PATCH'];
 		let response_ = null;
-		return from(fetch(url, {
+		let qstring = methods.indexOf(method) !== -1 ? Object.keys(data).map(function(key) {
+		    return key + '=' + encodeURI(data[key])
+		}).join('&') : undefined;
+		return from(fetch(url, url.indexOf('.json') !== -1 ? {
 			method: method,
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 			},
 			body: methods.indexOf(method) !== -1 ? JSON.stringify(data) : undefined
+		} : {
+		    method: method,
+		    headers: {
+		        'Content-Type': 'application/x-www-form-urlencoded'
+		    },
+		    body: qstring
 		}).then((response) => {
 			response_ = new HttpResponse(response);
 			return response[format]().then(json => {

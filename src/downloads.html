@@ -1,0 +1,99 @@
+<!-- @@master = ./templates/layout.html { "baseHref": "/cantalupi/" } -->
+
+<!-- @@block = main-->
+
+<script>
+	window.antiforgery = "949c21d9-2e33-44df-8560-9d5b502c02fc";
+	window.labels = {
+		select:"Seleziona",
+		error_required:"Il campo &#232; obbligatorio",
+		error_email:"Email non valida",
+		error_match:"I campi non corrispondono"
+	};
+	window.data = {
+		roles:[{
+			id:18247,name:"Costruttore"
+		},{
+			id:18244,name:"Importatore"
+		},{
+			id:18258,name:"Produttore"
+		},{
+			id:18261,name:"Esportatore"
+		},{
+			id:18256,name:"Progettista"
+		},{
+			id:18245,name:"Distributore"
+		},{
+			id:18254,name:"Installatore"
+		},{
+			id:18263,name:"Impresa di costruzioni"
+		},{
+			id:18265,name:"Studio professionale"
+		},{
+			id:18253,name:"Altro"
+		}],
+	};
+</script>
+
+<div class="page--contacts" downloads-page>
+
+	<section class="section--hero-generic">
+		<div class="container">
+			<div class="title">Downloads</div>
+		</div>
+	</section>
+
+	<!--
+	<section class="section--intro">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-2">
+					<ul class="nav--anchor">
+						<li class="nav--anchor__item"><a href="#downloads">Downloads</a></li>
+					</ul>
+				</div>
+				<div class="col-sm-6 col-md-4">
+					<div class="abstract">La natura crea le forme, gli architetti le interpretano, noi le illuminiamo.</div>
+					<div class="author">Bruno Cantalupi<br>Fondatore</div>
+				</div>
+				<div class="col-sm-5 col-md-4 offset-sm-1">
+					<div class="description">
+						<p>Il prodotto finale è solo uno degli step di una lunga catena che prevede la sua integrazione nell’ambiente, il supporto all’installazione e i servizi post vendita. Le nostre soluzioni sono orientate al progetto e richiedono la definizione di tempistiche e il rispetto di obiettivi in termini di tempo, budget e consegne. </p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	-->
+
+	<section class="section--downloads" id="downloads">
+		<div class="container">
+			<!-- filters -->
+			<ul class="nav--submenu">
+				<li *for="let item of filter.options">
+					<div class="title" [class]="{ active: filter.has(item), disabled: item.disabled }" (click)="filter.toggle(item)">
+						<span class="name" [innerHTML]="item.label"></span>
+						<!--
+						<span class="count" [innerHTML]="item.count || ''"></span>
+						-->
+					</div>
+				</li>
+			</ul>
+			<!-- results -->
+			<div class="listing--downloads">
+				<div class="listing__item" *for="let item of items">
+					<a [href]="item.url" download secure target="_blank" class="card--downloads" appear>
+						<div class="picture">
+							<img [lazy]="item.image" />
+						</div>
+						<div class="content">
+							<div class="title" [innerHTML]="item.title"></div>
+						</div>
+						<div class="new" *if="item.new">new</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+</div>

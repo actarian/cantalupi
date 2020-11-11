@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1001,
+    "image": "/cantalupi/img/downloads/01-linear-lights.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Linear Lights – Led Strips",
+    "new": true
+  },
+  {
+    "id": 1002,
+    "image": "/cantalupi/img/downloads/02-snake.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Flexible Linear Lights – Snake",
+    "new": true
+  },
+  {
+    "id": 1003,
+    "image": "/cantalupi/img/downloads/03-straight.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Straight",
+    "new": false
+  },
+  {
+    "id": 1004,
+    "image": "/cantalupi/img/downloads/04-masterline-for-exteriors.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Masterline for Exteriors",
+    "new": false
+  },
+  {
+    "id": 1005,
+    "image": "/cantalupi/img/downloads/05-masterline-for-interiors.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Masterline for Interiors",
+    "new": false
+  },
+  {
+    "id": 1006,
+    "image": "/cantalupi/img/downloads/06-sea-led.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Sea Led® – Underwater Lights",
+    "new": false
+  },
+  {
+    "id": 1007,
+    "image": "/cantalupi/img/downloads/07-otto.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Otto",
+    "new": false
+  },
+  {
+    "id": 1008,
+    "image": "/cantalupi/img/downloads/08-limited.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Limited Edition 2012",
+    "new": false
+  },
+  {
+    "id": 1009,
+    "image": "/cantalupi/img/downloads/09-backlighting.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 1,
+      "name": "Catalogues"
+    },
+    "title": "Backlighting",
+    "new": false
+  },
+  {
+    "id": 1010,
+    "image": "/cantalupi/img/downloads/10-company.jpg",
+    "url": "/cantalupi/files/test.pdf",
+    "category": {
+      "id": 2,
+      "name": "Company Profile"
+    },
+    "title": "Company Profile",
+    "new": true
+  }
+]

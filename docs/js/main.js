@@ -380,6 +380,1080 @@ _defineProperty(SessionStorageService, "items$", new rxjs.ReplaySubject(1));var 
 }(rxcomp.Component);
 AppComponent.meta = {
   selector: '[app-component]'
+};var NODE = typeof module !== 'undefined' && module.exports;
+var PARAMS = NODE ? {
+  get: function get() {}
+} : new URLSearchParams(window.location.search);
+var DEBUG =  PARAMS.get('debug') != null;
+var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
+var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io' || window.location.host === 'cantalupi.herokuapp.com');
+var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
+var PRODUCTION = !DEVELOPMENT;
+var ENV = {
+  NAME: 'cantalupi',
+  STATIC: STATIC,
+  DEVELOPMENT: DEVELOPMENT,
+  PRODUCTION: PRODUCTION,
+  RESOURCE: '/docs/',
+  STATIC_RESOURCE: './',
+  API: '/wp-json/cantalupi/v1',
+  STATIC_API: DEVELOPMENT && !STATIC ? '/Client/docs/api' : './api'
+};
+function getApiUrl(url, useStatic) {
+  var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
+  var json = useStatic || STATIC ? '.json' : '';
+  return "" + base + url + json;
+}
+function getSlug(url) {
+  if (!url) {
+    return url;
+  }
+
+  if (url.indexOf("/" + ENV.NAME) !== 0) {
+    return url;
+  }
+
+  if (STATIC) {
+    console.log(url);
+    return url;
+  }
+
+  url = url.replace("/" + ENV.NAME, '');
+  url = url.replace('.html', '');
+  return "/it/it" + url;
+}
+var Environment = /*#__PURE__*/function () {
+  _createClass(Environment, [{
+    key: "href",
+    get: function get() {
+      if (window.location.host.indexOf('herokuapp') !== -1) {
+        return 'https://raw.githubusercontent.com/actarian/cantalupi/master/docs/';
+      } else {
+        return BASE_HREF;
+      }
+    }
+  }, {
+    key: "host",
+    get: function get() {
+      var host = window.location.host.replace('127.0.0.1', '192.168.1.2');
+
+      if (host.substr(host.length - 1, 1) === '/') {
+        host = host.substr(0, host.length - 1);
+      }
+
+      return window.location.protocol + "//" + host + BASE_HREF;
+    }
+  }]);
+
+  function Environment(options) {
+    if (options) {
+      Object.assign(this, options);
+    }
+  }
+
+  return Environment;
+}();
+var environment = new Environment({
+  port: 5000
+});var HttpResponse = /*#__PURE__*/function () {
+  _createClass(HttpResponse, [{
+    key: "static",
+    get: function get() {
+      return this.url.indexOf('.json') === this.url.length - 5;
+    }
+  }]);
+
+  function HttpResponse(response) {
+    this.data = null;
+
+    if (response) {
+      this.url = response.url;
+      this.status = response.status;
+      this.statusText = response.statusText;
+      this.ok = response.ok;
+      this.redirected = response.redirected;
+    }
+  }
+
+  return HttpResponse;
+}();
+
+var HttpService = /*#__PURE__*/function () {
+  function HttpService() {}
+
+  HttpService.http$ = function http$(method, url, data, format) {
+    var _this = this;
+
+    if (format === void 0) {
+      format = 'json';
+    }
+
+    method = url.indexOf('.json') !== -1 ? 'GET' : method;
+    var methods = ['POST', 'PUT', 'PATCH'];
+    var response_ = null;
+    var qstring = methods.indexOf(method) !== -1 ? Object.keys(data).map(function (key) {
+      return key + '=' + encodeURI(data[key]);
+    }).join('&') : undefined;
+    return rxjs.from(fetch(url, url.indexOf('.json') !== -1 ? {
+      method: method,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: methods.indexOf(method) !== -1 ? JSON.stringify(data) : undefined
+    } : {
+      method: method,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: qstring
+    }).then(function (response) {
+      response_ = new HttpResponse(response);
+      return response[format]().then(function (json) {
+        response_.data = json;
+
+        if (response.ok) {
+          return Promise.resolve(response_);
+        } else {
+          return Promise.reject(response_);
+        }
+      });
+      /*
+      if (response.ok) {
+      	return response[format]();
+      } else {
+      	return response.json().then(json => {
+      		return Promise.reject(json);
+      	});
+      }
+      */
+    })).pipe(operators.catchError(function (error) {
+      return rxjs.throwError(_this.getError(error, response_));
+    }));
+  };
+
+  HttpService.get$ = function get$(url, data, format) {
+    var query = this.query(data);
+    return this.http$('GET', "" + url + query, undefined, format);
+  };
+
+  HttpService.delete$ = function delete$(url) {
+    return this.http$('DELETE', url);
+  };
+
+  HttpService.post$ = function post$(url, data) {
+    return this.http$('POST', url, data);
+  };
+
+  HttpService.put$ = function put$(url, data) {
+    return this.http$('PUT', url, data);
+  };
+
+  HttpService.patch$ = function patch$(url, data) {
+    return this.http$('PATCH', url, data);
+  };
+
+  HttpService.query = function query(data) {
+    return ''; // todo
+  };
+
+  HttpService.getError = function getError(object, response) {
+    var error = typeof object === 'object' ? object : {};
+
+    if (!error.statusCode) {
+      error.statusCode = response ? response.status : 0;
+    }
+
+    if (!error.statusMessage) {
+      error.statusMessage = response ? response.statusText : object;
+    }
+
+    console.log('HttpService.getError', error, object);
+    return error;
+  };
+
+  return HttpService;
+}();var CookieStorageService = /*#__PURE__*/function (_StorageService) {
+  _inheritsLoose(CookieStorageService, _StorageService);
+
+  function CookieStorageService() {
+    return _StorageService.apply(this, arguments) || this;
+  }
+
+  CookieStorageService.clear = function clear() {
+    var _this = this;
+
+    this.toRawArray().forEach(function (x) {
+      _this.setter(x.name, '', -1);
+    });
+  };
+
+  CookieStorageService.delete = function _delete(name) {
+    this.setter(name, '', -1);
+  };
+
+  CookieStorageService.exist = function exist(name) {
+    return document.cookie.indexOf(';' + name + '=') !== -1 || document.cookie.indexOf(name + '=') === 0;
+  };
+
+  CookieStorageService.get = function get(name) {
+    return this.decode(this.getRaw(name));
+  };
+
+  CookieStorageService.set = function set(name, value, days) {
+    this.setter(name, this.encode(value), days);
+  };
+
+  CookieStorageService.getRaw = function getRaw(name) {
+    var value = null;
+    var cookies = this.toRawArray();
+    var cookie = cookies.find(function (x) {
+      return x.name === name;
+    });
+
+    if (cookie) {
+      value = cookie.value;
+    }
+
+    return value;
+  };
+
+  CookieStorageService.setRaw = function setRaw(name, value, days) {
+    this.setter(name, value, days);
+  };
+
+  CookieStorageService.toArray = function toArray() {
+    var _this2 = this;
+
+    return this.toRawArray().map(function (x) {
+      x.value = _this2.decode(x.value);
+      return x;
+    });
+  };
+
+  CookieStorageService.toRawArray = function toRawArray() {
+    return document.cookie.split(';').map(function (x) {
+      var items = x.split('=');
+      return {
+        name: items[0].trim(),
+        value: items[1] ? items[1].trim() : null
+      };
+    }).filter(function (x) {
+      return x.name !== '';
+    });
+  };
+
+  CookieStorageService.setter = function setter(name, value, days) {
+    var expires;
+
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = '; expires=' + date.toUTCString();
+    } else {
+      expires = '';
+    }
+
+    document.cookie = name + '=' + value + expires + '; path=/';
+    this.items$.next(this.toArray());
+  };
+
+  CookieStorageService.isSupported = function isSupported() {
+    var isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
+    return isBrowser;
+  };
+
+  return CookieStorageService;
+}(StorageService);
+
+_defineProperty(CookieStorageService, "items$", new rxjs.ReplaySubject(1));var ApiService = /*#__PURE__*/function (_HttpService) {
+  _inheritsLoose(ApiService, _HttpService);
+
+  function ApiService() {
+    return _HttpService.apply(this, arguments) || this;
+  }
+
+  // || 'it';
+  ApiService.get$ = function get$(url, data, format) {
+    return _HttpService.get$.call(this, getApiUrl(url), data, format);
+  };
+
+  ApiService.delete$ = function delete$(url) {
+    return _HttpService.delete$.call(this, getApiUrl(url));
+  };
+
+  ApiService.post$ = function post$(url, data) {
+    return _HttpService.post$.call(this, getApiUrl(url), data);
+  };
+
+  ApiService.put$ = function put$(url, data) {
+    return _HttpService.put$.call(this, getApiUrl(url), data);
+  };
+
+  ApiService.patch$ = function patch$(url, data) {
+    return _HttpService.patch$.call(this, getApiUrl(url), data);
+  };
+
+  ApiService.staticGet$ = function staticGet$(url, data, format) {
+    return _HttpService.get$.call(this, getApiUrl(url, true), data, format);
+  };
+
+  ApiService.staticDelete$ = function staticDelete$(url) {
+    return _HttpService.delete$.call(this, getApiUrl(url, true));
+  };
+
+  ApiService.staticPost$ = function staticPost$(url, data) {
+    return _HttpService.post$.call(this, getApiUrl(url, true), data);
+  };
+
+  ApiService.staticPut$ = function staticPut$(url, data) {
+    return _HttpService.put$.call(this, getApiUrl(url, true), data);
+  };
+
+  ApiService.staticPatch$ = function staticPatch$(url, data) {
+    return _HttpService.patch$.call(this, getApiUrl(url, true), data);
+  };
+
+  return ApiService;
+}(HttpService);
+
+_defineProperty(ApiService, "currentLanguage", CookieStorageService.getRaw('wp-wpml_current_language'));var LocalStorageService = /*#__PURE__*/function (_StorageService) {
+  _inheritsLoose(LocalStorageService, _StorageService);
+
+  function LocalStorageService() {
+    return _StorageService.apply(this, arguments) || this;
+  }
+
+  LocalStorageService.clear = function clear() {
+    if (this.isSupported()) {
+      localStorage.clear();
+      this.items$.next(this.toArray());
+    }
+  };
+
+  LocalStorageService.delete = function _delete(name) {
+    if (this.isSupported()) {
+      localStorage.removeItem(name);
+      this.items$.next(this.toArray());
+    }
+  };
+
+  LocalStorageService.exist = function exist(name) {
+    if (this.isSupported()) {
+      return localStorage.getItem(name) !== undefined;
+    } else {
+      return false;
+    }
+  };
+
+  LocalStorageService.get = function get(name) {
+    return this.decode(this.getRaw(name));
+  };
+
+  LocalStorageService.set = function set(name, value) {
+    this.setRaw(name, this.encode(value));
+  };
+
+  LocalStorageService.getRaw = function getRaw(name) {
+    var value = null;
+
+    if (this.isSupported()) {
+      value = localStorage.getItem(name);
+    }
+
+    return value;
+  };
+
+  LocalStorageService.setRaw = function setRaw(name, value) {
+    if (value && this.isSupported()) {
+      localStorage.setItem(name, value);
+      this.items$.next(this.toArray());
+    }
+  };
+
+  LocalStorageService.toArray = function toArray() {
+    var _this = this;
+
+    return this.toRawArray().map(function (x) {
+      x.value = _this.decode(x.value);
+      return x;
+    });
+  };
+
+  LocalStorageService.toRawArray = function toRawArray() {
+    var _this2 = this;
+
+    if (this.isSupported()) {
+      return Object.keys(localStorage).map(function (key) {
+        return {
+          name: key,
+          value: _this2.getRaw(key)
+        };
+      });
+    } else {
+      return [];
+    }
+  };
+
+  LocalStorageService.isSupported = function isSupported() {
+    if (this.supported) {
+      return true;
+    }
+
+    return StorageService.isSupported('localStorage');
+  };
+
+  return LocalStorageService;
+}(StorageService);
+
+_defineProperty(LocalStorageService, "items$", new rxjs.ReplaySubject(1));var User = /*#__PURE__*/function () {
+  _createClass(User, [{
+    key: "avatar",
+    get: function get() {
+      return (this.firstName || '?').substr(0, 1).toUpperCase() + (this.lastName || '?').substr(0, 1).toUpperCase();
+    }
+  }, {
+    key: "fullName",
+    get: function get() {
+      return this.firstName + ' ' + this.lastName;
+    }
+  }]);
+
+  function User(data) {
+    if (data) {
+      Object.assign(this, data);
+    }
+  }
+
+  return User;
+}();
+
+var UserService = /*#__PURE__*/function () {
+  function UserService() {}
+
+  UserService.getCurrentUser = function getCurrentUser() {
+    return this.user$_.getValue();
+  };
+
+  UserService.setUser = function setUser(user) {
+    this.user$_.next(user);
+  };
+
+  UserService.me$ = function me$() {
+    var _this = this;
+
+    //return ApiService.staticGet$(`/user/me`).pipe(
+    return ApiService.get$("/user/me").pipe( // map((user) => this.mapStatic__(user, 'me')),
+    operators.map(function (response) {
+      return _this.mapUser(response.data, response.static);
+    }), operators.catchError(function (error) {
+      return rxjs.of(null);
+    }), operators.switchMap(function (user) {
+      _this.setUser(user);
+
+      return _this.user$_;
+    }));
+  };
+
+  UserService.register$ = function register$(payload) {
+    var _this2 = this;
+
+    return ApiService.staticPost$("/user/register", payload).pipe(operators.map(function (response) {
+      return _this2.mapStatic__(response.data, response.static, 'register');
+    }));
+  };
+
+  UserService.login$ = function login$(payload) {
+    var _this3 = this;
+
+    return ApiService.staticPost$("/user/login", payload).pipe(operators.map(function (response) {
+      return _this3.mapStatic__(response.data, response.static, 'login');
+    }));
+  };
+
+  UserService.logout$ = function logout$() {
+    var _this4 = this;
+
+    return ApiService.staticPost$("/user/logout").pipe(operators.map(function (response) {
+      return _this4.mapStatic__(response.data, response.static, 'logout');
+    }));
+  };
+
+  UserService.retrieve$ = function retrieve$(payload) {
+    var _this5 = this;
+
+    return ApiService.staticPost$("/user/forget", payload).pipe(operators.map(function (response) {
+      return _this5.mapStatic__(response.data, response.static, 'retrieve');
+    }));
+  }
+  /*
+  static update$(payload) {
+  	return ApiService.staticPost$(`/user/updateprofile`, payload).pipe(
+  		map((response) => this.mapStatic__(response.data, response.static, 'register')),
+  	);
+  }
+  */
+  ;
+
+  UserService.mapStatic__ = function mapStatic__(user, isStatic, action) {
+    if (action === void 0) {
+      action = 'me';
+    }
+
+    if (!isStatic) {
+      return user;
+    }
+
+    switch (action) {
+      case 'me':
+        if (!LocalStorageService.exist('user')) {
+          user = null;
+        }
+        break;
+
+      case 'register':
+        LocalStorageService.set('user', user);
+        break;
+
+      case 'login':
+        LocalStorageService.set('user', user);
+        break;
+
+      case 'logout':
+        LocalStorageService.delete('user');
+        break;
+    }
+
+    return user;
+  };
+
+  UserService.fake = function fake(user) {
+    user.firstName = user.firstName || 'Jhon';
+    user.lastName = user.lastName || 'Appleseed';
+    return user;
+  };
+
+  UserService.mapUser = function mapUser(user, isStatic) {
+    return isStatic ? UserService.fake(new User(user)) : new User(user);
+  };
+
+  UserService.mapUsers = function mapUsers(users, isStatic) {
+    return users ? users.map(function (x) {
+      return UserService.mapUser(x, isStatic);
+    }) : [];
+  };
+
+  return UserService;
+}();
+UserService.user$_ = new rxjs.BehaviorSubject(null);var AuthForgotComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(AuthForgotComponent, _Component);
+
+  function AuthForgotComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = AuthForgotComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _this = this;
+
+    var form = new rxcompForm.FormGroup({
+      email: new rxcompForm.FormControl(null, [rxcompForm.Validators.RequiredValidator(), rxcompForm.Validators.EmailValidator()]),
+      checkRequest: window.antiforgery,
+      checkField: ''
+    });
+    var controls = form.controls;
+    this.controls = controls;
+    form.changes$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (changes) {
+      // console.log('AuthForgotComponent.form.changes$', changes, form.valid);
+      _this.pushChanges();
+    });
+    this.form = form;
+    this.error = null;
+    this.success = false;
+  };
+
+  _proto.test = function test() {
+    this.form.patch({
+      email: 'jhonappleseed@gmail.com',
+      checkRequest: window.antiforgery,
+      checkField: ''
+    });
+  };
+
+  _proto.reset = function reset() {
+    this.form.reset();
+  };
+
+  _proto.onSubmit = function onSubmit() {
+    var _this2 = this;
+
+    // console.log('AuthForgotComponent.onSubmit', 'form.valid', valid);
+    if (this.form.valid) {
+      // console.log('AuthForgotComponent.onSubmit', this.form.value);
+      this.form.submitted = true;
+      UserService.retrieve$(this.form.value).subscribe(function (response) {
+        console.log('AuthForgotComponent.onSubmit', response);
+
+        _this2.sent.next(true);
+
+        _this2.success = true; // this.form.reset();
+
+        _this2.pushChanges();
+      }, function (error) {
+        console.log('AuthForgotComponent.error', error);
+        _this2.error = error;
+
+        _this2.pushChanges();
+      });
+    } else {
+      this.form.touched = true;
+    }
+  };
+
+  _proto.onLogin = function onLogin() {
+    this.login.next();
+  };
+
+  _proto.onRegister = function onRegister() {
+    this.register.next();
+  };
+
+  return AuthForgotComponent;
+}(rxcomp.Component);
+AuthForgotComponent.meta = {
+  selector: '[auth-forgot]',
+  outputs: ['sent', 'login', 'register']
+};var ModalEvent = function ModalEvent(data) {
+  this.data = data;
+};
+var ModalResolveEvent = /*#__PURE__*/function (_ModalEvent) {
+  _inheritsLoose(ModalResolveEvent, _ModalEvent);
+
+  function ModalResolveEvent() {
+    return _ModalEvent.apply(this, arguments) || this;
+  }
+
+  return ModalResolveEvent;
+}(ModalEvent);
+var ModalRejectEvent = /*#__PURE__*/function (_ModalEvent2) {
+  _inheritsLoose(ModalRejectEvent, _ModalEvent2);
+
+  function ModalRejectEvent() {
+    return _ModalEvent2.apply(this, arguments) || this;
+  }
+
+  return ModalRejectEvent;
+}(ModalEvent);
+
+var ModalService = /*#__PURE__*/function () {
+  function ModalService() {}
+
+  ModalService.open$ = function open$(modal) {
+    var _this = this;
+
+    return this.getTemplate$(modal.src).pipe(operators.map(function (template) {
+      return {
+        node: _this.getNode(template),
+        data: modal.data,
+        modal: modal
+      };
+    }), operators.tap(function (node) {
+      return _this.modal$.next(node);
+    }), operators.switchMap(function (node) {
+      return _this.events$;
+    }));
+  };
+
+  ModalService.load$ = function load$(modal) {};
+
+  ModalService.getTemplate$ = function getTemplate$(url) {
+    return rxjs.from(fetch(url).then(function (response) {
+      return response.text();
+    }));
+  };
+
+  ModalService.getNode = function getNode(template) {
+    var div = document.createElement("div");
+    div.innerHTML = template;
+    var node = div.firstElementChild;
+    return node;
+  };
+
+  ModalService.reject = function reject(data) {
+    this.modal$.next(null);
+    this.events$.next(new ModalRejectEvent(data));
+  };
+
+  ModalService.resolve = function resolve(data) {
+    this.modal$.next(null);
+    this.events$.next(new ModalResolveEvent(data));
+  };
+
+  return ModalService;
+}();
+ModalService.modal$ = new rxjs.Subject();
+ModalService.events$ = new rxjs.Subject();var ModalOutletComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(ModalOutletComponent, _Component);
+
+  function ModalOutletComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = ModalOutletComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _this = this;
+
+    var _getContext = rxcomp.getContext(this),
+        node = _getContext.node;
+
+    this.modalNode = node.querySelector('.modal-outlet__modal');
+    ModalService.modal$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (modal) {
+      _this.modal = modal;
+    });
+  };
+
+  _proto.onRegister = function onRegister(event) {
+    // console.log('ModalComponent.onRegister');
+    this.pushChanges();
+  };
+
+  _proto.onLogin = function onLogin(event) {
+    // console.log('ModalComponent.onLogin');
+    this.pushChanges();
+  };
+
+  _proto.reject = function reject(event) {
+    ModalService.reject();
+  };
+
+  _createClass(ModalOutletComponent, [{
+    key: "modal",
+    get: function get() {
+      return this.modal_;
+    },
+    set: function set(modal) {
+      // console.log('ModalOutletComponent set modal', modal, this);
+      var _getContext2 = rxcomp.getContext(this),
+          module = _getContext2.module;
+
+      if (this.modal_ && this.modal_.node) {
+        module.remove(this.modal_.node, this);
+        this.modalNode.removeChild(this.modal_.node);
+      }
+
+      if (modal && modal.node) {
+        this.modal_ = modal;
+        this.modalNode.appendChild(modal.node);
+        var instances = module.compile(modal.node);
+      }
+
+      this.modal_ = modal;
+      this.pushChanges();
+    }
+  }]);
+
+  return ModalOutletComponent;
+}(rxcomp.Component);
+ModalOutletComponent.meta = {
+  selector: '[modal-outlet]',
+  template:
+  /* html */
+  "\n\t<div class=\"modal-outlet__container\" [class]=\"{ active: modal }\">\n\t\t<div class=\"modal-outlet__background\" (click)=\"reject($event)\"></div>\n\t\t<div class=\"modal-outlet__modal\"></div>\n\t</div>\n\t"
+};var AuthComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(AuthComponent, _Component);
+
+  function AuthComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = AuthComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _getContext = rxcomp.getContext(this),
+        node = _getContext.node;
+
+    this.views = {
+      SIGN_IN: 1,
+      SIGN_UP: 2,
+      FORGOTTEN: 3
+    };
+    this.view = node.hasAttribute('view') ? parseInt(node.getAttribute('view')) : this.views.SIGN_IN;
+  };
+
+  _proto.onForgot = function onForgot(event) {
+    // console.log('AuthComponent.onForgot');
+    this.view = this.views.FORGOTTEN;
+    this.pushChanges();
+  };
+
+  _proto.onLogin = function onLogin(event) {
+    // console.log('AuthComponent.onLogin');
+    this.view = this.views.SIGN_IN;
+    this.pushChanges();
+  };
+
+  _proto.onRegister = function onRegister(event) {
+    // console.log('AuthComponent.onRegister');
+    this.view = this.views.SIGN_UP;
+    this.pushChanges();
+  };
+
+  _proto.onSignIn = function onSignIn(user) {
+    console.log('AuthComponent.onSignIn', user);
+    UserService.setUser(user);
+    window.location.href = this.auth; // nav to profile
+  };
+
+  _proto.onSignUp = function onSignUp(user) {
+    console.log('AuthComponent.onSignUp', user);
+    UserService.setUser(user);
+    window.location.href = this.auth; // nav to profile
+  };
+
+  _proto.onForgottenSent = function onForgottenSent(email) {
+    /*
+    console.log('AuthComponent.onForgottenSent', email);
+    this.view = this.views.SIGN_IN;
+    this.pushChanges();
+    */
+  };
+
+  return AuthComponent;
+}(rxcomp.Component);
+AuthComponent.meta = {
+  selector: '[auth]',
+  inputs: ['auth']
+};var AuthModalComponent = /*#__PURE__*/function (_AuthComponent) {
+  _inheritsLoose(AuthModalComponent, _AuthComponent);
+
+  function AuthModalComponent() {
+    return _AuthComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = AuthModalComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    _AuthComponent.prototype.onInit.call(this);
+
+    var _getContext = rxcomp.getContext(this),
+        parentInstance = _getContext.parentInstance;
+
+    if (parentInstance instanceof ModalOutletComponent) {
+      var data = parentInstance.modal.data;
+      this.view = data.view; // console.log('AuthModalComponent.onInit', data);
+    }
+  };
+
+  _proto.onSignIn = function onSignIn(user) {
+    // console.log('AuthModalComponent.onSignIn', user);
+    ModalService.resolve(user);
+  };
+
+  _proto.onSignUp = function onSignUp(user) {
+    // console.log('AuthModalComponent.onSignUp', user);
+    ModalService.resolve(user);
+  }
+  /*
+  onDestroy() {
+  	// console.log('AuthModalComponent.onDestroy');
+  }
+  */
+  ;
+
+  _proto.close = function close() {
+    ModalService.reject();
+  };
+
+  return AuthModalComponent;
+}(AuthComponent);
+AuthModalComponent.meta = {
+  selector: '[auth-modal]'
+};var AuthSigninComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(AuthSigninComponent, _Component);
+
+  function AuthSigninComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = AuthSigninComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _this = this;
+    var form = new rxcompForm.FormGroup({
+      email: new rxcompForm.FormControl(null, [rxcompForm.Validators.RequiredValidator(), rxcompForm.Validators.EmailValidator()]),
+      password: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      checkRequest: window.antiforgery,
+      checkField: ''
+    });
+    var controls = form.controls;
+    this.controls = controls;
+    form.changes$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (changes) {
+      // console.log('AuthSigninComponent.form.changes$', changes, form.valid);
+      _this.pushChanges();
+    });
+    this.form = form;
+    this.error = null;
+    this.success = false;
+  };
+
+  _proto.test = function test() {
+    this.form.patch({
+      email: 'jhonappleseed@gmail.com',
+      password: 'password',
+      checkRequest: window.antiforgery,
+      checkField: ''
+    });
+  };
+
+  _proto.reset = function reset() {
+    this.form.reset();
+  };
+
+  _proto.onSubmit = function onSubmit() {
+    var _this2 = this;
+
+    // console.log('AuthSigninComponent.onSubmit', 'form.valid', valid);
+    if (this.form.valid) {
+      // console.log('AuthSigninComponent.onSubmit', this.form.value);
+      this.form.submitted = true; // HttpService.post$('/api/users/Login', this.form.value)
+
+      UserService.login$(this.form.value).subscribe(function (response) {
+        console.log('AuthSigninComponent.onSubmit', response);
+        _this2.success = true; // this.form.reset();
+
+        _this2.pushChanges();
+
+        _this2.signIn.next(typeof response === 'string' ? {
+          status: response
+        } : response);
+      }, function (error) {
+        console.log('AuthSigninComponent.error', error);
+        _this2.error = error;
+
+        _this2.pushChanges();
+      });
+    } else {
+      this.form.touched = true;
+    }
+  };
+
+  _proto.onForgot = function onForgot() {
+    this.forgot.next();
+  };
+
+  _proto.onRegister = function onRegister() {
+    this.register.next();
+  };
+
+  return AuthSigninComponent;
+}(rxcomp.Component);
+AuthSigninComponent.meta = {
+  selector: '[auth-signin]',
+  outputs: ['signIn', 'forgot', 'register']
+};var AuthSignupComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(AuthSignupComponent, _Component);
+
+  function AuthSignupComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = AuthSignupComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _this = this;
+
+    var data = window.data || {
+      roles: [],
+      countries: []
+    };
+    var form = new rxcompForm.FormGroup({
+      firstName: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      lastName: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      email: new rxcompForm.FormControl(null, [rxcompForm.Validators.RequiredValidator(), rxcompForm.Validators.EmailValidator()]),
+      company: new rxcompForm.FormControl(null),
+      role: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      country: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      newsletter: new rxcompForm.FormControl(null),
+      privacy: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      checkRequest: window.antiforgery,
+      checkField: '',
+      action: window.formaction
+    });
+    var controls = form.controls;
+    controls.role.options = data.roles;
+    controls.country.options = data.countries;
+    this.controls = controls;
+    form.changes$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (changes) {
+      // console.log('WorkWithUsComponent.form.changes$', changes, form.valid);
+      _this.pushChanges();
+    });
+    this.data = data;
+    this.form = form;
+    this.error = null;
+    this.success = false;
+  };
+
+  _proto.test = function test() {
+    var role = this.controls.role.options.length ? this.controls.role.options[0].id : null;
+    this.form.patch({
+      firstName: 'Jhon',
+      lastName: 'Appleseed',
+      email: 'jhonappleseed@gmail.com',
+      company: 'Websolute',
+      country: 'Italy',
+      role: role,
+      privacy: true,
+      checkRequest: window.antiforgery,
+      checkField: ''
+    });
+  };
+
+  _proto.reset = function reset() {
+    this.form.reset();
+  };
+
+  _proto.onSubmit = function onSubmit() {
+    var _this2 = this;
+
+    // console.log('AuthSignupComponent.onSubmit', 'form.valid', valid);
+    if (this.form.valid) {
+      // console.log('AuthSignupComponent.onSubmit', this.form.value);
+      this.form.submitted = true; // HttpService.post$('/api/users/Register', this.form.value)
+
+      UserService.register$(this.form.value).subscribe(function (response) {
+        console.log('AuthSignupComponent.onSubmit', response);
+        _this2.success = true;
+        dataLayer.push({
+          'event': 'formSubmission',
+          'form type': 'Registrazione'
+        });
+
+        _this2.form.reset(); // this.pushChanges();
+        // this.signUp.next(response);
+
+      }, function (error) {
+        console.log('AuthSignupComponent.error', error);
+        _this2.error = error;
+        _this2.form.submitted = false;
+
+        _this2.pushChanges();
+      });
+    } else {
+      this.form.touched = true;
+    }
+  };
+
+  _proto.onLogin = function onLogin() {
+    this.login.next();
+  };
+
+  return AuthSignupComponent;
+}(rxcomp.Component);
+AuthSignupComponent.meta = {
+  selector: '[auth-signup]' //outputs: ['signUp', 'login'],
+
 };var CardSerieComponent = /*#__PURE__*/function (_Component) {
   _inheritsLoose(CardSerieComponent, _Component);
 
@@ -493,116 +1567,7 @@ CardServiceComponent.meta = {
 }(rxcomp.Directive);
 ClickOutsideDirective.meta = {
   selector: "[(clickOutside)]"
-};var HttpResponse = /*#__PURE__*/function () {
-  _createClass(HttpResponse, [{
-    key: "static",
-    get: function get() {
-      return this.url.indexOf('.json') === this.url.length - 5;
-    }
-  }]);
-
-  function HttpResponse(response) {
-    this.data = null;
-
-    if (response) {
-      this.url = response.url;
-      this.status = response.status;
-      this.statusText = response.statusText;
-      this.ok = response.ok;
-      this.redirected = response.redirected;
-    }
-  }
-
-  return HttpResponse;
-}();
-
-var HttpService = /*#__PURE__*/function () {
-  function HttpService() {}
-
-  HttpService.http$ = function http$(method, url, data, format) {
-    var _this = this;
-
-    if (format === void 0) {
-      format = 'json';
-    }
-
-    method = url.indexOf('.json') !== -1 ? 'GET' : method;
-    var methods = ['POST', 'PUT', 'PATCH'];
-    var response_ = null;
-    return rxjs.from(fetch(url, {
-      method: method,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: methods.indexOf(method) !== -1 ? JSON.stringify(data) : undefined
-    }).then(function (response) {
-      response_ = new HttpResponse(response);
-      return response[format]().then(function (json) {
-        response_.data = json;
-
-        if (response.ok) {
-          return Promise.resolve(response_);
-        } else {
-          return Promise.reject(response_);
-        }
-      });
-      /*
-      if (response.ok) {
-      	return response[format]();
-      } else {
-      	return response.json().then(json => {
-      		return Promise.reject(json);
-      	});
-      }
-      */
-    })).pipe(operators.catchError(function (error) {
-      return rxjs.throwError(_this.getError(error, response_));
-    }));
-  };
-
-  HttpService.get$ = function get$(url, data, format) {
-    var query = this.query(data);
-    return this.http$('GET', "" + url + query, undefined, format);
-  };
-
-  HttpService.delete$ = function delete$(url) {
-    return this.http$('DELETE', url);
-  };
-
-  HttpService.post$ = function post$(url, data) {
-    return this.http$('POST', url, data);
-  };
-
-  HttpService.put$ = function put$(url, data) {
-    return this.http$('PUT', url, data);
-  };
-
-  HttpService.patch$ = function patch$(url, data) {
-    return this.http$('PATCH', url, data);
-  };
-
-  HttpService.query = function query(data) {
-    return ''; // todo
-  };
-
-  HttpService.getError = function getError(object, response) {
-    var error = typeof object === 'object' ? object : {};
-
-    if (!error.statusCode) {
-      error.statusCode = response ? response.status : 0;
-    }
-
-    if (!error.statusMessage) {
-      error.statusMessage = response ? response.statusText : object;
-    }
-
-    console.log('HttpService.getError', error, object);
-    return error;
-  };
-
-  return HttpService;
-}();var ContactsComponent = /*#__PURE__*/function (_Component) {
+};var ContactsComponent = /*#__PURE__*/function (_Component) {
   _inheritsLoose(ContactsComponent, _Component);
 
   function ContactsComponent() {
@@ -615,7 +1580,8 @@ var HttpService = /*#__PURE__*/function () {
     var _this = this;
 
     var data = window.data || {
-      roles: []
+      roles: [],
+      countries: []
     };
     var form = new rxcompForm.FormGroup({
       firstName: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
@@ -625,12 +1591,15 @@ var HttpService = /*#__PURE__*/function () {
       role: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
       country: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
       message: new rxcompForm.FormControl(null),
-      privacy: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredTrueValidator()),
+      newsletter: new rxcompForm.FormControl(null),
+      privacy: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
       checkRequest: window.antiforgery,
-      checkField: ''
+      checkField: '',
+      action: window.formaction
     });
     var controls = form.controls;
     controls.role.options = data.roles;
+    controls.country.options = data.countries;
     this.controls = controls;
     form.changes$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (changes) {
       // console.log('WorkWithUsComponent.form.changes$', changes, form.valid);
@@ -669,7 +1638,7 @@ var HttpService = /*#__PURE__*/function () {
     if (this.form.valid) {
       // console.log('ContactsComponent.onSubmit', this.form.value);
       this.form.submitted = true;
-      HttpService.post$('/api/contacts', this.form.value).subscribe(function (response) {
+      HttpService.post$(globalVars.ajaxurl, this.form.value).subscribe(function (response) {
         _this2.success = true;
 
         _this2.form.reset(); // this.pushChanges();
@@ -2512,7 +3481,593 @@ DatePipe.meta = {
  * {{ dateObj | date:'mm:ss' }}       // output is '43:11'
  * ```
  *
- */var DROPDOWN_ID = 1000000;
+ */var FilterMode = {
+  SELECT: 'select',
+  AND: 'and',
+  OR: 'or'
+};
+
+var FilterItem = /*#__PURE__*/function () {
+  _createClass(FilterItem, [{
+    key: "empty",
+    get: function get() {
+      return this.values.length === 0;
+    }
+  }]);
+
+  function FilterItem(filter) {
+    this.change$ = new rxjs.BehaviorSubject();
+    this.mode = FilterMode.SELECT;
+    this.placeholder = 'Select';
+    this.values = [];
+    this.options = [];
+
+    if (filter) {
+      if (filter.mode === FilterMode.SELECT) {
+        filter.options.unshift({
+          label: filter.placeholder,
+          values: []
+        });
+      }
+
+      Object.assign(this, filter);
+    }
+  }
+
+  var _proto = FilterItem.prototype;
+
+  _proto.filter = function filter(item, value) {
+    return true; // item.options.indexOf(value) !== -1;
+  };
+
+  _proto.match = function match(item) {
+    var _this = this;
+
+    var match;
+
+    if (this.mode === FilterMode.OR) {
+      match = this.values.length ? false : true;
+      this.values.forEach(function (value) {
+        match = match || _this.filter(item, value);
+      });
+    } else {
+      match = true;
+      this.values.forEach(function (value) {
+        match = match && _this.filter(item, value);
+      });
+    }
+
+    return match;
+  };
+
+  _proto.getSelectedOption = function getSelectedOption() {
+    var _this2 = this;
+
+    return this.options.find(function (x) {
+      return _this2.has(x);
+    });
+  };
+
+  _proto.getLabel = function getLabel() {
+    if (this.mode === FilterMode.SELECT) {
+      var selectedOption = this.getSelectedOption();
+      return selectedOption ? selectedOption.label : this.placeholder;
+    } else {
+      return this.label;
+    }
+  };
+
+  _proto.hasAny = function hasAny() {
+    return this.values.length > 0;
+  };
+
+  _proto.has = function has(item) {
+    return this.values.indexOf(item.value) !== -1;
+  };
+
+  _proto.set = function set(item) {
+    if (this.mode === FilterMode.SELECT) {
+      this.values = [];
+    }
+
+    var index = this.values.indexOf(item.value);
+
+    if (index === -1) {
+      if (item.value !== undefined) {
+        this.values.push(item.value);
+      }
+    }
+
+    if (this.mode === FilterMode.SELECT) {
+      this.placeholder = item.label;
+    } // console.log('FilterItem.set', item);
+
+
+    this.change$.next();
+  };
+
+  _proto.remove = function remove(item) {
+    var index = this.values.indexOf(item.value);
+
+    if (index !== -1) {
+      this.values.splice(index, 1);
+    }
+
+    if (this.mode === FilterMode.SELECT) {
+      var first = this.options[0];
+      this.placeholder = first.label;
+    } // console.log('FilterItem.remove', item);
+
+
+    this.change$.next();
+  };
+
+  _proto.toggle = function toggle(item) {
+    if (this.has(item)) {
+      this.remove(item);
+    } else {
+      this.set(item);
+    }
+  };
+
+  _proto.toggleActive = function toggleActive() {
+    this.active = !this.active;
+  };
+
+  _proto.clear = function clear() {
+    this.values = [];
+
+    if (this.mode === FilterMode.SELECT) {
+      var first = this.options[0];
+      this.placeholder = first.label;
+    } // console.log('FilterItem.clear', item);
+
+
+    this.change$.next();
+  };
+
+  return FilterItem;
+}();var LocationService = /*#__PURE__*/function () {
+  function LocationService() {}
+
+  LocationService.get = function get(key) {
+    var params = new URLSearchParams(window.location.search); // console.log('LocationService.get', params);
+
+    return params.get(key);
+  };
+
+  LocationService.set = function set(keyOrValue, value) {
+    var params = new URLSearchParams(window.location.search);
+
+    if (typeof keyOrValue === 'string') {
+      params.set(keyOrValue, value);
+    } else {
+      params.set(keyOrValue, '');
+    }
+
+    this.replace(params); // console.log('LocationService.set', params, keyOrValue, value);
+  };
+
+  LocationService.replace = function replace(params) {
+    if (window.history && window.history.pushState) {
+      var title = document.title;
+      var url = window.location.href.split('?')[0] + "?" + params.toString();
+      window.history.pushState(params.toString(), title, url);
+    }
+  };
+
+  LocationService.deserialize = function deserialize(key) {
+    var encoded = this.get('params');
+    return this.decode(key, encoded);
+  };
+
+  LocationService.serialize = function serialize(keyOrValue, value) {
+    var params = this.deserialize();
+    var encoded = this.encode(keyOrValue, value, params);
+    this.set('params', encoded);
+  };
+
+  LocationService.decode = function decode(key, encoded) {
+    var decoded = null;
+
+    if (encoded) {
+      var json = window.atob(encoded);
+      decoded = JSON.parse(json);
+    }
+
+    if (key && decoded) {
+      decoded = decoded[key];
+    }
+
+    return decoded || null;
+  };
+
+  LocationService.encode = function encode(keyOrValue, value, params) {
+    params = params || {};
+    var encoded = null;
+
+    if (typeof keyOrValue === 'string') {
+      params[keyOrValue] = value;
+    } else {
+      params = keyOrValue;
+    }
+
+    var json = JSON.stringify(params);
+    encoded = window.btoa(json);
+    return encoded;
+  };
+
+  return LocationService;
+}();var FilterService = /*#__PURE__*/function () {
+  function FilterService(options, initialParams, callback) {
+    var filters = {};
+    this.filters = filters;
+
+    if (options) {
+      Object.keys(options).forEach(function (key) {
+        var filter = new FilterItem(options[key]);
+
+        if (typeof callback === 'function') {
+          callback(key, filter);
+        }
+
+        filters[key] = filter;
+      });
+      this.deserialize(this.filters, initialParams);
+    }
+  }
+
+  var _proto = FilterService.prototype;
+
+  _proto.getParamsCount = function getParamsCount(params) {
+    if (params) {
+      var paramsCount = Object.keys(params).reduce(function (p, c, i) {
+        var values = params[c];
+        return p + (values ? values.length : 0);
+      }, 0);
+      return paramsCount;
+    } else {
+      return 0;
+    }
+  };
+
+  _proto.deserialize = function deserialize(filters, initialParams) {
+    var params;
+
+    if (initialParams && this.getParamsCount(initialParams)) {
+      params = initialParams;
+    }
+
+    var locationParams = LocationService.deserialize('filters');
+
+    if (locationParams && this.getParamsCount(locationParams)) {
+      params = locationParams;
+    }
+
+    if (params) {
+      Object.keys(filters).forEach(function (key) {
+        filters[key].values = params[key] || [];
+      });
+    }
+
+    return filters;
+  };
+
+  _proto.serialize = function serialize(filters) {
+    var params = {};
+    var any = false;
+    Object.keys(filters).forEach(function (x) {
+      var filter = filters[x];
+
+      if (filter.values && filter.values.length > 0) {
+        params[x] = filter.values;
+        any = true;
+      }
+    });
+
+    if (!any) {
+      params = null;
+    } // console.log('FilterService.serialize', params);
+
+
+    LocationService.serialize('filters', params);
+    return params;
+  };
+
+  _proto.items$ = function items$(items) {
+    var _this = this;
+
+    var filters = this.filters;
+    var changes = Object.keys(filters).map(function (key) {
+      return filters[key].change$;
+    });
+    this.updateFilterStates(filters, items, true);
+    return rxjs.merge.apply(void 0, changes).pipe(operators.auditTime(1), // tap(() => console.log(filters)),
+    operators.tap(function () {
+      return _this.serialize(filters);
+    }), operators.map(function () {
+      return _this.filterItems(items);
+    }), operators.tap(function () {
+      return _this.updateFilterStates(filters, items);
+    }));
+  };
+
+  _proto.filterItems = function filterItems(items, skipFilter) {
+    var _this2 = this;
+
+    var filters = Object.keys(this.filters).map(function (x) {
+      return _this2.filters[x];
+    }).filter(function (x) {
+      return x.values && x.values.length > 0;
+    });
+    items = items.filter(function (item) {
+      var has = true;
+      filters.forEach(function (filter) {
+        if (filter !== skipFilter) {
+          has = has && filter.match(item);
+        }
+      });
+      return has;
+    });
+    return items;
+  };
+
+  _proto.updateFilterStates = function updateFilterStates(filters, items, initialCount) {
+    var _this3 = this;
+
+    Object.keys(filters).forEach(function (x) {
+      var filter = filters[x];
+      var filteredItems = initialCount ? items : _this3.filterItems(items, filter);
+      filter.options.forEach(function (option) {
+        var count = 0;
+
+        if (option.value) {
+          var i = 0;
+
+          while (i < filteredItems.length) {
+            var item = filteredItems[i];
+
+            if (filter.filter(item, option.value)) {
+              count++;
+            }
+
+            i++;
+          }
+        } else {
+          count = filteredItems.length;
+        }
+
+        initialCount ? option.initialCount = count : option.count = count;
+        option.disabled = count === 0;
+      });
+
+      if (initialCount) {
+        filter.options.sort(function (a, b) {
+          return b.initialCount - a.initialCount;
+        });
+      }
+    });
+  };
+
+  return FilterService;
+}();var PageComponent = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(PageComponent, _Component);
+
+  function PageComponent() {
+    return _Component.apply(this, arguments) || this;
+  }
+
+  var _proto = PageComponent.prototype;
+
+  _proto.onInit = function onInit() {};
+
+  return PageComponent;
+}(rxcomp.Component);
+PageComponent.meta = {
+  selector: '[page]'
+};var DownloadsService = /*#__PURE__*/function () {
+  function DownloadsService() {}
+
+  DownloadsService.all$ = function all$() {
+    if (STATIC) {
+      return ApiService.get$('/downloads/all').pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    } else {
+      return ApiService.get$('/downloads/all').pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    }
+  };
+
+  DownloadsService.filters$ = function filters$() {
+    if (STATIC) {
+      return ApiService.get$('/downloads/filters').pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    } else {
+      return ApiService.get$('/downloads/filters').pipe(operators.map(function (response) {
+        return response.data;
+      }));
+    }
+  };
+
+  return DownloadsService;
+}();var DownloadsPageComponent = /*#__PURE__*/function (_PageComponent) {
+  _inheritsLoose(DownloadsPageComponent, _PageComponent);
+
+  function DownloadsPageComponent() {
+    return _PageComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = DownloadsPageComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    var _this = this;
+
+    this.items = [];
+    this.filters = {};
+    this.filter = {};
+    this.load$().pipe(operators.first()).subscribe(function (data) {
+      _this.items = data[0];
+      _this.filters = data[1];
+
+      _this.onLoad();
+
+      _this.pushChanges();
+    });
+    this.makeForm();
+  };
+
+  _proto.load$ = function load$() {
+    return rxjs.combineLatest([DownloadsService.all$(), DownloadsService.filters$()]);
+  };
+
+  _proto.onLoad = function onLoad() {
+    var _this2 = this;
+
+    var items = this.items;
+    var filters = this.filters;
+    Object.keys(filters).forEach(function (key) {
+      filters[key].mode = FilterMode.OR;
+    });
+    var initialParams = {};
+    var filterService = new FilterService(filters, initialParams, function (key, filter) {
+      switch (key) {
+        default:
+          filter.filter = function (item, value) {
+            switch (key) {
+              case 'category':
+                return item.category.id === value;
+
+            }
+          };
+
+      }
+    });
+    this.filterService = filterService;
+    this.filters = filterService.filters;
+    this.filter = this.filters.category;
+    filterService.items$(items).pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (items) {
+      _this2.items = items;
+
+      _this2.pushChanges(); // console.log('DownloadsPageComponent.items', items.length);
+
+    });
+  };
+
+  _proto.toggleFilter = function toggleFilter(filter) {
+    var _this3 = this;
+
+    Object.keys(this.filters).forEach(function (key) {
+      var f = _this3.filters[key];
+
+      if (f === filter) {
+        f.active = !f.active;
+      } else {
+        f.active = false;
+      }
+    });
+    this.pushChanges();
+  };
+
+  _proto.clearFilter = function clearFilter(event, filter) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    filter.clear();
+    this.pushChanges();
+  };
+
+  _proto.makeForm = function makeForm() {
+    var _this4 = this;
+
+    var data = window.data || {
+      roles: [],
+      countries: []
+    };
+    var form = new rxcompForm.FormGroup({
+      firstName: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      lastName: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      email: new rxcompForm.FormControl(null, [rxcompForm.Validators.RequiredValidator(), rxcompForm.Validators.EmailValidator()]),
+      company: new rxcompForm.FormControl(null),
+      role: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      country: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      message: new rxcompForm.FormControl(null),
+      newsletter: new rxcompForm.FormControl(null),
+      privacy: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
+      checkRequest: window.antiforgery,
+      checkField: '',
+      action: window.formaction
+    });
+    var controls = form.controls;
+    controls.role.options = data.roles;
+    controls.country.options = data.countries;
+    this.controls = controls;
+    form.changes$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (changes) {
+      // console.log('WorkWithUsComponent.form.changes$', changes, form.valid);
+      _this4.pushChanges();
+    });
+    this.data = data;
+    this.form = form;
+    this.error = null;
+    this.success = false;
+  };
+
+  _proto.test = function test() {
+    var role = this.controls.role.options.length ? this.controls.role.options[0].id : null;
+    this.form.patch({
+      firstName: 'Jhon',
+      lastName: 'Appleseed',
+      email: 'jhonappleseed@gmail.com',
+      company: 'Websolute',
+      country: 'Italy',
+      role: role,
+      message: 'Hi!',
+      privacy: true,
+      checkRequest: window.antiforgery,
+      checkField: ''
+    });
+  };
+
+  _proto.reset = function reset() {
+    this.form.reset();
+  };
+
+  _proto.onSubmit = function onSubmit() {
+    var _this5 = this;
+
+    // console.log('ContactsComponent.onSubmit', 'form.valid', valid);
+    if (this.form.valid) {
+      // console.log('ContactsComponent.onSubmit', this.form.value);
+      this.form.submitted = true;
+      HttpService.post$(globalVars.ajaxurl, this.form.value).subscribe(function (response) {
+        _this5.success = true;
+
+        _this5.form.reset(); // this.pushChanges();
+
+        /*
+        dataLayer.push({
+        	'event': 'formSubmission',
+        	'form type': 'Contatti'
+        });
+        */
+
+      }, function (error) {
+        console.log('ContactsComponent.error', error);
+        _this5.error = error;
+
+        _this5.pushChanges();
+      });
+    } else {
+      this.form.touched = true;
+    }
+  };
+
+  return DownloadsPageComponent;
+}(PageComponent);
+DownloadsPageComponent.meta = {
+  selector: '[downloads-page]'
+};var DROPDOWN_ID = 1000000;
 
 var DropdownDirective = /*#__PURE__*/function (_Directive) {
   _inheritsLoose(DropdownDirective, _Directive);
@@ -2738,7 +4293,7 @@ ControlComponent.meta = {
   var _proto = ControlCheckboxComponent.prototype;
 
   _proto.onInit = function onInit() {
-    this.label = 'label';
+    this.label = this.label || 'label';
   };
 
   return ControlCheckboxComponent;
@@ -2939,14 +4494,36 @@ ControlCheckboxComponent.meta = {
 }(ControlComponent);
 ControlCustomSelectComponent.meta = {
   selector: '[control-custom-select]',
-  inputs: ['control', 'label', 'multiple'],
+  inputs: ['control', 'label', 'multiple', 'name'],
   template:
   /* html */
-  "\n\t\t<div class=\"group--form--select\" [class]=\"{ required: control.validators.length, multiple: isMultiple }\" [dropdown]=\"dropdownId\" (dropped)=\"onDropped($event)\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<span class=\"control--select\" [innerHTML]=\"getLabel()\"></span>\n\t\t\t<svg class=\"icon icon--caret-down\"><use xlink:href=\"#caret-down\"></use></svg>\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t\t<div class=\"dropdown\" [dropdown-item]=\"dropdownId\">\n\t\t\t<div class=\"category\" [innerHTML]=\"label\"></div>\n\t\t\t<ul class=\"nav--dropdown\" [class]=\"{ multiple: isMultiple }\">\n\t\t\t<li *for=\"let item of control.options\" (click)=\"setOption(item)\"><span [class]=\"{ active: hasOption(item) }\" [innerHTML]=\"item.name\"></span></li>\n\t\t\t</ul>\n\t\t</div>\n\t"
+  "\n\t\t<div class=\"group--form--select\" [class]=\"{ required: control.validators.length, multiple: isMultiple }\" [dropdown]=\"dropdownId\" (dropped)=\"onDropped($event)\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<span class=\"control--select\" [innerHTML]=\"getLabel()\"></span>\n            <input type=\"text\" style=\"display:none\" class=\"control--select\" [formControl]=\"control\" [formControlName]=\"name\" />\n\t\t\t<svg class=\"icon icon--caret-down\"><use xlink:href=\"#caret-down\"></use></svg>\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t\t<div class=\"dropdown\" [dropdown-item]=\"dropdownId\">\n\t\t\t<div class=\"category\" [innerHTML]=\"label\"></div>\n\t\t\t<ul class=\"nav--dropdown\" [class]=\"{ multiple: isMultiple }\">\n\t\t\t<li *for=\"let item of control.options\" (click)=\"setOption(item)\"><span [class]=\"{ active: hasOption(item) }\" [innerHTML]=\"item.name\"></span></li>\n\t\t\t</ul>\n\t\t</div>\n\t"
   /*  (click)="onClick($event)" (clickOutside)="onClickOutside($event)" */
 
   /*  <!-- <div class="dropdown" [class]="{ dropped: dropped }"> --> */
 
+};var ControlPasswordComponent = /*#__PURE__*/function (_ControlComponent) {
+  _inheritsLoose(ControlPasswordComponent, _ControlComponent);
+
+  function ControlPasswordComponent() {
+    return _ControlComponent.apply(this, arguments) || this;
+  }
+
+  var _proto = ControlPasswordComponent.prototype;
+
+  _proto.onInit = function onInit() {
+    this.label = 'label';
+    this.required = false;
+  };
+
+  return ControlPasswordComponent;
+}(ControlComponent);
+ControlPasswordComponent.meta = {
+  selector: '[control-password]',
+  inputs: ['control', 'label', 'name'],
+  template:
+  /* html */
+  "\n\t\t<div class=\"group--form\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<input type=\"password\" class=\"control--text\" [formControl]=\"control\" [placeholder]=\"label\" [formControlName]=\"name\" />\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
 };var ControlTextComponent = /*#__PURE__*/function (_ControlComponent) {
   _inheritsLoose(ControlTextComponent, _ControlComponent);
 
@@ -2965,10 +4542,10 @@ ControlCustomSelectComponent.meta = {
 }(ControlComponent);
 ControlTextComponent.meta = {
   selector: '[control-text]',
-  inputs: ['control', 'label'],
+  inputs: ['control', 'label', 'name'],
   template:
   /* html */
-  "\n\t\t<div class=\"group--form\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<input type=\"text\" class=\"control--text\" [formControl]=\"control\" [placeholder]=\"label\" />\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
+  "\n\t\t<div class=\"group--form\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<input type=\"text\" class=\"control--text\" [formControl]=\"control\" [placeholder]=\"label\" [formControlName]=\"name\" />\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
 };var ControlTextareaComponent = /*#__PURE__*/function (_ControlComponent) {
   _inheritsLoose(ControlTextareaComponent, _ControlComponent);
 
@@ -2987,10 +4564,10 @@ ControlTextComponent.meta = {
 }(ControlComponent);
 ControlTextareaComponent.meta = {
   selector: '[control-textarea]',
-  inputs: ['control', 'label'],
+  inputs: ['control', 'label', 'name'],
   template:
   /* html */
-  "\n\t\t<div class=\"group--form--textarea\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<textarea class=\"control--text\" [formControl]=\"control\" [innerHTML]=\"label\" rows=\"4\"></textarea>\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
+  "\n\t\t<div class=\"group--form--textarea\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label [innerHTML]=\"label\"></label>\n\t\t\t<textarea class=\"control--text\" [formControl]=\"control\" [innerHTML]=\"label\" rows=\"4\" [formControlName]=\"name\"></textarea>\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
 };var ErrorsComponent = /*#__PURE__*/function (_ControlComponent) {
   _inheritsLoose(ErrorsComponent, _ControlComponent);
 
@@ -3017,82 +4594,7 @@ ErrorsComponent.meta = {
   template:
   /* html */
   "\n\t<div class=\"inner\" [style]=\"{ display: control.invalid && control.touched ? 'block' : 'none' }\">\n\t\t<div class=\"error\" *for=\"let [key, value] of control.errors\">\n\t\t\t<span [innerHTML]=\"getLabel(key, value)\"></span>\n\t\t\t<!-- <span class=\"key\" [innerHTML]=\"key\"></span> <span class=\"value\" [innerHTML]=\"value | json\"></span> -->\n\t\t</div>\n\t</div>\n\t"
-};var NODE = typeof module !== 'undefined' && module.exports;
-var PARAMS = NODE ? {
-  get: function get() {}
-} : new URLSearchParams(window.location.search);
-var DEBUG =  PARAMS.get('debug') != null;
-var BASE_HREF = NODE ? null : document.querySelector('base').getAttribute('href');
-var STATIC = NODE ? false : window && (window.location.port === '40525' || window.location.host === 'actarian.github.io' || window.location.host === 'cantalupi.herokuapp.com');
-var DEVELOPMENT = NODE ? false : window && ['localhost', '127.0.0.1', '0.0.0.0'].indexOf(window.location.host.split(':')[0]) !== -1;
-var PRODUCTION = !DEVELOPMENT;
-var ENV = {
-  NAME: 'cantalupi',
-  STATIC: STATIC,
-  DEVELOPMENT: DEVELOPMENT,
-  PRODUCTION: PRODUCTION,
-  RESOURCE: '/docs/',
-  STATIC_RESOURCE: './',
-  API: '/wp-json/cantalupi/v1',
-  STATIC_API: DEVELOPMENT && !STATIC ? '/Client/docs/api' : './api'
-};
-function getApiUrl(url, useStatic) {
-  var base = useStatic || STATIC ? ENV.STATIC_API : ENV.API;
-  var json = useStatic || STATIC ? '.json' : '';
-  return "" + base + url + json;
-}
-function getSlug(url) {
-  if (!url) {
-    return url;
-  }
-
-  if (url.indexOf("/" + ENV.NAME) !== 0) {
-    return url;
-  }
-
-  if (STATIC) {
-    console.log(url);
-    return url;
-  }
-
-  url = url.replace("/" + ENV.NAME, '');
-  url = url.replace('.html', '');
-  return "/it/it" + url;
-}
-var Environment = /*#__PURE__*/function () {
-  _createClass(Environment, [{
-    key: "href",
-    get: function get() {
-      if (window.location.host.indexOf('herokuapp') !== -1) {
-        return 'https://raw.githubusercontent.com/actarian/cantalupi/master/docs/';
-      } else {
-        return BASE_HREF;
-      }
-    }
-  }, {
-    key: "host",
-    get: function get() {
-      var host = window.location.host.replace('127.0.0.1', '192.168.1.2');
-
-      if (host.substr(host.length - 1, 1) === '/') {
-        host = host.substr(0, host.length - 1);
-      }
-
-      return window.location.protocol + "//" + host + BASE_HREF;
-    }
-  }]);
-
-  function Environment(options) {
-    if (options) {
-      Object.assign(this, options);
-    }
-  }
-
-  return Environment;
-}();
-var environment = new Environment({
-  port: 5000
-});var TestComponent = /*#__PURE__*/function (_Component) {
+};var TestComponent = /*#__PURE__*/function (_Component) {
   _inheritsLoose(TestComponent, _Component);
 
   function TestComponent() {
@@ -3122,143 +4624,6 @@ TestComponent.meta = {
   template:
   /* html */
   "\n\t<div class=\"group--form--results\" *if=\"env.DEVELOPMENT\">\n\t\t<code [innerHTML]=\"form.value | json\"></code>\n\t\t<button type=\"button\" class=\"btn--link\" (click)=\"onTest($event)\"><span>test</span></button>\n\t\t<button type=\"button\" class=\"btn--link\" (click)=\"onReset($event)\"><span>reset</span></button>\n\t</div>\n\t"
-};var ModalEvent = function ModalEvent(data) {
-  this.data = data;
-};
-var ModalResolveEvent = /*#__PURE__*/function (_ModalEvent) {
-  _inheritsLoose(ModalResolveEvent, _ModalEvent);
-
-  function ModalResolveEvent() {
-    return _ModalEvent.apply(this, arguments) || this;
-  }
-
-  return ModalResolveEvent;
-}(ModalEvent);
-var ModalRejectEvent = /*#__PURE__*/function (_ModalEvent2) {
-  _inheritsLoose(ModalRejectEvent, _ModalEvent2);
-
-  function ModalRejectEvent() {
-    return _ModalEvent2.apply(this, arguments) || this;
-  }
-
-  return ModalRejectEvent;
-}(ModalEvent);
-
-var ModalService = /*#__PURE__*/function () {
-  function ModalService() {}
-
-  ModalService.open$ = function open$(modal) {
-    var _this = this;
-
-    return this.getTemplate$(modal.src).pipe(operators.map(function (template) {
-      return {
-        node: _this.getNode(template),
-        data: modal.data,
-        modal: modal
-      };
-    }), operators.tap(function (node) {
-      return _this.modal$.next(node);
-    }), operators.switchMap(function (node) {
-      return _this.events$;
-    }));
-  };
-
-  ModalService.load$ = function load$(modal) {};
-
-  ModalService.getTemplate$ = function getTemplate$(url) {
-    return rxjs.from(fetch(url).then(function (response) {
-      return response.text();
-    }));
-  };
-
-  ModalService.getNode = function getNode(template) {
-    var div = document.createElement("div");
-    div.innerHTML = template;
-    var node = div.firstElementChild;
-    return node;
-  };
-
-  ModalService.reject = function reject(data) {
-    this.modal$.next(null);
-    this.events$.next(new ModalRejectEvent(data));
-  };
-
-  ModalService.resolve = function resolve(data) {
-    this.modal$.next(null);
-    this.events$.next(new ModalResolveEvent(data));
-  };
-
-  return ModalService;
-}();
-ModalService.modal$ = new rxjs.Subject();
-ModalService.events$ = new rxjs.Subject();var ModalOutletComponent = /*#__PURE__*/function (_Component) {
-  _inheritsLoose(ModalOutletComponent, _Component);
-
-  function ModalOutletComponent() {
-    return _Component.apply(this, arguments) || this;
-  }
-
-  var _proto = ModalOutletComponent.prototype;
-
-  _proto.onInit = function onInit() {
-    var _this = this;
-
-    var _getContext = rxcomp.getContext(this),
-        node = _getContext.node;
-
-    this.modalNode = node.querySelector('.modal-outlet__modal');
-    ModalService.modal$.pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (modal) {
-      _this.modal = modal;
-    });
-  };
-
-  _proto.onRegister = function onRegister(event) {
-    // console.log('ModalComponent.onRegister');
-    this.pushChanges();
-  };
-
-  _proto.onLogin = function onLogin(event) {
-    // console.log('ModalComponent.onLogin');
-    this.pushChanges();
-  };
-
-  _proto.reject = function reject(event) {
-    ModalService.reject();
-  };
-
-  _createClass(ModalOutletComponent, [{
-    key: "modal",
-    get: function get() {
-      return this.modal_;
-    },
-    set: function set(modal) {
-      // console.log('ModalOutletComponent set modal', modal, this);
-      var _getContext2 = rxcomp.getContext(this),
-          module = _getContext2.module;
-
-      if (this.modal_ && this.modal_.node) {
-        module.remove(this.modal_.node, this);
-        this.modalNode.removeChild(this.modal_.node);
-      }
-
-      if (modal && modal.node) {
-        this.modal_ = modal;
-        this.modalNode.appendChild(modal.node);
-        var instances = module.compile(modal.node);
-      }
-
-      this.modal_ = modal;
-      this.pushChanges();
-    }
-  }]);
-
-  return ModalOutletComponent;
-}(rxcomp.Component);
-ModalOutletComponent.meta = {
-  selector: '[modal-outlet]',
-  template:
-  /* html */
-  "\n\t<div class=\"modal-outlet__container\" [class]=\"{ active: modal }\">\n\t\t<div class=\"modal-outlet__background\" (click)=\"reject($event)\"></div>\n\t\t<div class=\"modal-outlet__modal\"></div>\n\t</div>\n\t"
 };var GalleryModalComponent = /*#__PURE__*/function (_Component) {
   _inheritsLoose(GalleryModalComponent, _Component);
 
@@ -6535,535 +7900,7 @@ LocomotiveDirective.meta = {
 }(rxcomp.Component);
 ModalComponent.meta = {
   selector: '[modal]'
-};var FilterMode = {
-  SELECT: 'select',
-  AND: 'and',
-  OR: 'or'
-};
-
-var FilterItem = /*#__PURE__*/function () {
-  _createClass(FilterItem, [{
-    key: "empty",
-    get: function get() {
-      return this.values.length === 0;
-    }
-  }]);
-
-  function FilterItem(filter) {
-    this.change$ = new rxjs.BehaviorSubject();
-    this.mode = FilterMode.SELECT;
-    this.placeholder = 'Select';
-    this.values = [];
-    this.options = [];
-
-    if (filter) {
-      if (filter.mode === FilterMode.SELECT) {
-        filter.options.unshift({
-          label: filter.placeholder,
-          values: []
-        });
-      }
-
-      Object.assign(this, filter);
-    }
-  }
-
-  var _proto = FilterItem.prototype;
-
-  _proto.filter = function filter(item, value) {
-    return true; // item.options.indexOf(value) !== -1;
-  };
-
-  _proto.match = function match(item) {
-    var _this = this;
-
-    var match;
-
-    if (this.mode === FilterMode.OR) {
-      match = this.values.length ? false : true;
-      this.values.forEach(function (value) {
-        match = match || _this.filter(item, value);
-      });
-    } else {
-      match = true;
-      this.values.forEach(function (value) {
-        match = match && _this.filter(item, value);
-      });
-    }
-
-    return match;
-  };
-
-  _proto.getSelectedOption = function getSelectedOption() {
-    var _this2 = this;
-
-    return this.options.find(function (x) {
-      return _this2.has(x);
-    });
-  };
-
-  _proto.getLabel = function getLabel() {
-    if (this.mode === FilterMode.SELECT) {
-      var selectedOption = this.getSelectedOption();
-      return selectedOption ? selectedOption.label : this.placeholder;
-    } else {
-      return this.label;
-    }
-  };
-
-  _proto.hasAny = function hasAny() {
-    return this.values.length > 0;
-  };
-
-  _proto.has = function has(item) {
-    return this.values.indexOf(item.value) !== -1;
-  };
-
-  _proto.set = function set(item) {
-    if (this.mode === FilterMode.SELECT) {
-      this.values = [];
-    }
-
-    var index = this.values.indexOf(item.value);
-
-    if (index === -1) {
-      if (item.value !== undefined) {
-        this.values.push(item.value);
-      }
-    }
-
-    if (this.mode === FilterMode.SELECT) {
-      this.placeholder = item.label;
-    } // console.log('FilterItem.set', item);
-
-
-    this.change$.next();
-  };
-
-  _proto.remove = function remove(item) {
-    var index = this.values.indexOf(item.value);
-
-    if (index !== -1) {
-      this.values.splice(index, 1);
-    }
-
-    if (this.mode === FilterMode.SELECT) {
-      var first = this.options[0];
-      this.placeholder = first.label;
-    } // console.log('FilterItem.remove', item);
-
-
-    this.change$.next();
-  };
-
-  _proto.toggle = function toggle(item) {
-    if (this.has(item)) {
-      this.remove(item);
-    } else {
-      this.set(item);
-    }
-  };
-
-  _proto.toggleActive = function toggleActive() {
-    this.active = !this.active;
-  };
-
-  _proto.clear = function clear() {
-    this.values = [];
-
-    if (this.mode === FilterMode.SELECT) {
-      var first = this.options[0];
-      this.placeholder = first.label;
-    } // console.log('FilterItem.clear', item);
-
-
-    this.change$.next();
-  };
-
-  return FilterItem;
-}();var LocationService = /*#__PURE__*/function () {
-  function LocationService() {}
-
-  LocationService.get = function get(key) {
-    var params = new URLSearchParams(window.location.search); // console.log('LocationService.get', params);
-
-    return params.get(key);
-  };
-
-  LocationService.set = function set(keyOrValue, value) {
-    var params = new URLSearchParams(window.location.search);
-
-    if (typeof keyOrValue === 'string') {
-      params.set(keyOrValue, value);
-    } else {
-      params.set(keyOrValue, '');
-    }
-
-    this.replace(params); // console.log('LocationService.set', params, keyOrValue, value);
-  };
-
-  LocationService.replace = function replace(params) {
-    if (window.history && window.history.pushState) {
-      var title = document.title;
-      var url = window.location.href.split('?')[0] + "?" + params.toString();
-      window.history.pushState(params.toString(), title, url);
-    }
-  };
-
-  LocationService.deserialize = function deserialize(key) {
-    var encoded = this.get('params');
-    return this.decode(key, encoded);
-  };
-
-  LocationService.serialize = function serialize(keyOrValue, value) {
-    var params = this.deserialize();
-    var encoded = this.encode(keyOrValue, value, params);
-    this.set('params', encoded);
-  };
-
-  LocationService.decode = function decode(key, encoded) {
-    var decoded = null;
-
-    if (encoded) {
-      var json = window.atob(encoded);
-      decoded = JSON.parse(json);
-    }
-
-    if (key && decoded) {
-      decoded = decoded[key];
-    }
-
-    return decoded || null;
-  };
-
-  LocationService.encode = function encode(keyOrValue, value, params) {
-    params = params || {};
-    var encoded = null;
-
-    if (typeof keyOrValue === 'string') {
-      params[keyOrValue] = value;
-    } else {
-      params = keyOrValue;
-    }
-
-    var json = JSON.stringify(params);
-    encoded = window.btoa(json);
-    return encoded;
-  };
-
-  return LocationService;
-}();var FilterService = /*#__PURE__*/function () {
-  function FilterService(options, initialParams, callback) {
-    var filters = {};
-    this.filters = filters;
-
-    if (options) {
-      Object.keys(options).forEach(function (key) {
-        var filter = new FilterItem(options[key]);
-
-        if (typeof callback === 'function') {
-          callback(key, filter);
-        }
-
-        filters[key] = filter;
-      });
-      this.deserialize(this.filters, initialParams);
-    }
-  }
-
-  var _proto = FilterService.prototype;
-
-  _proto.getParamsCount = function getParamsCount(params) {
-    if (params) {
-      var paramsCount = Object.keys(params).reduce(function (p, c, i) {
-        var values = params[c];
-        return p + (values ? values.length : 0);
-      }, 0);
-      return paramsCount;
-    } else {
-      return 0;
-    }
-  };
-
-  _proto.deserialize = function deserialize(filters, initialParams) {
-    var params;
-
-    if (initialParams && this.getParamsCount(initialParams)) {
-      params = initialParams;
-    }
-
-    var locationParams = LocationService.deserialize('filters');
-
-    if (locationParams && this.getParamsCount(locationParams)) {
-      params = locationParams;
-    }
-
-    if (params) {
-      Object.keys(filters).forEach(function (key) {
-        filters[key].values = params[key] || [];
-      });
-    }
-
-    return filters;
-  };
-
-  _proto.serialize = function serialize(filters) {
-    var params = {};
-    var any = false;
-    Object.keys(filters).forEach(function (x) {
-      var filter = filters[x];
-
-      if (filter.values && filter.values.length > 0) {
-        params[x] = filter.values;
-        any = true;
-      }
-    });
-
-    if (!any) {
-      params = null;
-    } // console.log('FilterService.serialize', params);
-
-
-    LocationService.serialize('filters', params);
-    return params;
-  };
-
-  _proto.items$ = function items$(items) {
-    var _this = this;
-
-    var filters = this.filters;
-    var changes = Object.keys(filters).map(function (key) {
-      return filters[key].change$;
-    });
-    this.updateFilterStates(filters, items, true);
-    return rxjs.merge.apply(void 0, changes).pipe(operators.auditTime(1), // tap(() => console.log(filters)),
-    operators.tap(function () {
-      return _this.serialize(filters);
-    }), operators.map(function () {
-      return _this.filterItems(items);
-    }), operators.tap(function () {
-      return _this.updateFilterStates(filters, items);
-    }));
-  };
-
-  _proto.filterItems = function filterItems(items, skipFilter) {
-    var _this2 = this;
-
-    var filters = Object.keys(this.filters).map(function (x) {
-      return _this2.filters[x];
-    }).filter(function (x) {
-      return x.values && x.values.length > 0;
-    });
-    items = items.filter(function (item) {
-      var has = true;
-      filters.forEach(function (filter) {
-        if (filter !== skipFilter) {
-          has = has && filter.match(item);
-        }
-      });
-      return has;
-    });
-    return items;
-  };
-
-  _proto.updateFilterStates = function updateFilterStates(filters, items, initialCount) {
-    var _this3 = this;
-
-    Object.keys(filters).forEach(function (x) {
-      var filter = filters[x];
-      var filteredItems = initialCount ? items : _this3.filterItems(items, filter);
-      filter.options.forEach(function (option) {
-        var count = 0;
-
-        if (option.value) {
-          var i = 0;
-
-          while (i < filteredItems.length) {
-            var item = filteredItems[i];
-
-            if (filter.filter(item, option.value)) {
-              count++;
-            }
-
-            i++;
-          }
-        } else {
-          count = filteredItems.length;
-        }
-
-        initialCount ? option.initialCount = count : option.count = count;
-        option.disabled = count === 0;
-      });
-
-      if (initialCount) {
-        filter.options.sort(function (a, b) {
-          return b.initialCount - a.initialCount;
-        });
-      }
-    });
-  };
-
-  return FilterService;
-}();var PageComponent = /*#__PURE__*/function (_Component) {
-  _inheritsLoose(PageComponent, _Component);
-
-  function PageComponent() {
-    return _Component.apply(this, arguments) || this;
-  }
-
-  var _proto = PageComponent.prototype;
-
-  _proto.onInit = function onInit() {};
-
-  return PageComponent;
-}(rxcomp.Component);
-PageComponent.meta = {
-  selector: '[page]'
-};var CookieStorageService = /*#__PURE__*/function (_StorageService) {
-  _inheritsLoose(CookieStorageService, _StorageService);
-
-  function CookieStorageService() {
-    return _StorageService.apply(this, arguments) || this;
-  }
-
-  CookieStorageService.clear = function clear() {
-    var _this = this;
-
-    this.toRawArray().forEach(function (x) {
-      _this.setter(x.name, '', -1);
-    });
-  };
-
-  CookieStorageService.delete = function _delete(name) {
-    this.setter(name, '', -1);
-  };
-
-  CookieStorageService.exist = function exist(name) {
-    return document.cookie.indexOf(';' + name + '=') !== -1 || document.cookie.indexOf(name + '=') === 0;
-  };
-
-  CookieStorageService.get = function get(name) {
-    return this.decode(this.getRaw(name));
-  };
-
-  CookieStorageService.set = function set(name, value, days) {
-    this.setter(name, this.encode(value), days);
-  };
-
-  CookieStorageService.getRaw = function getRaw(name) {
-    var value = null;
-    var cookies = this.toRawArray();
-    var cookie = cookies.find(function (x) {
-      return x.name === name;
-    });
-
-    if (cookie) {
-      value = cookie.value;
-    }
-
-    return value;
-  };
-
-  CookieStorageService.setRaw = function setRaw(name, value, days) {
-    this.setter(name, value, days);
-  };
-
-  CookieStorageService.toArray = function toArray() {
-    var _this2 = this;
-
-    return this.toRawArray().map(function (x) {
-      x.value = _this2.decode(x.value);
-      return x;
-    });
-  };
-
-  CookieStorageService.toRawArray = function toRawArray() {
-    return document.cookie.split(';').map(function (x) {
-      var items = x.split('=');
-      return {
-        name: items[0].trim(),
-        value: items[1] ? items[1].trim() : null
-      };
-    }).filter(function (x) {
-      return x.name !== '';
-    });
-  };
-
-  CookieStorageService.setter = function setter(name, value, days) {
-    var expires;
-
-    if (days) {
-      var date = new Date();
-      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-      expires = '; expires=' + date.toUTCString();
-    } else {
-      expires = '';
-    }
-
-    document.cookie = name + '=' + value + expires + '; path=/';
-    this.items$.next(this.toArray());
-  };
-
-  CookieStorageService.isSupported = function isSupported() {
-    var isBrowser = typeof window !== 'undefined' && typeof window.document !== 'undefined';
-    return isBrowser;
-  };
-
-  return CookieStorageService;
-}(StorageService);
-
-_defineProperty(CookieStorageService, "items$", new rxjs.ReplaySubject(1));var ApiService = /*#__PURE__*/function (_HttpService) {
-  _inheritsLoose(ApiService, _HttpService);
-
-  function ApiService() {
-    return _HttpService.apply(this, arguments) || this;
-  }
-
-  // || 'it';
-  ApiService.get$ = function get$(url, data, format) {
-    return _HttpService.get$.call(this, getApiUrl(url), data, format);
-  };
-
-  ApiService.delete$ = function delete$(url) {
-    return _HttpService.delete$.call(this, getApiUrl(url));
-  };
-
-  ApiService.post$ = function post$(url, data) {
-    return _HttpService.post$.call(this, getApiUrl(url), data);
-  };
-
-  ApiService.put$ = function put$(url, data) {
-    return _HttpService.put$.call(this, getApiUrl(url), data);
-  };
-
-  ApiService.patch$ = function patch$(url, data) {
-    return _HttpService.patch$.call(this, getApiUrl(url), data);
-  };
-
-  ApiService.staticGet$ = function staticGet$(url, data, format) {
-    return _HttpService.get$.call(this, getApiUrl(url, true), data, format);
-  };
-
-  ApiService.staticDelete$ = function staticDelete$(url) {
-    return _HttpService.delete$.call(this, getApiUrl(url, true));
-  };
-
-  ApiService.staticPost$ = function staticPost$(url, data) {
-    return _HttpService.post$.call(this, getApiUrl(url, true), data);
-  };
-
-  ApiService.staticPut$ = function staticPut$(url, data) {
-    return _HttpService.put$.call(this, getApiUrl(url, true), data);
-  };
-
-  ApiService.staticPatch$ = function staticPatch$(url, data) {
-    return _HttpService.patch$.call(this, getApiUrl(url, true), data);
-  };
-
-  return ApiService;
-}(HttpService);
-
-_defineProperty(ApiService, "currentLanguage", CookieStorageService.getRaw('wp-wpml_current_language'));var NewsService = /*#__PURE__*/function () {
+};var NewsService = /*#__PURE__*/function () {
   function NewsService() {}
 
   NewsService.all$ = function all$() {
@@ -7772,235 +8609,7 @@ ScrollToDirective.meta = {
   }]);
 
   return DownloadService;
-}();var LocalStorageService = /*#__PURE__*/function (_StorageService) {
-  _inheritsLoose(LocalStorageService, _StorageService);
-
-  function LocalStorageService() {
-    return _StorageService.apply(this, arguments) || this;
-  }
-
-  LocalStorageService.clear = function clear() {
-    if (this.isSupported()) {
-      localStorage.clear();
-      this.items$.next(this.toArray());
-    }
-  };
-
-  LocalStorageService.delete = function _delete(name) {
-    if (this.isSupported()) {
-      localStorage.removeItem(name);
-      this.items$.next(this.toArray());
-    }
-  };
-
-  LocalStorageService.exist = function exist(name) {
-    if (this.isSupported()) {
-      return localStorage.getItem(name) !== undefined;
-    } else {
-      return false;
-    }
-  };
-
-  LocalStorageService.get = function get(name) {
-    return this.decode(this.getRaw(name));
-  };
-
-  LocalStorageService.set = function set(name, value) {
-    this.setRaw(name, this.encode(value));
-  };
-
-  LocalStorageService.getRaw = function getRaw(name) {
-    var value = null;
-
-    if (this.isSupported()) {
-      value = localStorage.getItem(name);
-    }
-
-    return value;
-  };
-
-  LocalStorageService.setRaw = function setRaw(name, value) {
-    if (value && this.isSupported()) {
-      localStorage.setItem(name, value);
-      this.items$.next(this.toArray());
-    }
-  };
-
-  LocalStorageService.toArray = function toArray() {
-    var _this = this;
-
-    return this.toRawArray().map(function (x) {
-      x.value = _this.decode(x.value);
-      return x;
-    });
-  };
-
-  LocalStorageService.toRawArray = function toRawArray() {
-    var _this2 = this;
-
-    if (this.isSupported()) {
-      return Object.keys(localStorage).map(function (key) {
-        return {
-          name: key,
-          value: _this2.getRaw(key)
-        };
-      });
-    } else {
-      return [];
-    }
-  };
-
-  LocalStorageService.isSupported = function isSupported() {
-    if (this.supported) {
-      return true;
-    }
-
-    return StorageService.isSupported('localStorage');
-  };
-
-  return LocalStorageService;
-}(StorageService);
-
-_defineProperty(LocalStorageService, "items$", new rxjs.ReplaySubject(1));var User = /*#__PURE__*/function () {
-  _createClass(User, [{
-    key: "avatar",
-    get: function get() {
-      return (this.firstName || '?').substr(0, 1).toUpperCase() + (this.lastName || '?').substr(0, 1).toUpperCase();
-    }
-  }, {
-    key: "fullName",
-    get: function get() {
-      return this.firstName + ' ' + this.lastName;
-    }
-  }]);
-
-  function User(data) {
-    if (data) {
-      Object.assign(this, data);
-    }
-  }
-
-  return User;
-}();
-
-var UserService = /*#__PURE__*/function () {
-  function UserService() {}
-
-  UserService.getCurrentUser = function getCurrentUser() {
-    return this.user$_.getValue();
-  };
-
-  UserService.setUser = function setUser(user) {
-    this.user$_.next(user);
-  };
-
-  UserService.me$ = function me$() {
-    var _this = this;
-
-    //return ApiService.staticGet$(`/user/me`).pipe(
-    return ApiService.get$("/user/me").pipe( // map((user) => this.mapStatic__(user, 'me')),
-    operators.map(function (response) {
-      return _this.mapUser(response.data, response.static);
-    }), operators.catchError(function (error) {
-      return rxjs.of(null);
-    }), operators.switchMap(function (user) {
-      _this.setUser(user);
-
-      return _this.user$_;
-    }));
-  };
-
-  UserService.register$ = function register$(payload) {
-    var _this2 = this;
-
-    return ApiService.staticPost$("/user/register", payload).pipe(operators.map(function (response) {
-      return _this2.mapStatic__(response.data, response.static, 'register');
-    }));
-  };
-
-  UserService.login$ = function login$(payload) {
-    var _this3 = this;
-
-    return ApiService.staticPost$("/user/login", payload).pipe(operators.map(function (response) {
-      return _this3.mapStatic__(response.data, response.static, 'login');
-    }));
-  };
-
-  UserService.logout$ = function logout$() {
-    var _this4 = this;
-
-    return ApiService.staticPost$("/user/logout").pipe(operators.map(function (response) {
-      return _this4.mapStatic__(response.data, response.static, 'logout');
-    }));
-  };
-
-  UserService.retrieve$ = function retrieve$(payload) {
-    var _this5 = this;
-
-    return ApiService.staticPost$("/user/retrievepassword", payload).pipe(operators.map(function (response) {
-      return _this5.mapStatic__(response.data, response.static, 'retrieve');
-    }));
-  };
-
-  UserService.update$ = function update$(payload) {
-    var _this6 = this;
-
-    return ApiService.staticPost$("/user/updateprofile", payload).pipe(operators.map(function (response) {
-      return _this6.mapStatic__(response.data, response.static, 'register');
-    }));
-  };
-
-  UserService.mapStatic__ = function mapStatic__(user, isStatic, action) {
-    if (action === void 0) {
-      action = 'me';
-    }
-
-    if (!isStatic) {
-      return user;
-    }
-
-    switch (action) {
-      case 'me':
-        if (!LocalStorageService.exist('user')) {
-          user = null;
-        }
-        break;
-
-      case 'register':
-        LocalStorageService.set('user', user);
-        break;
-
-      case 'login':
-        LocalStorageService.set('user', user);
-        break;
-
-      case 'logout':
-        LocalStorageService.delete('user');
-        break;
-    }
-
-    return user;
-  };
-
-  UserService.fake = function fake(user) {
-    user.firstName = user.firstName || 'Jhon';
-    user.lastName = user.lastName || 'Appleseed';
-    return user;
-  };
-
-  UserService.mapUser = function mapUser(user, isStatic) {
-    return isStatic ? UserService.fake(new User(user)) : new User(user);
-  };
-
-  UserService.mapUsers = function mapUsers(users, isStatic) {
-    return users ? users.map(function (x) {
-      return UserService.mapUser(x, isStatic);
-    }) : [];
-  };
-
-  return UserService;
-}();
-UserService.user$_ = new rxjs.BehaviorSubject(null);var src$2 = STATIC ? '/tiemme-com/club-modal.html' : '/Viewdoc.cshtml?co_id=23649';
+}();var src$2 = STATIC ? '/cantalupi/auth-modal.html' : '/cantalupi/auth-modal.html';
 
 var SecureDirective = /*#__PURE__*/function (_Directive) {
   _inheritsLoose(SecureDirective, _Directive);
@@ -8017,7 +8626,6 @@ var SecureDirective = /*#__PURE__*/function (_Directive) {
     var _getContext = rxcomp.getContext(this),
         node = _getContext.node;
 
-    this.href = node.getAttribute('href');
     rxjs.fromEvent(node, 'click').pipe(operators.takeUntil(this.unsubscribe$)).subscribe(function (event) {
       event.preventDefault();
 
@@ -8025,32 +8633,28 @@ var SecureDirective = /*#__PURE__*/function (_Directive) {
     });
   };
 
-  _proto.onChanges = function onChanges() {
-    var _getContext2 = rxcomp.getContext(this),
-        node = _getContext2.node;
-
-    this.href = node.getAttribute('href');
-  };
-
   _proto.tryDownloadHref = function tryDownloadHref() {
     var _this2 = this;
 
-    ApiService.staticGet$(this.href, undefined, 'blob').pipe(operators.first(), operators.map(function (response) {
+    var _getContext2 = rxcomp.getContext(this),
+        node = _getContext2.node;
+
+    var href = node.getAttribute('href');
+    ApiService.staticGet$(href, undefined, 'blob').pipe(operators.first(), operators.map(function (response) {
       return response.data;
     })).subscribe(function (blob) {
-      DownloadService.download(blob, _this2.href.split('/').pop());
+      DownloadService.download(blob, href.split('/').pop());
     }, function (error) {
-      console.log(error);
+      console.log('SecureDirective.tryDownloadHref', error);
 
-      _this2.onLogin(event);
+      _this2.onLogin();
     });
   };
 
-  _proto.onLogin = function onLogin(event) {
+  _proto.onLogin = function onLogin() {
     var _this3 = this;
 
-    // console.log('SecureDirective.onLogin');
-    // event.preventDefault();
+    console.log('SecureDirective.onLogin');
     ModalService.open$({
       src: src$2,
       data: {
@@ -8064,23 +8668,7 @@ var SecureDirective = /*#__PURE__*/function (_Directive) {
         _this3.tryDownloadHref();
       }
     }); // this.pushChanges();
-  }
-  /*
-  onRegister(event) {
-  	// console.log('SecureDirective.onRegister');
-  	// event.preventDefault();
-  	ModalService.open$({ src: src, data: { view: 2 } }).pipe(
-  		takeUntil(this.unsubscribe$)
-  	).subscribe(event => {
-  		// console.log('SecureDirective.onRegister', event);
-  		if (event instanceof ModalResolveEvent) {
-  			UserService.setUser(event.data);
-  		}
-  	});
-  	// this.pushChanges();
-  }
-  */
-  ;
+  };
 
   return SecureDirective;
 }(rxcomp.Directive);
@@ -9132,6 +9720,6 @@ VirtualStructure.meta = {
 }(rxcomp.Module);
 AppModule.meta = {
   imports: [rxcomp.CoreModule, rxcompForm.FormModule],
-  declarations: [CardServiceComponent, CardSerieComponent, ClickOutsideDirective, ContactsComponent, ControlCheckboxComponent, ControlCustomSelectComponent, ControlTextComponent, ControlTextareaComponent, CoverComponent, CoverVideoComponent, DatePipe, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, NewsPageComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderProductsRelatedComponent, SliderServiceComponent, SlugPipe, TestComponent, VirtualStructure],
+  declarations: [AuthComponent, AuthForgotComponent, AuthModalComponent, AuthSigninComponent, AuthSignupComponent, CardServiceComponent, CardSerieComponent, ClickOutsideDirective, ContactsComponent, ControlCheckboxComponent, ControlCustomSelectComponent, ControlPasswordComponent, ControlTextComponent, ControlTextareaComponent, CoverComponent, CoverVideoComponent, DatePipe, DownloadsPageComponent, DropdownDirective, DropdownItemDirective, ErrorsComponent, FadingGalleryComponent, GalleryComponent, GalleryModalComponent, HeaderComponent, HtmlPipe, LazyDirective, LazyPictureDirective, LocomotiveDirective, ModalComponent, ModalOutletComponent, NewsPageComponent, OverlayEffectDirective, OverlayWebglDirective, ProductsPageComponent, ScrollToDirective, SecureDirective, ShareComponent, SliderComponent, SliderProductsRelatedComponent, SliderServiceComponent, SlugPipe, TestComponent, VirtualStructure],
   bootstrap: AppComponent
 };rxcomp.Browser.bootstrap(AppModule);})));

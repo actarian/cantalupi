@@ -135,11 +135,12 @@ export default class ControlCustomSelectComponent extends ControlComponent {
 
 ControlCustomSelectComponent.meta = {
 	selector: '[control-custom-select]',
-	inputs: ['control', 'label', 'multiple'],
+	inputs: ['control', 'label', 'multiple', 'name'],
 	template: /* html */ `
 		<div class="group--form--select" [class]="{ required: control.validators.length, multiple: isMultiple }" [dropdown]="dropdownId" (dropped)="onDropped($event)">
 			<label [innerHTML]="label"></label>
 			<span class="control--select" [innerHTML]="getLabel()"></span>
+            <input type="text" style="display:none" class="control--select" [formControl]="control" [formControlName]="name" />
 			<svg class="icon icon--caret-down"><use xlink:href="#caret-down"></use></svg>
 			<span class="required__badge">required</span>
 		</div>

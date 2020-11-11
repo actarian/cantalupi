@@ -1,0 +1,16 @@
+{
+  "category": {
+    "label": "Category",
+    "mode": "or",
+    "options": [
+      {
+        "value": 1,
+        "label": "Catalogues"
+      },
+      {
+        "value": 2,
+        "label": "Company Profile"
+      }
+    ]
+  }
+}

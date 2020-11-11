@@ -10,11 +10,11 @@ export default class ControlEmailComponent extends ControlComponent {
 
 ControlEmailComponent.meta = {
 	selector: '[control-email]',
-	inputs: ['control', 'label'],
+	inputs: ['control', 'label', 'name'],
 	template: /* html */ `
 		<div class="group--form" [class]="{ required: control.validators.length }">
 			<label [innerHTML]="label"></label>
-			<input type="text" class="control--text" [formControl]="control" [placeholder]="label" required email />
+			<input type="text" class="control--text" [formControl]="control" [placeholder]="label" required email [formControlName]="name" />
 			<span class="required__badge">required</span>
 		</div>
 		<errors-component [control]="control"></errors-component>

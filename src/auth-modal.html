@@ -1,0 +1,29 @@
+<div class="auth-modal" auth-modal>
+	<div class="modal__header">
+		<button type="button" class="btn--close" (click)="close()"><svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#close"></use></svg></button>
+	</div>
+	<div class="modal__inner">
+		<div *if="view == views.SIGN_IN">
+			<!-- @@include ./templates/shared/auth-signin.html -->
+		</div>
+		<div *if="view == views.SIGN_UP">
+			<!-- @@include ./templates/shared/auth-signup.html -->
+		</div>
+		<div *if="view == views.FORGOTTEN">
+			<!-- @@include ./templates/shared/auth-forgot.html -->
+		</div>
+		<div class="divline"></div>
+		<div class="container" *if="view != views.SIGN_UP">
+			<div class="title">Non fai ancora parte di Cantalupi?</div>
+			<div class="group--info">
+				<button type="button" class="btn--link" (click)="onRegister($event)"><span>Registrati</span></button>
+			</div>
+		</div>
+		<div class="container" *if="view == views.SIGN_UP">
+			<div class="title">Sei già registrato?</div>
+			<div class="group--info">
+				<button type="button" class="btn--link" (click)="onLogin($event)"><span>Accedi</span></button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -63,16 +63,18 @@ export default class UserService {
 	}
 
 	static retrieve$(payload) {
-		return ApiService.staticPost$(`/user/retrievepassword`, payload).pipe(
+		return ApiService.staticPost$(`/user/forget`, payload).pipe(
 			map((response) => this.mapStatic__(response.data, response.static, 'retrieve')),
 		);
 	}
 
+	/*
 	static update$(payload) {
 		return ApiService.staticPost$(`/user/updateprofile`, payload).pipe(
 			map((response) => this.mapStatic__(response.data, response.static, 'register')),
 		);
 	}
+	*/
 
 	static mapStatic__(user, isStatic, action = 'me') {
 		if (!isStatic) {

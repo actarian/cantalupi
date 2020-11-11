@@ -537,6 +537,23 @@
 			padding: 40px 0;
 		}
 	}
+
+	&.expand {
+
+		.container {
+			max-width: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.group--picture {
+			width: 100%;
+			flex: 1 1 auto;
+			max-width: 100%;
+			margin-right: 0;
+			margin-left: 0;
+		}
+	}
 }
 
 .section--text-picture-05 {

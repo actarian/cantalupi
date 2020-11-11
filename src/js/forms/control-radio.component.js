@@ -10,11 +10,11 @@ export default class ControlRadioComponent extends ControlComponent {
 
 ControlRadioComponent.meta = {
 	selector: '[control-radio]',
-	inputs: ['control', 'label'],
+	inputs: ['control', 'label', 'name', 'value'],
 	template: /* html */ `
 		<div class="group--form--radio" [class]="{ required: control.validators.length }">
 			<label>
-				<input type="radio" class="control--radio" [formControl]="control" [value]="true"/>
+				<input type="radio" class="control--radio" [formControl]="control" [value]="value" [formControlName]="name" />
 				<span [innerHTML]="label"></span>
 			</label>
 			<span class="required__badge">required</span>

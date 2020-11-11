@@ -3,8 +3,10 @@
 		justify-content: flex-start;
 		margin: 70px 0;
 
-		&>li {
-			margin-right: 40px;
+		@include media-up(sm) {
+			&>li {
+				margin-right: 40px;
+			}
 		}
 	}
 }
@@ -232,6 +234,7 @@
 		margin-bottom: 40px;
 
 		&>img {
+			width: auto !important;
 			max-height: 90vh;
 			margin: 0 auto;
 		}

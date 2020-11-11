@@ -11,11 +11,11 @@ export default class ControlSelectComponent extends ControlComponent {
 
 ControlSelectComponent.meta = {
 	selector: '[control-select]',
-	inputs: ['control', 'label'],
+	inputs: ['control', 'label', 'name'],
 	template: /* html */ `
 		<div class="group--form--select" [class]="{ required: control.validators.length }">
 			<label [innerHTML]="label"></label>
-			<select class="control--select" [formControl]="control" required>
+			<select class="control--select" [formControl]="control" [formControlName]="name" required>
 				<option value="">{{labels.select}}</option>
 				<option [value]="item.id" *for="let item of control.options" [innerHTML]="item.name"></option>
 			</select>

@@ -1,11 +1,9 @@
 import ControlComponent from './control.component';
 
 export default class ControlCheckboxComponent extends ControlComponent {
-
 	onInit() {
-		this.label = 'label';
+		this.label = this.label || 'label';
 	}
-
 }
 
 ControlCheckboxComponent.meta = {

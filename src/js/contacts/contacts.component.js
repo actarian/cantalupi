@@ -7,7 +7,8 @@ export default class ContactsComponent extends Component {
 
 	onInit() {
 		const data = window.data || {
-			roles: []
+		    roles: [],
+            countries: []
 		};
 
 		const form = new FormGroup({
@@ -18,13 +19,16 @@ export default class ContactsComponent extends Component {
 			role: new FormControl(null, Validators.RequiredValidator()),
 			country: new FormControl(null, Validators.RequiredValidator()),
 			message: new FormControl(null),
-			privacy: new FormControl(null, Validators.RequiredTrueValidator()),
+			newsletter: new FormControl(null),
+			privacy: new FormControl(null, Validators.RequiredValidator()),
 			checkRequest: window.antiforgery,
-			checkField: ''
+			checkField: '',
+            action: window.formaction
 		});
 
 		const controls = form.controls;
 		controls.role.options = data.roles;
+		controls.country.options = data.countries;
 		this.controls = controls;
 
 		form.changes$.pipe(
@@ -65,7 +69,7 @@ export default class ContactsComponent extends Component {
 		if (this.form.valid) {
 			// console.log('ContactsComponent.onSubmit', this.form.value);
 			this.form.submitted = true;
-			HttpService.post$('/api/contacts', this.form.value)
+			HttpService.post$(globalVars.ajaxurl, this.form.value)
 				.subscribe(response => {
 					this.success = true;
 					this.form.reset();

@@ -28,6 +28,14 @@
 			}
 		}
 	}
+
+	@include media-down(xs) {
+		display: flex;
+
+		&>li {
+			margin-right: 15px;
+		}
+	}
 }
 
 .header {

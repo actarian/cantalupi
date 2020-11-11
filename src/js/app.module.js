@@ -1,6 +1,11 @@
 import { CoreModule, Module } from 'rxcomp';
 import { FormModule } from 'rxcomp-form';
 import AppComponent from './app.component';
+import AuthForgotComponent from './auth/auth-forgot.component';
+import AuthModalComponent from './auth/auth-modal.component';
+import AuthSigninComponent from './auth/auth-signin.component';
+import AuthSignupComponent from './auth/auth-signup.component';
+import AuthComponent from './auth/auth.component';
 import CardSerieComponent from './card/card-serie';
 import CardServiceComponent from './card/card-service';
 import ClickOutsideDirective from './click-outside/click-outside.directive';
@@ -8,11 +13,13 @@ import ContactsComponent from './contacts/contacts.component';
 import CoverVideoComponent from './cover/cover-video.component';
 import CoverComponent from './cover/cover.component';
 import DatePipe from './date/date.pipe';
+import DownloadsPageComponent from './downloads-page/downloads-page.component';
 import DropdownItemDirective from './dropdown/dropdown-item.directive';
 import DropdownDirective from './dropdown/dropdown.directive';
 import FadingGalleryComponent from './fading-gallery/fading-gallery.component';
 import ControlCheckboxComponent from './forms/control-checkbox.component';
 import ControlCustomSelectComponent from './forms/control-custom-select.component';
+import ControlPasswordComponent from './forms/control-password.component';
 import ControlTextComponent from './forms/control-text.component';
 import ControlTextareaComponent from './forms/control-textarea.component';
 import ErrorsComponent from './forms/errors.component';
@@ -47,17 +54,24 @@ AppModule.meta = {
 		FormModule,
 	],
 	declarations: [
+		AuthComponent,
+		AuthForgotComponent,
+		AuthModalComponent,
+		AuthSigninComponent,
+		AuthSignupComponent,
 		CardServiceComponent,
 		CardSerieComponent,
 		ClickOutsideDirective,
 		ContactsComponent,
 		ControlCheckboxComponent,
 		ControlCustomSelectComponent,
+		ControlPasswordComponent,
 		ControlTextComponent,
 		ControlTextareaComponent,
 		CoverComponent,
 		CoverVideoComponent,
 		DatePipe,
+		DownloadsPageComponent,
 		DropdownDirective,
 		DropdownItemDirective,
 		ErrorsComponent,

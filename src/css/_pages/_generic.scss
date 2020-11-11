@@ -1,3 +1,73 @@
+.section--hero-generic {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	background: black;
+	color: white;
+	min-height: 40vh;
+
+	.background {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&>img {
+			object-fit: cover;
+			width: 100%;
+			height: 100%;
+			@extend %lazy;
+		}
+
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background: radial-gradient(ellipse at center, rgba(0, 0, 0, .05) 50%, rgba(0, 0, 0, .3) 90%);
+		}
+	}
+
+	.container {
+		flex: 1 1 auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding-bottom: 40px;
+	}
+
+	.category {
+		@extend %btn;
+		display: flex;
+		align-items: center;
+		margin-left: 10px;
+		font-family: $font-secondary;
+		font-style: italic;
+		font-size: 18px;
+		text-transform: uppercase;
+
+		em {
+			font-size: 0;
+			line-height: 1;
+			display: block;
+			width: 14px;
+			height: 1px;
+			margin: 0 4px 0 7px;
+			background: #fff;
+		}
+	}
+
+	.title {
+		@extend %title;
+	}
+}
 
 .listing--table {
 	display: flex;
@@ -25,7 +95,6 @@
 		}
 	}
 }
-
 
 table {
     width: 100%;

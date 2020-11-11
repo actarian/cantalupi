@@ -52,7 +52,7 @@
 				<div class="listing__item" *for="let item of items">
 					<div class="card--news" appear>
 						<div class="picture">
-							<img [lazy]="item.image" width="436" height="315" />
+							<img [lazy]="item.image" />
 						</div>
 						<div class="content">
 							<div class="category"><span [innerHTML]="item.category.name"></span> By <span [innerHTML]="item.author"></span> __ <span [innerHTML]="item.date | date : 'MMM dd yyyy'"></span></div>
