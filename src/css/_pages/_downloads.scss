@@ -144,6 +144,8 @@
 		top: 0;
 		width: calc(100% - 25px);
 		padding: 10px;
+		height: 100%;
+		align-items: flex-start;
 	}
 
 	.modal__inner {

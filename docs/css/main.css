@@ -916,10 +916,12 @@ errors-component {
   errors-component .inner {
     margin-top: -10px;
     margin-bottom: 10px;
-    padding: 7px 7px;
-    font-size: 14px;
     background: #A28850;
-    color: #ffffff; }
+    color: #ffffff;
+    padding: 5px 8px;
+    font-size: 11px;
+    font-weight: 100;
+    letter-spacing: 0.5px; }
 
 .group--form--results {
   justify-content: center;
@@ -6146,7 +6148,9 @@ table {
     position: absolute;
     top: 0;
     width: calc(100% - 25px);
-    padding: 10px; }
+    padding: 10px;
+    height: 100%;
+    align-items: flex-start; }
   .auth-modal .modal__inner {
     overflow-x: hidden;
     overflow-y: auto; }
