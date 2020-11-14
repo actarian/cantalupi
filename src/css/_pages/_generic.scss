@@ -65,7 +65,67 @@
 	}
 
 	.title {
-		@extend %title;
+		@extend %title-secondary;
+	}
+}
+
+.section--text-long {
+	padding: 80px 0;
+
+	.title {
+		@extend %subtitle;
+	}
+
+	.subtitle {
+		font-family: $font-primary;
+		font-size: 21px;
+		line-height: 1.5;
+		font-weight: $font-regular;
+
+		@include media-down(sm) {
+			font-size: 19px;
+		}
+	}
+
+	.description {
+		font-size: 14px;
+		line-height: 1.5;
+
+		ul,
+		ol {
+			list-style: none;
+			padding: 0;
+			margin: 0 0 30px 0;
+		}
+
+		ol {
+			&>li {
+				font-family: $font-secondary;
+				font-style: italic;
+				font-size: 1.3em;
+				line-height: 1.2;
+				margin-bottom: 10px;
+			}
+		}
+
+		ul {
+			&>li {
+				display: flex;
+				margin-bottom: 5px;
+
+				&:before {
+					content: '';
+					display: block;
+					flex: 0 0 8px;
+					width: 8px;
+					height: 8px;
+					border-radius: 4px;
+					background: #A28850;
+					margin-right: 10px;
+					margin-top: 7px;
+				}
+			}
+		}
 	}
 }
 

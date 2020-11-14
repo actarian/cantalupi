@@ -7,8 +7,8 @@ export default class ContactsComponent extends Component {
 
 	onInit() {
 		const data = window.data || {
-		    roles: [],
-            countries: []
+			roles: [],
+			countries: []
 		};
 
 		const form = new FormGroup({
@@ -19,11 +19,11 @@ export default class ContactsComponent extends Component {
 			role: new FormControl(null, Validators.RequiredValidator()),
 			country: new FormControl(null, Validators.RequiredValidator()),
 			message: new FormControl(null),
-			newsletter: new FormControl(null),
+			newsletter: new FormControl(this.flag),
 			privacy: new FormControl(null, Validators.RequiredValidator()),
 			checkRequest: window.antiforgery,
 			checkField: '',
-            action: window.formaction
+			action: window.formaction
 		});
 
 		const controls = form.controls;
@@ -94,4 +94,5 @@ export default class ContactsComponent extends Component {
 
 ContactsComponent.meta = {
 	selector: '[contacts]',
+	inputs: ['flag']
 };

@@ -1591,7 +1591,7 @@ ClickOutsideDirective.meta = {
       role: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
       country: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
       message: new rxcompForm.FormControl(null),
-      newsletter: new rxcompForm.FormControl(null),
+      newsletter: new rxcompForm.FormControl(this.flag),
       privacy: new rxcompForm.FormControl(null, rxcompForm.Validators.RequiredValidator()),
       checkRequest: window.antiforgery,
       checkField: '',
@@ -1664,7 +1664,8 @@ ClickOutsideDirective.meta = {
   return ContactsComponent;
 }(rxcomp.Component);
 ContactsComponent.meta = {
-  selector: '[contacts]'
+  selector: '[contacts]',
+  inputs: ['flag']
 };var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function createCommonjsModule(fn, basedir, module) {
@@ -4300,10 +4301,10 @@ ControlComponent.meta = {
 }(ControlComponent);
 ControlCheckboxComponent.meta = {
   selector: '[control-checkbox]',
-  inputs: ['control', 'label'],
+  inputs: ['control', 'label', 'name'],
   template:
   /* html */
-  "\n\t\t<div class=\"group--form--checkbox\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label>\n\t\t\t\t<input type=\"checkbox\" class=\"control--checkbox\" [formControl]=\"control\" [value]=\"true\" />\n\t\t\t\t<span [innerHTML]=\"label | html\"></span>\n\t\t\t</label>\n\t\t\t<span class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component [control]=\"control\"></errors-component>\n\t"
+  "\n\t\t<div class=\"group--form--checkbox\" [class]=\"{ required: control.validators.length }\">\n\t\t\t<label>\n\t\t\t\t<input type=\"checkbox\" class=\"control--checkbox\" [formControl]=\"control\" [value]=\"true\" [formControlName]=\"name\" />\n\t\t\t\t<span [innerHTML]=\"label | html\"></span>\n\t\t\t</label>\n\t\t\t<span *if=\"control.validators.length\" class=\"required__badge\">required</span>\n\t\t</div>\n\t\t<errors-component *if=\"control.validators.length\" [control]=\"control\"></errors-component>\n\t"
 };var KeyboardService = /*#__PURE__*/function () {
   function KeyboardService() {}
 

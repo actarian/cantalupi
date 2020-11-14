@@ -7,7 +7,7 @@ $container-max-widths: (sm: calc(100% - 70px),
 * {
   box-sizing: border-box; }
 
-.card__category, .card__title, .section--hero .title, .section--hero-generic .title, .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title, .section--series__content > .title, .card--serie > .content > .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
+.card__category, .card__title, .section--hero .title, .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title, .section--hero-generic .title, .section--series__content > .title, .card--serie > .content > .title, .section--text-long .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
   text-decoration: none;
   outline: none;
   color: inherit; }
@@ -160,42 +160,63 @@ body {
       font-size: 40px;
       line-height: 1.2; } }
 
-.section--hero-generic .title, .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
+.section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
   line-height: 0.9;
   text-transform: uppercase; }
   @media (min-width: 1440px) {
-    .section--hero-generic .title, .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
+    .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
       font-size: 108px; } }
   @media (min-width: 768px) and (max-width: 1919.98px) {
-    .section--hero-generic .title, .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
+    .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
       font-size: 7.2vw; } }
   @media (max-width: 1023.98px) {
-    .section--hero-generic .title, .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
+    .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
       font-size: 72px;
       word-break: break-word; } }
   @media (max-width: 767.98px) {
-    .section--hero-generic .title, .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
+    .section--hero-emotional .title, .section--hero-products .title, .section--hero-series .title, .section--hero-how-we-do .title, .section--hero-heritage .title, .section--hero-news .title {
       font-size: 54px;
       line-height: 1.2;
       word-break: break-word; } }
 
-.section--series__content > .title, .card--serie > .content > .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
+.section--hero-generic .title {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  line-height: 0.9;
+  text-transform: uppercase; }
+  @media (min-width: 1440px) {
+    .section--hero-generic .title {
+      font-size: 84px; } }
+  @media (min-width: 768px) and (max-width: 1919.98px) {
+    .section--hero-generic .title {
+      font-size: 5.5vw; } }
+  @media (max-width: 1023.98px) {
+    .section--hero-generic .title {
+      font-size: 56px;
+      word-break: break-word; } }
+  @media (max-width: 767.98px) {
+    .section--hero-generic .title {
+      font-size: 56px;
+      line-height: 1.2;
+      word-break: break-word; } }
+
+.section--series__content > .title, .card--serie > .content > .title, .section--text-long .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
   line-height: 1.15; }
   @media (min-width: 1440px) {
-    .section--series__content > .title, .card--serie > .content > .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
+    .section--series__content > .title, .card--serie > .content > .title, .section--text-long .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
       font-size: 52px; } }
   @media (min-width: 768px) and (max-width: 1919.98px) {
-    .section--series__content > .title, .card--serie > .content > .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
+    .section--series__content > .title, .card--serie > .content > .title, .section--text-long .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
       font-size: 2.7vw; } }
   @media (max-width: 1023.98px) {
-    .section--series__content > .title, .card--serie > .content > .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
+    .section--series__content > .title, .card--serie > .content > .title, .section--text-long .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
       font-size: 4.05vw; } }
   @media (max-width: 767.98px) {
-    .section--series__content > .title, .card--serie > .content > .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
+    .section--series__content > .title, .card--serie > .content > .title, .section--text-long .title, .section--intro .title, .section--intro-02 .title, .section--service__title, .section--related__title, .section--form .title {
       font-size: 28px; } }
 
 .section--intro .abstract, .section--intro-02 .abstract {
@@ -249,6 +270,45 @@ body {
   @media (max-width: 1023.98px) {
     .section--intro .description {
       font-size: 15px; } }
+
+.section--intro-02 .description ul,
+.section--intro-02 .description ol {
+  align-items: flex-start;
+  margin-bottom: 30px; }
+  .section--intro-02 .description ul > li,
+  .section--intro-02 .description ol > li {
+    display: flex;
+    align-items: center; }
+
+
+.section--intro-02 .description ol > li {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 24px;
+  font-style: italic;
+  line-height: 1.1;
+  margin-bottom: 10px; }
+  .section--intro-02 .description ol > li:before {
+    content: '';
+    display: block;
+    background: #1D1D1B;
+    flex: 0 0 0.5em;
+    width: 0.5em;
+    height: 1px;
+    margin-right: 10px; }
+
+.section--intro-02 .description ul > li {
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 10px; }
+  .section--intro-02 .description ul > li:before {
+    content: '';
+    display: block;
+    flex: 0 0 10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background: #A28850;
+    margin-right: 15px; }
 
 /*
 body {
@@ -3316,18 +3376,18 @@ errors-component {
   .lazyed[lazy], .section--cover .background > img.lazyed, .section--hero .background:not(.fading-gallery) > img.lazyed, .card--serie > .picture > img.lazyed, .section--hero-generic .background > img.lazyed, .section--hero-we-know-light .background > img.lazyed, .section--hero-emotional .background > img.lazyed, .section--hero-products .background > img.lazyed, .section--hero-series .background > img.lazyed, .section--hero-how-we-do .background > img.lazyed, .section--hero-heritage .background > img.lazyed, .section--hero-news .background > img.lazyed {
     opacity: 1; }
 
-.nav--secondary-menu > li > a, .nav--submenu > li > a, .nav--share > li > a,
+.section--intro-02 .description ul > li,
+.section--intro-02 .description ol > li, .nav--secondary-menu > li > a, .nav--submenu > li > a, .nav--share > li > a,
 .nav--secondary-menu > li > span,
 .nav--submenu > li > span,
-.nav--share > li > span, .nav--primary-menu > li > a, .nav--primary-menu > li > ul > li > a, .nav--options > li > a, .section--intro-02 .description ul > li > a, .section--intro-02 .description ol > li > a, .nav--anchor > li > a,
+.nav--share > li > span, .section--intro-02 .description ul > li > a, .section--intro-02 .description ol > li > a, .nav--primary-menu > li > a, .nav--primary-menu > li > ul > li > a, .nav--options > li > a, .nav--anchor > li > a,
+.section--intro-02 .description ul > li > span,
+.section--intro-02 .description ol > li > span,
 .nav--primary-menu > li > span,
 .nav--primary-menu > li > ul > li > span,
 .nav--options > li > span,
-.section--intro-02 .description ul > li > span,
-.section--intro-02 .description ol > li > span,
 .nav--anchor > li > span, .nav--dropdown > li > a,
-.nav--dropdown > li > span, .nav--secondary-menu > li, .nav--primary-menu > li, .nav--primary-menu > li > ul > li, .nav--options__item, .section--intro-02 .description ul > li,
-.section--intro-02 .description ol > li, .nav--submenu > li, .nav--anchor__item, .nav--share > li {
+.nav--dropdown > li > span, .nav--secondary-menu > li, .nav--primary-menu > li, .nav--primary-menu > li > ul > li, .nav--options__item, .nav--submenu > li, .nav--anchor__item, .nav--share > li {
   position: relative;
   display: flex;
   justify-content: flex-start;
@@ -3343,22 +3403,22 @@ errors-component {
 		transition-property: fill, opacity;
 	}
 	*/ }
-  .nav--secondary-menu > li > a:focus, .nav--submenu > li > a:focus, .nav--share > li > a:focus,
+  .section--intro-02 .description ul > li:focus,
+  .section--intro-02 .description ol > li:focus, .nav--secondary-menu > li > a:focus, .nav--submenu > li > a:focus, .nav--share > li > a:focus,
   .nav--secondary-menu > li > span:focus,
   .nav--submenu > li > span:focus,
-  .nav--share > li > span:focus, .nav--primary-menu > li > a:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--options > li > a:focus, .section--intro-02 .description ul > li > a:focus, .section--intro-02 .description ol > li > a:focus, .nav--anchor > li > a:focus,
+  .nav--share > li > span:focus, .section--intro-02 .description ul > li > a:focus, .section--intro-02 .description ol > li > a:focus, .nav--primary-menu > li > a:focus, .nav--primary-menu > li > ul > li > a:focus, .nav--options > li > a:focus, .nav--anchor > li > a:focus,
+  .section--intro-02 .description ul > li > span:focus,
+  .section--intro-02 .description ol > li > span:focus,
   .nav--primary-menu > li > span:focus,
   .nav--primary-menu > li > ul > li > span:focus,
   .nav--options > li > span:focus,
-  .section--intro-02 .description ul > li > span:focus,
-  .section--intro-02 .description ol > li > span:focus,
   .nav--anchor > li > span:focus, .nav--dropdown > li > a:focus,
-  .nav--dropdown > li > span:focus, .nav--secondary-menu > li:focus, .nav--primary-menu > li:focus, .nav--primary-menu > li > ul > li:focus, .nav--options__item:focus, .section--intro-02 .description ul > li:focus,
-  .section--intro-02 .description ol > li:focus, .nav--submenu > li:focus, .nav--anchor__item:focus, .nav--share > li:focus {
+  .nav--dropdown > li > span:focus, .nav--secondary-menu > li:focus, .nav--primary-menu > li:focus, .nav--primary-menu > li > ul > li:focus, .nav--options__item:focus, .nav--submenu > li:focus, .nav--anchor__item:focus, .nav--share > li:focus {
     outline: 0; }
 
-.nav--secondary-menu, .nav--submenu, .nav--share, .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .section--intro-02 .description ul,
-.section--intro-02 .description ol, .nav--anchor, .nav--dropdown, .nav--menu-tertiary, .nav--social {
+.nav--secondary-menu, .nav--submenu, .nav--share, .section--intro-02 .description ul,
+.section--intro-02 .description ol, .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .nav--anchor, .nav--dropdown, .nav--menu-tertiary, .nav--social {
   list-style: none;
   padding: 0;
   margin: 0; }
@@ -3377,22 +3437,22 @@ errors-component {
     .nav--secondary-menu, .nav--submenu, .nav--share {
       display: block; } }
 
-.nav--primary-menu > li, .nav--primary-menu > li > ul > li, .nav--options > li, .section--intro-02 .description ul > li, .section--intro-02 .description ol > li, .nav--anchor > li {
+.section--intro-02 .description ul > li, .section--intro-02 .description ol > li, .nav--primary-menu > li, .nav--primary-menu > li > ul > li, .nav--options > li, .nav--anchor > li {
   position: relative;
   display: block;
   flex: 1 1 auto; }
 
 @media (min-width: 1024px) {
-  .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .section--intro-02 .description ul,
-  .section--intro-02 .description ol, .nav--anchor {
+  .section--intro-02 .description ul,
+  .section--intro-02 .description ol, .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .nav--anchor {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center; } }
 
 @media (max-width: 1023.98px) {
-  .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .section--intro-02 .description ul,
-  .section--intro-02 .description ol, .nav--anchor {
+  .section--intro-02 .description ul,
+  .section--intro-02 .description ol, .nav--primary-menu, .nav--primary-menu > li > ul, .nav--options, .nav--anchor {
     display: block; } }
 
 .dropdown-item:not(.dropped) {
@@ -4859,6 +4919,44 @@ errors-component {
       margin: 0 4px 0 7px;
       background: #fff; }
 
+.section--text-long {
+  padding: 80px 0; }
+  .section--text-long .subtitle {
+    font-family: "Nunito Sans", sans-serif;
+    font-size: 21px;
+    line-height: 1.5;
+    font-weight: 400; }
+    @media (max-width: 1023.98px) {
+      .section--text-long .subtitle {
+        font-size: 19px; } }
+  .section--text-long .description {
+    font-size: 14px;
+    line-height: 1.5; }
+    .section--text-long .description ul,
+    .section--text-long .description ol {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 30px 0; }
+    .section--text-long .description ol > li {
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-size: 1.3em;
+      line-height: 1.2;
+      margin-bottom: 10px; }
+    .section--text-long .description ul > li {
+      display: flex;
+      margin-bottom: 5px; }
+      .section--text-long .description ul > li:before {
+        content: '';
+        display: block;
+        flex: 0 0 8px;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        background: #A28850;
+        margin-right: 10px;
+        margin-top: 7px; }
+
 .listing--table {
   display: flex;
   flex-direction: column;
@@ -5381,6 +5479,11 @@ table {
   max-width: 100%;
   margin-right: 0;
   margin-left: 0; }
+
+.section--text-picture-04.expand .picture {
+  width: 100%; }
+  .section--text-picture-04.expand .picture img {
+    width: 100%; }
 
 .section--text-picture-05 .group--inline {
   position: relative;
@@ -6369,41 +6472,6 @@ table {
   .section--intro-02 .category {
     font-size: 16px;
     margin-bottom: 20px; }
-  .section--intro-02 .description ul,
-  .section--intro-02 .description ol {
-    align-items: flex-start;
-    margin-bottom: 30px; }
-    .section--intro-02 .description ul > li,
-    .section--intro-02 .description ol > li {
-      display: flex;
-      align-items: center; }
-  .section--intro-02 .description ol > li {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 24px;
-    font-style: italic;
-    line-height: 1.1;
-    margin-bottom: 10px; }
-    .section--intro-02 .description ol > li:before {
-      content: '';
-      display: block;
-      background: #1D1D1B;
-      flex: 0 0 0.5em;
-      width: 0.5em;
-      height: 1px;
-      margin-right: 10px; }
-  .section--intro-02 .description ul > li {
-    font-size: 16px;
-    line-height: 24px;
-    margin-bottom: 10px; }
-    .section--intro-02 .description ul > li:before {
-      content: '';
-      display: block;
-      flex: 0 0 10px;
-      width: 10px;
-      height: 10px;
-      border-radius: 5px;
-      background: #A28850;
-      margin-right: 15px; }
   @media (min-width: 1024px) {
     .section--intro-02 .group--cta .btn--contact {
       margin-right: 30px; } }
